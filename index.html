@@ -1,421 +1,836 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
     <title>LUMINARA 2026 | DUAL INTERFACE</title>
+
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;500&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     
+
     <style>
+
         :root {
+
             --neon: #00f2ff;
+
             --glass: rgba(255, 255, 255, 0.02);
+
             --border: rgba(255, 255, 255, 0.08);
+
             --error: #ff4d4d;
+
         }
+
+
 
         body {
+
             margin: 0; padding: 0; background: #010306; color: #fff;
+
             font-family: 'Inter', sans-serif; height: 100vh;
+
             display: flex; overflow: hidden;
+
             user-select: none;
+
         }
+
+
 
         /* --- Tech Background Enhancements --- */
+
         .bg-grid {
+
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+
             background-image: linear-gradient(rgba(0, 242, 255, 0.05) 1px, transparent 1px),
+
                               linear-gradient(90deg, rgba(0, 242, 255, 0.05) 1px, transparent 1px);
+
             background-size: 60px 60px; z-index: -2;
+
             mask-image: radial-gradient(circle at center, black, transparent 90%);
+
             animation: gridMove 30s linear infinite;
+
         }
+
         @keyframes gridMove { from { background-position: 0 0; } to { background-position: 60px 60px; } }
 
+
+
         .glow-overlay {
+
             position: fixed; width: 100%; height: 100%;
+
             background: radial-gradient(circle at 20% 50%, rgba(0, 242, 255, 0.07) 0%, transparent 40%),
+
                         radial-gradient(circle at 80% 50%, rgba(0, 242, 255, 0.03) 0%, transparent 40%);
+
             z-index: -1;
+
         }
+
+
 
         /* --- Floating Neural Particles --- */
+
         .particles-container {
+
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+
             pointer-events: none; z-index: 0; overflow: hidden;
+
         }
+
+
 
         .particle {
+
             position: absolute; background: var(--neon);
+
             border-radius: 50%; opacity: 0.3;
+
             filter: blur(1px);
+
             animation: floatParticle 15s infinite linear;
+
         }
+
+
 
         @keyframes floatParticle {
+
             0% { transform: translateY(100vh) scale(0); opacity: 0; }
+
             20% { opacity: 0.4; }
+
             80% { opacity: 0.4; }
+
             100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+
         }
 
-        .split-container { display: flex; width: 100%; height: 100%; z-index: 10; overflow-y: auto; padding-bottom: 80px; }
+
+
+        .split-container { display: flex; width: 100%; height: 100%; z-index: 10; overflow-y: auto; padding-bottom: 120px; }
+
+
 
         /* --- Visual Side (Left) --- */
+
         .visual-side {
+
             flex: 1.2; display: flex; flex-direction: column;
+
             justify-content: center; padding-left: 8%; position: relative;
+
         }
+
+
 
         .cube-container {
+
             position: absolute; width: 300px; height: 300px;
+
             left: 5%; top: 15%; z-index: -1; perspective: 1000px; opacity: 0.5;
+
         }
+
         .glass-cube {
+
             width: 100px; height: 100px; position: relative;
+
             transform-style: preserve-3d; animation: rotateCube 20s infinite linear;
+
             background: rgba(0, 242, 255, 0.03); border: 1px solid rgba(0, 242, 255, 0.2);
+
             backdrop-filter: blur(5px);
+
         }
+
         @keyframes rotateCube { from { transform: rotateX(0) rotateY(0); } to { transform: rotateX(360deg) rotateY(360deg); } }
 
+
+
         .system-title {
+
             font-family: 'Orbitron'; font-size: clamp(2.5rem, 6vw, 4rem); letter-spacing: 15px;
+
             text-shadow: 0 0 40px var(--neon); margin: 0;
+
         }
+
+
 
         .shape-path-container {
+
             position: relative;
+
             width: 100%;
+
             max-width: 400px;
+
             height: 40px;
+
             margin: 10px 0;
+
             display: flex;
+
             align-items: center;
+
         }
+
+
 
         .moving-path {
+
             position: absolute;
+
             width: 100%;
+
             height: 1px;
+
             background: linear-gradient(90deg, transparent, var(--neon), transparent);
+
             opacity: 0.4;
+
         }
+
+
 
         .shape {
+
             position: absolute;
+
             background: rgba(255, 255, 255, 0.05);
+
             backdrop-filter: blur(4px);
+
             border: 1px solid rgba(0, 242, 255, 0.5);
+
             filter: drop-shadow(0 0 8px var(--neon));
+
         }
+
+
 
         .circle { width: 10px; height: 10px; border-radius: 50%; animation: shapeMove 5s infinite linear; }
+
         .square { width: 9px; height: 9px; animation: shapeMove 7s infinite linear -2s; }
+
         .triangle { 
+
             width: 0; height: 0; background: transparent; border: none; filter: drop-shadow(0 0 6px var(--neon));
+
             border-left: 6px solid transparent; border-right: 6px solid transparent;
+
             border-bottom: 10px solid rgba(0, 242, 255, 0.6);
+
             animation: shapeMove 6s infinite linear -4s;
+
         }
 
+
+
         @keyframes shapeMove {
+
             0% { left: 0%; transform: rotate(0deg); opacity: 0; }
+
             10%, 90% { opacity: 0.8; }
+
             50% { filter: brightness(1.5) drop-shadow(0 0 15px var(--neon)); transform: rotate(180deg) scale(1.2); }
+
             100% { left: 100%; transform: rotate(360deg); opacity: 0; }
+
         }
+
+
 
         .system-tag { color: var(--neon); letter-spacing: 5px; opacity: 0.6; font-weight: 300; margin-top: 10px; }
 
+
+
         .data-panels {
+
             display: flex; gap: 15px; margin-top: 40px;
+
         }
+
         
+
         .glass-panel {
+
             background: rgba(255, 255, 255, 0.03);
+
             backdrop-filter: blur(10px);
+
             border: 1px solid var(--border);
+
             border-radius: 12px;
+
             padding: 15px 20px;
+
             min-width: 120px;
+
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
         }
+
         .glass-panel:hover { 
+
             background: rgba(0, 242, 255, 0.05); 
+
             border-color: rgba(0, 242, 255, 0.3);
+
             transform: translateY(-8px);
+
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+
         }
+
         
+
         .panel-label { font-size: 0.6rem; color: var(--neon); opacity: 0.6; letter-spacing: 2px; margin-bottom: 5px; }
+
         .panel-value { font-family: 'Orbitron'; font-size: 0.9rem; color: #fff; }
 
+
+
         .monitor-logs {
+
             margin-top: 30px; font-family: monospace; font-size: 0.75rem;
+
             color: var(--neon); opacity: 0.4; line-height: 1.8;
+
             border-left: 2px solid var(--neon); padding-left: 15px;
+
         }
 
-        /* --- NEW: Glass Divider Line --- */
-        .glass-divider {
-            width: 1px;
-            height: 60%;
-            background: linear-gradient(to bottom, transparent, rgba(0, 242, 255, 0.2), transparent);
-            align-self: center;
-            box-shadow: 0 0 15px rgba(0, 242, 255, 0.1);
-        }
+
 
         /* --- Auth Side --- */
+
         .auth-side { flex: 0.8; display: flex; justify-content: center; align-items: center; padding-right: 5%; }
-        #auth-container { width: 100%; max-width: 380px; text-align: center; transition: all 0.5s ease; }
+
+        #auth-container { width: 100%; max-width: 380px; text-align: center; transition: transform 0.5s ease; }
+
         #auth-container:hover { transform: translateY(-12px); }
 
+
+
         #timer {
+
             font-family: 'Orbitron'; font-size: 1.6rem; color: var(--neon);
+
             text-shadow: 0 0 15px rgba(0, 242, 255, 0.5); margin-bottom: 25px;
+
         }
+
+        
+
         .glass-card {
+
             background: var(--glass); backdrop-filter: blur(30px);
+
             border: 1px solid var(--border); border-radius: 30px; padding: 40px 30px;
+
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5); position: relative; overflow: hidden;
+
+            transition: all 0.4s ease;
+
         }
+
+        .glass-card:hover { border-color: rgba(0, 242, 255, 0.2); }
+
+
+
         .glass-input {
+
             width: 100%; padding: 14px; margin-bottom: 5px; background: rgba(0, 0, 0, 0.4);
+
             border: 1px solid var(--border); border-radius: 12px; color: var(--neon);
+
             outline: none; box-sizing: border-box; font-family: 'Orbitron'; transition: 0.3s;
+
             font-size: 0.9rem;
+
         }
+
         .glass-input.input-error { border-color: var(--error); box-shadow: 0 0 10px rgba(255, 77, 77, 0.2); }
+
         .error-msg { color: var(--error); font-size: 0.7rem; text-align: left; margin-bottom: 12px; margin-left: 5px; display: none; }
+
         .glass-btn {
+
             width: 100%; padding: 16px; background: var(--neon); border: none;
+
             border-radius: 12px; color: #000; font-weight: bold; font-family: 'Orbitron';
+
             cursor: pointer; transition: 0.4s; letter-spacing: 2px; margin-top: 10px;
+
         }
+
         .glass-btn:hover { background: #fff; box-shadow: 0 0 25px var(--neon); }
 
+
+
         .icon-container { display: flex; justify-content: center; gap: 15px; margin-top: 30px; }
+
         .icon-card {
+
             width: 50px; height: 50px; background: var(--glass); border: 1px solid var(--border);
+
             border-radius: 12px; display: flex; justify-content: center; align-items: center;
+
             text-decoration: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); color: #94a3b8; font-size: 1.2rem;
+
         }
-        .icon-card:hover { transform: translateY(-8px) scale(1.1); color: var(--neon); border-color: var(--neon); }
+
+        .icon-card:hover { 
+
+            transform: translateY(-8px) scale(1.1); 
+
+            color: var(--neon);
+
+            border-color: var(--neon);
+
+        }
+
+
+
+        .icon-card[style*="#ff0000"]:hover { box-shadow: 0 0 20px rgba(255, 0, 0, 0.4); }
+
+        .icon-card[style*="#1877F2"]:hover { box-shadow: 0 0 20px rgba(24, 119, 242, 0.4); }
+
+        .icon-card[style*="#25D366"]:hover { box-shadow: 0 0 20px rgba(37, 211, 102, 0.4); }
+
+
 
         /* --- Bottom Glass Typewriter Box --- */
+
         .bottom-quote-box {
+
             position: fixed;
+
             bottom: 20px;
+
             left: 50%;
+
             transform: translateX(-50%);
+
             width: 90%;
+
             max-width: 600px;
+
             background: rgba(255, 255, 255, 0.01);
+
             backdrop-filter: blur(15px);
+
             border: 1px solid var(--border);
+
             border-radius: 15px;
+
             padding: 12px 20px;
+
             text-align: center;
+
             z-index: 100;
+
             transition: all 0.4s ease;
+
         }
+
+        .bottom-quote-box:hover {
+
+            transform: translateX(-50%) translateY(-5px);
+
+            border-color: rgba(0, 242, 255, 0.2);
+
+        }
+
+
 
         #typewriter-text {
+
             font-family: 'Orbitron', monospace;
-            font-size: 0.75rem;
+
+            font-size: clamp(0.6rem, 2.5vw, 0.75rem);
+
             color: var(--neon);
+
             letter-spacing: 2px;
+
             text-transform: uppercase;
+
             min-height: 1.2em;
+
         }
+
         .cursor {
+
             display: inline-block;
+
             width: 8px;
+
             height: 14px;
+
             background: var(--neon);
+
             margin-left: 5px;
+
             animation: blink 0.8s infinite;
+
             vertical-align: middle;
+
         }
+
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
+
+
         @media (max-width: 950px) {
+
             body { overflow-y: auto; }
-            .split-container { flex-direction: column; height: auto; padding: 40px 20px; }
+
+            .split-container { flex-direction: column; height: auto; padding: 40px 20px 140px 20px; }
+
             .visual-side { padding-left: 0; align-items: center; text-align: center; margin-bottom: 40px; flex: none; }
+
             .auth-side { padding-right: 0; width: 100%; flex: none; }
+
             .cube-container, .monitor-logs, .data-panels { display: none; }
+
             .shape-path-container { margin: 10px auto; }
-            .bottom-quote-box { position: relative; left: 0; transform: none; margin: 20px auto; width: 100%; }
-            
-            /* Hide vertical line and show horizontal on mobile */
-            .glass-divider {
-                width: 80%;
-                height: 1px;
-                margin: 20px auto;
-                background: linear-gradient(to right, transparent, rgba(0, 242, 255, 0.2), transparent);
-            }
+
+            .bottom-quote-box { width: 95%; bottom: 10px; }
+
         }
+
     </style>
+
 </head>
+
 <body oncontextmenu="return false;"> 
+
     <div class="bg-grid"></div>
+
     <div class="glow-overlay"></div>
+
     
+
     <div class="particles-container" id="particles"></div>
 
+
+
     <div class="split-container">
+
         <div class="visual-side">
+
             <div class="cube-container">
+
                 <div class="glass-cube"></div>
+
             </div>
+
             <h1 class="system-title">DARK NEO</h1>
+
             
+
             <div class="shape-path-container">
+
                 <div class="moving-path"></div>
+
                 <div class="shape circle"></div>
+
                 <div class="shape square"></div>
+
                 <div class="shape triangle"></div>
+
             </div>
+
+
 
             <p class="system-tag">ACCESS PROTOCOL 2026</p>
 
+
+
             <div class="data-panels">
+
                 <div class="glass-panel">
+
                     <div class="panel-label">CORE_LINK</div>
+
                     <div class="panel-value">ACTIVE</div>
+
                 </div>
+
                 <div class="glass-panel">
+
                     <div class="panel-label">STABILITY</div>
+
                     <div class="panel-value">98.4%</div>
+
                 </div>
+
                 <div class="glass-panel">
+
                     <div class="panel-label">SECURETY</div>
+
                     <div class="panel-value">100%</div>
+
                 </div>
+
             </div>
+
+
 
             <div class="monitor-logs">
+
                 [SYSTEM] ONLINE...<br>
+
                 [GATE] WAITING FOR PASSKEY_<br>
+
                 [AUTHOR] AMIDU_NISHX
+
             </div>
+
         </div>
 
-        <div class="glass-divider"></div>
+
 
         <div class="auth-side">
+
             <div id="auth-container">
+
                 <div id="timer">00d 00h 00m 00s</div>
+
                 <div class="glass-card">
+
                     <h2 style="font-family: 'Orbitron'; font-size: 0.8rem; letter-spacing: 3px; margin-bottom: 25px; opacity: 0.5;">AUTHENTICATE</h2>
+
                     <input type="email" id="email" placeholder="Email Input" class="glass-input">
+
                     <div id="email-error" class="error-msg"></div>
+
                     <input type="password" id="password" placeholder="PASSWORD" class="glass-input">
+
                     <div id="password-error" class="error-msg"></div>
+
                     <button onclick="handleAuth()" id="submit-btn" class="glass-btn">Sign Up</button>
+
                     <div class="icon-container">
+
                         <a href="https://www.youtube.com/@Techarksl123" class="icon-card" style="--color: #ff0000;"><i class="fab fa-youtube"></i></a>
+
                         <a href="https://www.youtube.com/@Techarksl123" class="icon-card" style="--color: #1877F2;"><i class="fab fa-facebook-f"></i></a>
+
                         <a href="https://www.youtube.com/@Techarksl123" class="icon-card" style="--color: #25D366;"><i class="fab fa-whatsapp"></i></a>
+
                     </div>
+
                 </div>
+
             </div>
+
         </div>
+
     </div>
+
+
 
     <div class="bottom-quote-box">
+
         <span id="typewriter-text"></span><span class="cursor"></span>
+
     </div>
 
+
+
     <script>
+
         // Particle Generator
+
         const container = document.getElementById('particles');
+
         for (let i = 0; i < 50; i++) {
+
             const p = document.createElement('div');
+
             p.className = 'particle';
+
             const size = Math.random() * 3 + 1;
+
             p.style.width = size + 'px';
+
             p.style.height = size + 'px';
+
             p.style.left = Math.random() * 100 + 'vw';
+
             p.style.animationDuration = (Math.random() * 10 + 10) + 's';
+
             p.style.animationDelay = Math.random() * 10 + 's';
+
             container.appendChild(p);
+
         }
+
+
 
         // Typewriter Effect
+
         const phrases = [
+
             "THE FUTURE BELONGS TO THOSE WHO BELIEVE.",
+
             "LUMINARA 2026: BEYOND THE HORIZON.",
+
             "CONNECTING THE DIGITAL NEURAL NETWORK.",
+
             "GET MORE INFO CLICK SOCIAL MEDIA ICON."
+
         ];
+
         let phraseIndex = 0;
+
         let characterIndex = 0;
+
         const textElement = document.getElementById('typewriter-text');
 
+
+
         function type() {
+
             if (characterIndex < phrases[phraseIndex].length) {
+
                 textElement.textContent += phrases[phraseIndex].charAt(characterIndex);
+
                 characterIndex++;
+
                 setTimeout(type, 100);
+
             } else {
+
                 setTimeout(erase, 2000);
+
             }
+
         }
 
+
+
         function erase() {
+
             if (characterIndex > 0) {
-                textElement.textContent = phrases[phraseIndex].substring(0, characterIndex - 1 characterIndex - 1);
+
+                textElement.textContent = phrases[phraseIndex].substring(0, characterIndex - 1);
+
                 characterIndex--;
+
                 setTimeout(erase, 50);
+
             } else {
+
                 phraseIndex = (phraseIndex + 1) % phrases.length;
-                characterIndex = 0;
-                setTimeout(type, 500);
+
+                setTimeout(type, 500); characterIndex = 0;
+
             }
+
         }
+
+
 
         window.onload = type;
 
+
+
         document.addEventListener('contextmenu', e => e.preventDefault());
+
         document.onkeydown = function(e) {
+
             if (event.keyCode == 123) return false;
+
             if (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'C'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) return false;
+
             if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
+
         };
+
+
 
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxjHN0-eYtkgSdFb61BEpWPDIEgeZDAEm699tZIt_QHNxngDzabZedOuAQqNeCjJWyFNw/exec';
 
+
+
         async function handleAuth() {
+
             const emailInput = document.getElementById('email');
+
             const passwordInput = document.getElementById('password');
+
             const btn = document.getElementById('submit-btn');
+
+
 
             if(!emailInput.value || !passwordInput.value) return;
 
+
+
             btn.innerText = "AUTHENTICATING..."; btn.disabled = true;
 
+
+
             try {
+
                 const response = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ email: emailInput.value, password: passwordInput.value }) });
+
                 const res = await response.json();
+
                 if(res.result === "success") {
+
                     localStorage.setItem('loggedEmail', emailInput.value);
+
                     window.location.href = 'dashboard.html';
+
                 } else {
+
                     btn.innerText = "INITIALIZE"; btn.disabled = false;
+
                 }
+
             } catch (e) { window.location.href = 'dashboard.html'; }
+
         }
 
+
+
         setInterval(() => {
+
             const diff = new Date("2026-02-20").getTime() - new Date().getTime();
+
             if (diff > 0) {
+
                 document.getElementById('timer').innerText = `${Math.floor(diff/(1000*60*60*24))}d ${Math.floor((diff/(1000*60*60))%24)}h ${Math.floor((diff/(1000*60))%60)}m ${Math.floor((diff/1000)%60)}s`;
+
             }
+
         }, 1000);
+
     </script>
+
 </body>
+
 </html>
+
+
+
