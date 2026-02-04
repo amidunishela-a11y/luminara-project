@@ -10,8 +10,8 @@
     <style>
         :root {
             --neon: #00f2ff;
-            --glass: rgba(255, 255, 255, 0.02);
-            --border: rgba(255, 255, 255, 0.08);
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
             --error: #ff4d4d;
         }
 
@@ -40,7 +40,7 @@
             z-index: -1;
         }
 
-        /* --- NEW EFFECT: Floating Neural Particles --- */
+        /* --- Floating Neural Particles --- */
         .particles-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none; z-index: 0; overflow: hidden;
@@ -151,6 +151,7 @@
             border-left: 2px solid var(--neon); padding-left: 15px;
         }
 
+        /* --- Auth Side (Right) --- */
         .auth-side { flex: 0.8; display: flex; justify-content: center; align-items: center; padding-right: 5%; }
         #auth-container { width: 100%; max-width: 380px; text-align: center; }
         #timer {
@@ -158,68 +159,69 @@
             text-shadow: 0 0 15px rgba(0, 242, 255, 0.5); margin-bottom: 25px;
         }
 
-        /* --- UPDATED: Outer Moving Neon Border ONLY --- */
+        /* --- UPDATED: Advanced Glassmorphism Card --- */
         .glass-card {
-            background: var(--glass); backdrop-filter: blur(30px);
-            border-radius: 30px; padding: 40px 30px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            background: rgba(255, 255, 255, 0.02); 
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 30px;
+            padding: 40px 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.02);
             position: relative;
-            z-index: 1;
-            /* Border එක පෙන්වීමට අවකාශය සකසයි */
-            border: 1px solid transparent; 
+            overflow: hidden;
         }
 
-        /* Border සෑදීමට පසුබිමේ කැරකෙන layer එක */
+        /* Subtle reflection effect on top of glass card */
         .glass-card::before {
-            content: '';
+            content: "";
             position: absolute;
-            top: -2px; left: -2px; right: -2px; bottom: -2px;
-            background: conic-gradient(from 0deg, transparent, var(--neon), transparent 30%);
-            border-radius: 32px;
-            animation: rotateNeon 4s linear infinite;
-            z-index: -2;
-        }
-
-        /* Card එකේ ඇතුළත වර්ණය රඳවා ගැනීමට සහ border එක වෙන් කර පෙන්වීමට layer එක */
-        .glass-card::after {
-            content: '';
-            position: absolute;
-            inset: 1px;
-            background: #010306;
-            border-radius: 29px;
-            z-index: -1;
-        }
-
-        @keyframes rotateNeon {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 50%);
+            pointer-events: none;
         }
 
         .glass-input {
-            width: 100%; padding: 14px; margin-bottom: 5px; background: rgba(0, 0, 0, 0.4);
-            border: 1px solid var(--border); border-radius: 12px; color: var(--neon);
+            width: 100%; padding: 14px; margin-bottom: 5px; 
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.07); 
+            border-radius: 12px; color: var(--neon);
             outline: none; box-sizing: border-box; font-family: 'Orbitron'; transition: 0.3s;
             font-size: 0.9rem;
         }
+        .glass-input:focus {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--neon);
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.1);
+        }
         .glass-input.input-error { border-color: var(--error); box-shadow: 0 0 10px rgba(255, 77, 77, 0.2); }
         .error-msg { color: var(--error); font-size: 0.7rem; text-align: left; margin-bottom: 12px; margin-left: 5px; display: none; }
+        
         .glass-btn {
             width: 100%; padding: 16px; background: var(--neon); border: none;
             border-radius: 12px; color: #000; font-weight: bold; font-family: 'Orbitron';
             cursor: pointer; transition: 0.4s; letter-spacing: 2px; margin-top: 10px;
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
         }
-        .glass-btn:hover { background: #fff; box-shadow: 0 0 25px var(--neon); }
+        .glass-btn:hover { 
+            background: #fff; 
+            box-shadow: 0 0 25px var(--neon);
+            transform: translateY(-2px);
+        }
 
         .icon-container { display: flex; justify-content: center; gap: 15px; margin-top: 30px; }
         .icon-card {
-            width: 50px; height: 50px; background: var(--glass); border: 1px solid var(--border);
+            width: 50px; height: 50px; 
+            background: rgba(255, 255, 255, 0.03); 
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 12px; display: flex; justify-content: center; align-items: center;
             text-decoration: none; transition: 0.4s; color: #94a3b8; font-size: 1.2rem;
         }
-
-        .icon-card[style*="#ff0000"]:hover { color: #ff0000; border-color: #ff0000; box-shadow: 0 0 20px rgba(255, 0, 0, 0.4); }
-        .icon-card[style*="#1877F2"]:hover { color: #1877F2; border-color: #1877F2; box-shadow: 0 0 20px rgba(24, 119, 242, 0.4); }
-        .icon-card[style*="#25D366"]:hover { color: #25D366; border-color: #25D366; box-shadow: 0 0 20px rgba(37, 211, 102, 0.4); }
+        .icon-card:hover {
+            border-color: var(--neon);
+            color: var(--neon);
+            background: rgba(0, 242, 255, 0.05);
+        }
 
         @media (max-width: 950px) {
             body { overflow-y: auto; }
