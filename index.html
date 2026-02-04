@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LUMINARA SYSTEM</title>
+    <title>LUMINARA 2026 SYSTEM</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
 </head>
@@ -13,24 +13,29 @@
     <div id="auth-container">
         <div id="ui-layer">
             <div class="label">SYSTEM ACTIVATION</div>
-            <div id="timer">16d 00h 00m 00s</div>
+            <div id="timer">15d 23h 58m 46s</div>
         </div>
 
         <div class="glass-card">
-            <h2>System Access</h2>
+            <h2>Identity Access</h2>
             <input type="email" id="email" placeholder="Email Address" class="glass-input">
             <input type="password" id="password" placeholder="Password" class="glass-input">
-            <button onclick="handleAuth()" id="submit-btn" class="glass-btn">INITIALIZE ACCESS</button>
-            <p id="hint-text">New users will be automatically registered.</p>
+            <button onclick="handleAuth()" id="submit-btn" class="glass-btn">INITIALIZE AUTHORIZATION</button>
+            <p id="info-msg">Unregistered identities will be automatically archived.</p>
         </div>
     </div>
 
     <div id="success-screen" style="display:none;">
         <div class="success-content">
-            <h1>LUMINARA CORE ACTIVATED</h1>
-            <p>Authentication Successful. Welcome to the Core.</p>
+            <h1 id="welcome-msg">CORE ACCESS GRANTED</h1>
+            <p>Welcome back to the LUMINARA encrypted database.</p>
             <button onclick="location.reload()" class="glass-btn" style="width:200px;">TERMINATE SESSION</button>
         </div>
+    </div>
+
+    <div id="sheet-data-container">
+        <div class="label" style="font-size: 0.6rem; color: #00f2ff; margin-bottom: 8px;">LIVE LOGS</div>
+        <div id="sheet-content">Synchronizing Data...</div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
