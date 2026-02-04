@@ -40,6 +40,21 @@
             z-index: -1;
         }
 
+        /* --- NEW: Diagonal Scan Glow --- */
+        .scan-glow {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(45deg, transparent 40%, rgba(0, 242, 255, 0.08) 50%, transparent 60%);
+            background-size: 300% 300%;
+            pointer-events: none;
+            z-index: 5;
+            animation: diagonalScan 8s infinite ease-in-out;
+        }
+
+        @keyframes diagonalScan {
+            0% { background-position: -150% -150%; }
+            100% { background-position: 150% 150%; }
+        }
+
         .split-container { display: flex; width: 100%; height: 100%; z-index: 10; overflow-y: auto; }
 
         /* --- Visual Side (Left) --- */
@@ -185,6 +200,7 @@
 <body oncontextmenu="return false;"> 
     <div class="bg-grid"></div>
     <div class="glow-overlay"></div>
+    <div class="scan-glow"></div>
 
     <div class="split-container">
         <div class="visual-side">
