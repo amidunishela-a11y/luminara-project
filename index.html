@@ -12,6 +12,7 @@
             --neon: #00f2ff;
             --glass: rgba(255, 255, 255, 0.03);
             --border: rgba(255, 255, 255, 0.1);
+            --error: #ff4d4d;
         }
 
         body {
@@ -20,12 +21,8 @@
             display: flex; justify-content: center; align-items: center; overflow: hidden;
         }
 
-        /* --- Particle Canvas --- */
-        #particle-canvas {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-        }
+        #particle-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
 
-        /* --- Auth Container --- */
         #auth-container { width: 100%; max-width: 420px; z-index: 10; text-align: center; pointer-events: auto; }
 
         #timer {
@@ -40,15 +37,36 @@
         }
 
         .glass-input {
-            width: 100%; padding: 14px; margin-bottom: 12px; background: rgba(0, 0, 0, 0.5);
+            width: 100%; padding: 14px; margin-bottom: 5px; background: rgba(0, 0, 0, 0.5);
             border: 1px solid var(--border); border-radius: 10px; color: var(--neon);
             outline: none; box-sizing: border-box; font-family: 'Orbitron', sans-serif;
+            transition: 0.3s;
         }
+
+        /* Error එකක් ඇති විට Input එක Glow වන ආකාරය */
+        .glass-input.input-error {
+            border-color: var(--error);
+            box-shadow: 0 0 10px rgba(255, 77, 77, 0.3);
+        }
+
+        /* Error පණිවිඩය සඳහා Styling */
+        .error-msg {
+            color: var(--error);
+            font-size: 0.7rem;
+            text-align: left;
+            margin-bottom: 12px;
+            margin-left: 5px;
+            font-weight: 500;
+            display: none; /* ආරම්භයේදී නොපෙනේ */
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
 
         .glass-btn {
             width: 100%; padding: 15px; background: var(--neon); border: none;
             border-radius: 10px; color: #000; font-weight: bold; font-family: 'Orbitron';
-            cursor: pointer; transition: 0.4s; letter-spacing: 1px;
+            cursor: pointer; transition: 0.4s; letter-spacing: 1px; margin-top: 10px;
         }
 
         .glass-btn:hover { background: #fff; box-shadow: 0 0 20px var(--neon); }
@@ -60,11 +78,6 @@
             text-decoration: none; transition: 0.4s; color: #94a3b8;
         }
         .icon-card:hover { border-color: var(--color); color: var(--color); transform: scale(1.1); }
-
-        #sheet-data-container {
-            position: absolute; bottom: 15px; left: 15px; font-size: 0.55rem;
-            background: var(--glass); padding: 8px; border-radius: 8px; border: 1px solid var(--border);
-        }
     </style>
 </head>
 <body>
@@ -76,8 +89,13 @@
         
         <div class="glass-card">
             <h2 style="font-family: 'Orbitron'; font-size: 0.9rem; letter-spacing: 2px; margin-top: 0;">TERMINAL_SECURE</h2>
+            
             <input type="email" id="email" placeholder="EMAIL_ID" class="glass-input">
+            <div id="email-error" class="error-msg"></div>
+
             <input type="password" id="password" placeholder="PASSKEY" class="glass-input">
+            <div id="password-error" class="error-msg"></div>
+
             <button onclick="handleAuth()" id="submit-btn" class="glass-btn">LOGIN</button>
             
             <div class="icon-container">
@@ -88,153 +106,120 @@
         </div>
     </div>
 
-    <div id="sheet-data-container">
-        <div style="color: var(--neon);">ENCRYPTION_STATUS: <span id="sheet-content" style="color:#fff;">STABLE</span></div>
-    </div>
-
     <script>
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
         let mouse = { x: undefined, y: undefined, timer: 0 };
-        const particleAmount = 1800; // අංශු 1800-2000 අතර ප්‍රමාණයක්
+        const particleAmount = 1800;
 
-        // අකුරු වල අංශු පිහිටිය යුතු තැන් (Coordinates for "LUMINARA")
-        const textCoords = [];
-        const textToForm = "LUMINARA";
-
-        window.addEventListener('mousemove', (e) => {
-            mouse.x = e.clientX;
-            mouse.y = e.clientY;
-            mouse.timer = 0; // මවුසය සෙලවෙන විට ටයිමරය රීසෙට් වේ
-        });
-
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
+        window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; mouse.timer = 0; });
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.addEventListener('resize', resize);
         resize();
 
         class Particle {
-            constructor() {
-                this.init();
-            }
-
+            constructor() { this.init(); }
             init() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.vx = (Math.random() - 0.5) * 0.6;
-                this.vy = (Math.random() - 0.5) * 0.6;
-                this.size = Math.random() * 1.5 + 0.5;
-                this.color = '#00f2ff';
-                this.acc = 0.08; // වේගයෙන් එකතු වීම සඳහා
-                this.friction = 0.95;
+                this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.6; this.vy = (Math.random() - 0.5) * 0.6;
+                this.size = Math.random() * 1.5 + 0.5; this.color = '#00f2ff';
+                this.acc = 0.08; this.friction = 0.95;
             }
-
-            draw() {
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-
+            draw() { ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
             update() {
-                // මවුසය තත්පරයකට වඩා වැඩි වෙලාවක් එක තැන තිබේ නම්
                 if (mouse.x && mouse.timer > 40) {
-                    let dx = mouse.x - this.x;
-                    let dy = mouse.y - this.y;
+                    let dx = mouse.x - this.x; let dy = mouse.y - this.y;
                     let distance = Math.sqrt(dx * dx + dy * dy);
-
-                    // මවුසය අවට ඇති අංශු පමණක් (Range 200px)
                     if (distance < 200) {
                         this.isGathering = true;
-                        
-                        // අකුරු සැකසීමේ ලොජික් එක (Simple Scatter-to-Text)
                         let index = particles.indexOf(this) % 8;
-                        let tx = mouse.x - 70 + (index * 20);
-                        let ty = mouse.y;
-
-                        let tdx = tx - this.x;
-                        let tdy = ty - this.y;
-                        
-                        this.vx += tdx * this.acc;
-                        this.vy += tdy * this.acc;
-                        this.vx *= this.friction;
-                        this.vy *= this.friction;
-                    } else {
-                        this.isGathering = false;
-                    }
-                } else {
-                    this.isGathering = false;
-                }
-
+                        let tx = mouse.x - 70 + (index * 20); let ty = mouse.y;
+                        this.vx += (tx - this.x) * this.acc; this.vy += (ty - this.y) * this.acc;
+                        this.vx *= this.friction; this.vy *= this.friction;
+                    } else { this.isGathering = false; }
+                } else { this.isGathering = false; }
+                this.x += this.vx; this.y += this.vy;
                 if (!this.isGathering) {
-                    this.x += this.vx;
-                    this.y += this.vy;
                     if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
                     if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-                } else {
-                    this.x += this.vx;
-                    this.y += this.vy;
                 }
-            }
-        }
-
-        function createParticles() {
-            for (let i = 0; i < particleAmount; i++) {
-                particles.push(new Particle());
             }
         }
 
         function animate() {
-            ctx.fillStyle = 'rgba(1, 3, 5, 0.3)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
+            ctx.fillStyle = 'rgba(1, 3, 5, 0.3)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
             mouse.timer++;
-            
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-
-            // මවුසය එක තැන තිබෙන විට වචනය පෙන්වීම
+            particles.forEach(p => { p.update(); p.draw(); });
             if (mouse.timer > 80) {
-                ctx.font = "bold 20px Orbitron";
-                ctx.fillStyle = "rgba(0, 242, 255, 0.2)";
-                ctx.textAlign = "center";
-                ctx.fillText("LUMINARA", mouse.x, mouse.y - 30);
+                ctx.font = "bold 20px Orbitron"; ctx.fillStyle = "rgba(0, 242, 255, 0.2)";
+                ctx.textAlign = "center"; ctx.fillText("LUMINARA", mouse.x, mouse.y - 30);
             }
-            
             requestAnimationFrame(animate);
         }
-
-        createParticles();
+        for (let i = 0; i < particleAmount; i++) particles.push(new Particle());
         animate();
 
-        // --- Existing Auth & Redirect Logic ---
+        // --- යාවත්කාලීන කළ Auth Logic ---
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxjHN0-eYtkgSdFb61BEpWPDIEgeZDAEm699tZIt_QHNxngDzabZedOuAQqNeCjJWyFNw/exec';
+
         async function handleAuth() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const emailError = document.getElementById('email-error');
+            const passwordError = document.getElementById('password-error');
             const btn = document.getElementById('submit-btn');
-            if(!email || !password) return alert("System Requires ID");
+
+            // Reset Errors
+            emailInput.classList.remove('input-error');
+            passwordInput.classList.remove('input-error');
+            emailError.style.display = 'none';
+            passwordError.style.display = 'none';
+
+            if(!emailInput.value) {
+                showError(emailInput, emailError, "Terminal ID required");
+                return;
+            }
+            if(!passwordInput.value) {
+                showError(passwordInput, passwordError, "Passkey required");
+                return;
+            }
+
             btn.innerText = "AUTHENTICATING..."; btn.disabled = true;
+
             try {
-                const response = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ email, password }) });
+                const response = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ email: emailInput.value, password: passwordInput.value }) });
                 const res = await response.json();
-                if(res.result === "success") { localStorage.setItem('loggedEmail', email); window.location.href = 'dashboard.html'; }
-                else { alert(res.message); btn.innerText = "LOGIN"; btn.disabled = false; }
+
+                if(res.result === "success") {
+                    localStorage.setItem('loggedEmail', emailInput.value);
+                    window.location.href = 'dashboard.html';
+                } else {
+                    // Alert වෙනුවට Input එකට යටින් Error එක පෙන්වීම
+                    showError(passwordInput, passwordError, res.message || "Incorrect Password!");
+                    btn.innerText = "LOGIN"; btn.disabled = false;
+                }
             } catch (e) { window.location.href = 'dashboard.html'; }
         }
 
+        function showError(input, element, message) {
+            input.classList.add('input-error');
+            element.innerText = message;
+            element.style.display = 'block';
+        }
+
+        // Input එකක් උඩ Type කරනකොට Error එක මැකී යන ලොජික් එක
+        document.querySelectorAll('.glass-input').forEach(input => {
+            input.addEventListener('input', () => {
+                input.classList.remove('input-error');
+                const errorId = input.id + '-error';
+                document.getElementById(errorId).style.display = 'none';
+            });
+        });
+
         setInterval(() => {
             const diff = new Date("2026-02-20").getTime() - new Date().getTime();
-            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
-            const m = Math.floor((diff / (1000 * 60)) % 60);
-            const s = Math.floor((diff / 1000) % 60);
-            document.getElementById('timer').innerText = `${d}d ${h}h ${m}m ${s}s`;
+            document.getElementById('timer').innerText = `${Math.floor(diff/(1000*60*60*24))}d ${Math.floor((diff/(1000*60*60))%24)}h ${Math.floor((diff/(1000*60))%60)}m ${Math.floor((diff/1000)%60)}s`;
         }, 1000);
     </script>
 </body>
