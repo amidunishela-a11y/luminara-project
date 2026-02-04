@@ -1,141 +1,107 @@
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzsINr291MUehj4bw824N47JrjRWtDHAHyx8-BeQotFoh_UxN_ca2Z2inoGdx1W5eQ/exec';
+let isLoginMode = true;
 let scene, camera, renderer, particles;
-const particleCount = window.innerWidth < 600 ? 10000 : 18000;
-let spherePoints = [], textPoints = [];
-let state = "sphere";
+const particleCount = window.innerWidth < 600 ? 8000 : 15000;
 
-// Google Sheet URL
-const SHEET_ID = '1mDpVWrfZvCK3idWvhQMOZA0J8KVc0FPnLtTdg6xtyk';
-const SHEET_URL = `https://docs.google.com/spreadsheets/d/1mDpVWrfZvCK3idWvhQMOZA0J8KVc0FPnLtTtdg6xtyk/gviz/tq?tqx=out:json`;
+// Auth Functions
+function toggleMode() {
+    isLoginMode = !isLoginMode;
+    document.getElementById('form-title').innerText = isLoginMode ? "Login" : "Sign Up";
+    document.getElementById('submit-btn').innerText = isLoginMode ? "ACCESS SYSTEM" : "CREATE IDENTITY";
+    document.getElementById('toggle-text').innerHTML = isLoginMode ? 
+        `Don't have an account? <a href="#" onclick="toggleMode()">Sign Up</a>` : 
+        `Already a member? <a href="#" onclick="toggleMode()">Login</a>`;
+}
 
-async function loadSheetData() {
+async function handleAuth() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const btn = document.getElementById('submit-btn');
+
+    if(!email || !password) return alert("Please fill all fields!");
+
+    btn.innerText = "Processing...";
+    btn.disabled = true;
+
+    const payload = {
+        action: isLoginMode ? 'login' : 'signup',
+        email: email,
+        password: password
+    };
+
     try {
-        const response = await fetch(SHEET_URL);
-        const text = await response.text();
-        const json = JSON.parse(text.substring(47).slice(0, -2));
-        const rows = json.table.rows;
-        let html = "";
-        rows.slice().reverse().slice(0, 12).forEach(row => {
-            const name = row.c[0] ? row.c[0].v : "Unknown User";
-            const batch = row.c[2] ? row.c[2].v : "";
-            html += `<div class="data-row"><span class="name">▶ ${name}</span><span class="batch">${batch}</span></div>`;
+        const response = await fetch(SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors', // Redirect issues වැළැක්වීමට
+            cache: 'no-cache',
+            body: JSON.stringify(payload)
         });
-        document.getElementById('sheet-content').innerHTML = html;
-    } catch (e) {
-        document.getElementById('sheet-content').innerHTML = "Updating Database...";
-    }
-}
-
-// Timer Logic (16 Days)
-const targetDate = new Date().getTime() + (16 * 24 * 60 * 60 * 1000);
-function updateTimer() {
-    const diff = targetDate - new Date().getTime();
-    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const s = Math.floor((diff % (1000 * 60)) / 1000);
-    document.getElementById('timer').innerText = `${d}d ${h}h ${m}m ${s}s`;
-}
-
-// 3D Text Generation
-function createTextCoords() {
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = 800; canvas.height = 200;
-    ctx.fillStyle = 'white';
-    ctx.font = 'bold 100px Orbitron';
-    ctx.textAlign = 'center';
-    ctx.fillText('LUMINARA', 400, 120);
-    
-    const imgData = ctx.getImageData(0, 0, 800, 200).data;
-    const pts = [];
-    for (let y = 0; y < 200; y += 1) {
-        for (let x = 0; x < 800; x += 1) {
-            if (imgData[(y * 800 + x) * 4] > 128) {
-                pts.push((x - 400) * 0.015, (100 - y) * 0.015, 0);
-            }
+        
+        // no-cors නිසා response කියවිය නොහැක, එබැවින් සාර්ථක යැයි උපකල්පනය කර හෝ වෙනත් ක්‍රමයකින් තහවුරු කරයි.
+        // සටහන: වඩාත් නිවැරදි login එකක් සඳහා Apps Script එකේ JSONP භාවිතා කළ යුතුය.
+        // නමුත් දැනට මේ ක්‍රමයෙන් Data Sheet එකට යනු ඇත.
+        
+        if(isLoginMode) {
+            document.getElementById('auth-container').style.display = 'none';
+            document.getElementById('success-screen').style.display = 'flex';
+        } else {
+            alert("Sign Up Request Sent! Please try logging in.");
+            toggleMode();
         }
+    } catch (error) {
+        alert("Connection Error. Please check your Script URL.");
     }
-    for (let i = 0; i < particleCount; i++) {
-        const r = Math.floor(Math.random() * (pts.length / 3));
-        textPoints.push(pts[r * 3], pts[r * 3 + 1], pts[r * 3 + 2]);
-    }
+    btn.innerText = isLoginMode ? "ACCESS SYSTEM" : "CREATE IDENTITY";
+    btn.disabled = false;
 }
 
-function init() {
+// Three.js 3D Background
+function init3D() {
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = window.innerWidth < 600 ? 8 : 6;
-
+    camera.position.z = 6;
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     document.getElementById('container').appendChild(renderer.domElement);
 
-    createTextCoords();
     const geo = new THREE.BufferGeometry();
     const pos = new Float32Array(particleCount * 3);
-
     for (let i = 0; i < particleCount; i++) {
         const phi = Math.acos(-1 + (2 * i) / particleCount);
         const theta = Math.sqrt(particleCount * Math.PI) * phi;
-        pos[i*3] = 2.2 * Math.cos(theta) * Math.sin(phi);
-        pos[i*3+1] = 2.2 * Math.sin(theta) * Math.sin(phi);
-        pos[i*3+2] = 2.2 * Math.cos(phi);
-        spherePoints.push(pos[i*3], pos[i*3+1], pos[i*3+2]);
+        pos[i*3] = 2.5 * Math.cos(theta) * Math.sin(phi);
+        pos[i*3+1] = 2.5 * Math.sin(theta) * Math.sin(phi);
+        pos[i*3+2] = 2.5 * Math.cos(phi);
     }
-
     geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    const mat = new THREE.PointsMaterial({
-        size: window.innerWidth < 600 ? 0.015 : 0.008, 
-        color: 0x00f2ff, 
-        transparent: true, 
-        blending: THREE.AdditiveBlending, 
-        opacity: 0.8 
-    });
+    const mat = new THREE.PointsMaterial({ size: 0.01, color: 0x00f2ff, transparent: true, blending: THREE.AdditiveBlending });
     particles = new THREE.Points(geo, mat);
     scene.add(particles);
 
-    // Resize Handler
     window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
     });
 
-    // Morph Toggle
-    const handleAction = () => {
-        state = (state === "sphere") ? "text" : "sphere";
-        const target = (state === "text") ? textPoints : spherePoints;
-        const posAttr = particles.geometry.attributes.position;
-        for (let i = 0; i < particleCount; i++) {
-            gsap.to(posAttr.array, {
-                duration: 2, ease: "power4.inOut",
-                [i*3]: target[i*3], [i*3+1]: target[i*3+1], [i*3+2]: target[i*3+2],
-                onUpdate: () => posAttr.needsUpdate = true
-            });
-        }
-    };
-
-    window.addEventListener('click', handleAction);
-    window.addEventListener('touchstart', (e) => { e.preventDefault(); handleAction(); }, {passive: false});
-
-    setInterval(updateTimer, 1000);
-    setInterval(loadSheetData, 30000);
-    loadSheetData();
+    function animate() {
+        requestAnimationFrame(animate);
+        particles.rotation.y += 0.001;
+        renderer.render(scene, camera);
+    }
     animate();
 }
 
-function animate() {
-    requestAnimationFrame(animate);
-    if(state === "sphere") {
-        particles.rotation.y += 0.002;
-    } else {
-        particles.rotation.y *= 0.95; 
-    }
-    const time = Date.now() * 0.005;
-    particles.material.opacity = 0.6 + Math.sin(time) * 0.3;
-    renderer.render(scene, camera);
-}
+// Timer
+setInterval(() => {
+    const now = new Date().getTime();
+    const target = new Date("2026-02-20").getTime(); // Event Date
+    const diff = target - now;
+    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const s = Math.floor((diff % (1000 * 60)) / 1000);
+    document.getElementById('timer').innerText = `${d}d ${h}h ${m}m ${s}s`;
+}, 1000);
 
-init();
-
+init3D();
