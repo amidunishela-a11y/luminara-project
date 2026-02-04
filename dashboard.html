@@ -6,100 +6,140 @@
     <title>LUMINARA | CENTRAL COMMAND</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --neon: #00f2ff; --bg: #00050a; }
+        :root { --neon: #00f2ff; --bg: #000a0f; --card-bg: rgba(0, 242, 255, 0.03); }
+        
         body {
             margin: 0; background-color: var(--bg); color: #fff;
-            font-family: 'Orbitron', sans-serif; overflow-x: hidden;
-        }
-        /* Background Animation */
-        .bg-grid {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: linear-gradient(rgba(0, 242, 255, 0.05) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(0, 242, 255, 0.05) 1px, transparent 1px);
-            background-size: 50px 50px; z-index: -1;
+            font-family: 'Orbitron', sans-serif; overflow: hidden;
+            display: flex; height: 100vh;
         }
 
-        header {
-            padding: 20px; border-bottom: 1px solid var(--neon);
+        /* Sidebar Design */
+        .sidebar {
+            width: 260px; background: rgba(0, 0, 0, 0.8);
+            border-right: 1px solid rgba(0, 242, 255, 0.2);
+            display: flex; flex-direction: column; padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo { font-size: 1.5rem; font-weight: bold; color: var(--neon); letter-spacing: 4px; margin-bottom: 50px; }
+
+        .nav-item {
+            padding: 15px; margin-bottom: 10px; border-radius: 8px;
+            cursor: pointer; color: #888; transition: 0.3s; font-size: 0.8rem;
+        }
+
+        .nav-item.active, .nav-item:hover {
+            color: var(--neon); background: rgba(0, 242, 255, 0.1);
+            box-shadow: inset 0 0 10px rgba(0, 242, 255, 0.2);
+        }
+
+        /* Main Content Area */
+        .content { flex: 1; padding: 30px; overflow-y: auto; position: relative; }
+
+        .header {
             display: flex; justify-content: space-between; align-items: center;
-            background: rgba(0, 242, 255, 0.02); backdrop-filter: blur(10px);
+            margin-bottom: 40px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 20px;
         }
 
-        .user-info { font-size: 0.8rem; color: var(--neon); text-transform: uppercase; }
+        .user-id { font-size: 0.7rem; color: var(--neon); text-transform: uppercase; letter-spacing: 2px; }
 
-        .main-container {
-            max-width: 1000px; margin: 50px auto; padding: 20px;
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;
+        /* Stats Grid */
+        .grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;
         }
 
-        .stat-card {
-            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(0, 242, 255, 0.1);
-            padding: 25px; border-radius: 15px; position: relative; overflow: hidden;
-        }
-        .stat-card::before {
-            content: ""; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--neon);
+        .card {
+            background: var(--card-bg); border: 1px solid rgba(0, 242, 255, 0.1);
+            padding: 25px; border-radius: 15px; position: relative;
+            transition: 0.3s;
         }
 
-        h3 { color: var(--neon); margin-top: 0; font-size: 0.9rem; letter-spacing: 2px; }
-        .value { font-size: 2.5rem; font-weight: bold; text-shadow: 0 0 15px var(--neon); }
+        .card:hover { border-color: var(--neon); box-shadow: 0 0 20px rgba(0, 242, 255, 0.1); }
 
-        .btn-group { grid-column: 1 / -1; display: flex; gap: 15px; margin-top: 20px; }
-        .action-btn {
-            flex: 1; padding: 15px; background: transparent; border: 1px solid var(--neon);
-            color: var(--neon); cursor: pointer; font-family: 'Orbitron'; transition: 0.3s;
+        .card h3 { font-size: 0.7rem; color: #888; margin: 0 0 15px 0; letter-spacing: 2px; }
+        .card .value { font-size: 2.2rem; font-weight: bold; color: #fff; text-shadow: 0 0 10px var(--neon); }
+
+        /* Visual Elements */
+        .status-bar {
+            height: 4px; background: #222; border-radius: 2px; margin-top: 15px; overflow: hidden;
         }
-        .action-btn:hover { background: var(--neon); color: #000; box-shadow: 0 0 20px var(--neon); }
+        .progress { height: 100%; background: var(--neon); width: 75%; box-shadow: 0 0 10px var(--neon); }
 
-        .logout { color: #ff4d4d; border-color: #ff4d4d; }
-        .logout:hover { background: #ff4d4d; box-shadow: 0 0 20px #ff4d4d; }
+        .terminate-btn {
+            margin-top: auto; padding: 15px; background: transparent;
+            border: 1px solid #ff4d4d; color: #ff4d4d; border-radius: 8px;
+            cursor: pointer; font-family: 'Orbitron'; font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .terminate-btn:hover { background: #ff4d4d; color: #fff; box-shadow: 0 0 20px rgba(255, 77, 77, 0.4); }
+
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            .sidebar { width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--neon); }
+        }
     </style>
 </head>
 <body>
-    <div class="bg-grid"></div>
-    
-    <header>
-        <div style="font-weight: bold; letter-spacing: 5px;">LUMINARA <span style="color: var(--neon);">CORE</span></div>
-        <div class="user-info" id="user-display">ID: GUEST_SESSION</div>
-    </header>
+    <div class="sidebar">
+        <div class="logo">LUMINARA</div>
+        <div class="nav-item active">OVERVIEW</div>
+        <div class="nav-item">SECURITY LOGS</div>
+        <div class="nav-item">DATABASE</div>
+        <div class="nav-item">CORE SETTINGS</div>
+        <button class="terminate-btn" onclick="logout()">TERMINATE SESSION</button>
+    </div>
 
-    <div class="main-container">
-        <div class="stat-card">
-            <h3>SYSTEM STATUS</h3>
-            <div class="value">ACTIVE</div>
-            <p style="font-size: 0.7rem; color: #888;">Core stability at 98.4%</p>
+    <div class="content">
+        <div class="header">
+            <h2 style="margin: 0; font-size: 1.2rem;">CORE SYSTEM DASHBOARD</h2>
+            <div class="user-id" id="user-display">GUEST_USER</div>
         </div>
 
-        <div class="stat-card">
-            <h3>AUTHORIZED USERS</h3>
-            <div class="value" id="user-count">SYNC...</div>
-            <p style="font-size: 0.7rem; color: #888;">Live data from encrypted sheet</p>
-        </div>
+        <div class="grid">
+            <div class="card">
+                <h3>CORE STABILITY</h3>
+                <div class="value">98.4%</div>
+                <div class="status-bar"><div class="progress" style="width: 98%;"></div></div>
+            </div>
 
-        <div class="btn-group">
-            <button class="action-btn">ACCESS DATABASE</button>
-            <button class="action-btn">EVENT AGENDA</button>
-            <button class="action-btn logout" onclick="logout()">TERMINATE SESSION</button>
+            <div class="card">
+                <h3>AUTHORIZED IDENTITIES</h3>
+                <div class="value" id="user-count">SYNC...</div>
+                <div class="status-bar"><div class="progress" style="width: 45%; background: #00f2ff;"></div></div>
+            </div>
+
+            <div class="card">
+                <h3>SYSTEM UPTIME</h3>
+                <div class="value">15:23:46</div>
+                <p style="font-size: 0.6rem; color: #555; margin-top: 10px;">OPERATIONAL SINCE ACTIVATION</p>
+            </div>
+            
+            <div class="card" style="grid-column: 1 / -1;">
+                <h3>LIVE ENCRYPTION FEED</h3>
+                <div style="font-family: monospace; font-size: 0.7rem; color: var(--neon); line-height: 1.5;">
+                    > AUTHENTICATING PACKET 0xFF21... SUCCESS<br>
+                    > UPDATING GLOBAL LEDGER... COMPLETED<br>
+                    > SECURE TUNNEL ESTABLISHED TO CORE_DATABASE
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        // Login වුණු User ගේ Email එක පෙන්වීම
+        // Display Logged Email from Storage
         const userEmail = localStorage.getItem('loggedEmail') || "Unauthorized";
         document.getElementById('user-display').innerText = `ID: ${userEmail}`;
 
-        // Logout function
+        // Dynamic User Count Simulation
+        document.getElementById('user-count').innerText = Math.floor(Math.random() * (500 - 100) + 100);
+
         function logout() {
             localStorage.removeItem('loggedEmail');
             window.location.href = 'index.html';
         }
-
-        // Live User Count එක පෙන්වීමට (උදාහරණයක් ලෙස)
-        async function fetchStats() {
-            // මෙතනට ඔයාගේ Google Sheet JSON link එක දාන්න පුළුවන්
-            // දැනට අපි සාමාන්‍ය අගයක් පෙන්වමු
-            document.getElementById('user-count').innerText = "128+"; 
-        }
-        fetchStats();
     </script>
 </body>
 </html>
