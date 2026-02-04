@@ -19,7 +19,7 @@
             width: 260px; background: rgba(0, 0, 0, 0.8);
             border-right: 1px solid rgba(0, 242, 255, 0.2);
             display: flex; flex-direction: column; padding: 20px;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px); z-index: 10;
         }
 
         .logo { font-size: 1.5rem; font-weight: bold; color: var(--neon); letter-spacing: 4px; margin-bottom: 50px; }
@@ -45,142 +45,166 @@
 
         .user-id { font-size: 0.7rem; color: var(--neon); text-transform: uppercase; letter-spacing: 2px; }
 
-        /* Stats Grid */
-        .grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;
-        }
+        /* Grid & Cards */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
 
         .card {
             background: var(--card-bg); border: 1px solid rgba(0, 242, 255, 0.1);
-            padding: 20px; border-radius: 15px; position: relative;
-            transition: 0.3s;
+            padding: 25px; border-radius: 15px; transition: 0.3s; cursor: pointer;
         }
-
         .card:hover { border-color: var(--neon); box-shadow: 0 0 20px rgba(0, 242, 255, 0.1); transform: translateY(-5px); }
+        .card h3 { font-size: 0.7rem; color: #888; margin: 0 0 15px 0; letter-spacing: 2px; }
+        .card .value { font-size: 2.2rem; font-weight: bold; color: #fff; text-shadow: 0 0 10px var(--neon); }
 
-        .card h3 { font-size: 0.7rem; color: #888; margin: 0 0 10px 0; letter-spacing: 2px; }
-        .card .value { font-size: 1.8rem; font-weight: bold; color: #fff; text-shadow: 0 0 10px var(--neon); }
-
-        /* Visual Elements */
-        .status-bar {
-            height: 4px; background: #222; border-radius: 2px; margin-top: 15px; overflow: hidden;
+        /* iPhone List Modal/Overlay */
+        #iphone-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 10, 15, 0.98); z-index: 100;
+            display: none; padding: 40px; overflow-y: auto; box-sizing: border-box;
+            backdrop-filter: blur(20px);
         }
+
+        .close-btn {
+            position: sticky; top: 0; float: right; color: #ff4d4d;
+            font-size: 1rem; cursor: pointer; border: 1px solid #ff4d4d;
+            padding: 10px 20px; border-radius: 5px; transition: 0.3s;
+            background: rgba(0,0,0,0.5); z-index: 101;
+        }
+        .close-btn:hover { background: #ff4d4d; color: #fff; }
+
+        .iphone-table {
+            width: 100%; border-collapse: collapse; margin-top: 60px;
+            font-size: 0.75rem; color: #ddd;
+        }
+
+        .iphone-table th {
+            text-align: left; border-bottom: 2px solid var(--neon);
+            padding: 15px; color: var(--neon); letter-spacing: 2px;
+            background: rgba(0, 242, 255, 0.05); position: sticky; top: 0;
+        }
+
+        .iphone-table td { padding: 12px 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .iphone-table tr:hover { background: rgba(0, 242, 255, 0.08); }
+
+        .status-bar { height: 4px; background: #222; border-radius: 2px; margin-top: 15px; overflow: hidden; }
         .progress { height: 100%; background: var(--neon); box-shadow: 0 0 10px var(--neon); }
 
         .terminate-btn {
             margin-top: auto; padding: 15px; background: transparent;
             border: 1px solid #ff4d4d; color: #ff4d4d; border-radius: 8px;
-            cursor: pointer; font-family: 'Orbitron'; font-weight: bold;
-            transition: 0.3s;
+            cursor: pointer; font-family: 'Orbitron'; font-weight: bold; transition: 0.3s;
         }
-
-        .terminate-btn:hover { background: #ff4d4d; color: #fff; box-shadow: 0 0 20px rgba(255, 77, 77, 0.4); }
+        .terminate-btn:hover { background: #ff4d4d; color: #fff; }
 
         @media (max-width: 768px) {
             body { flex-direction: column; overflow-y: auto; }
             .sidebar { width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--neon); }
-            .content { padding: 20px; }
+            #iphone-overlay { padding: 15px; }
+            .iphone-table { font-size: 0.55rem; }
+            .iphone-table th, .iphone-table td { padding: 8px; }
         }
     </style>
 </head>
 <body>
+
     <div class="sidebar">
         <div class="logo">LUMINARA</div>
-        <div class="nav-item active">DASHBOARD</div>
-        <div class="nav-item">INVENTORY</div>
-        <div class="nav-item">MARKETPLACE</div>
-        <div class="nav-item">ANALYTICS</div>
+        <div class="nav-item active">OVERVIEW</div>
+        <div class="nav-item">SECURITY LOGS</div>
+        <div class="nav-item">DATABASE</div>
         <button class="terminate-btn" onclick="logout()">TERMINATE SESSION</button>
     </div>
 
     <div class="content">
         <div class="header">
-            <h2 style="margin: 0; font-size: 1.1rem;">INVENTORY OVERVIEW</h2>
-            <div class="user-id" id="user-display">LOADING_ID...</div>
+            <h2 style="margin: 0; font-size: 1.2rem;">CORE SYSTEM DASHBOARD</h2>
+            <div class="user-id" id="user-display">GUEST_USER</div>
         </div>
 
         <div class="grid">
-            <div class="card">
-                <h3>MOBILE PHONES</h3>
-                <div class="value">1,248</div>
-                <div class="status-bar"><div class="progress" style="width: 85%;"></div></div>
+            <div class="card" onclick="showIphones()">
+                <h3>MOBILE PHONES (IPHONE)</h3>
+                <div class="value">24 MODELS</div>
+                <div class="status-bar"><div class="progress" style="width: 95%;"></div></div>
+                <p style="font-size: 0.6rem; color: var(--neon); margin-top: 10px;">EXPAND INVENTORY DATA</p>
             </div>
 
             <div class="card">
                 <h3>VEHICLES</h3>
-                <div class="value">452</div>
-                <div class="status-bar"><div class="progress" style="width: 60%; background: #00f2ff;"></div></div>
-            </div>
-
-            <div class="card">
-                <h3>ELECTRONIC ITEMS</h3>
-                <div class="value">3,105</div>
-                <div class="status-bar"><div class="progress" style="width: 92%;"></div></div>
-            </div>
-
-            <div class="card">
-                <h3>LAPTOPS & PC</h3>
-                <div class="value">864</div>
-                <div class="status-bar"><div class="progress" style="width: 70%;"></div></div>
-            </div>
-
-            <div class="card">
-                <h3>PC ACCESSORIES</h3>
-                <div class="value">5,420</div>
+                <div class="value">04 UNITS</div>
                 <div class="status-bar"><div class="progress" style="width: 45%;"></div></div>
             </div>
 
             <div class="card">
-                <h3>REAL ESTATE</h3>
-                <div class="value">124</div>
-                <div class="status-bar"><div class="progress" style="width: 30%;"></div></div>
-            </div>
-
-            <div class="card">
-                <h3>HOUSEHOLD ITEMS</h3>
-                <div class="value">2,150</div>
-                <div class="status-bar"><div class="progress" style="width: 78%;"></div></div>
-            </div>
-
-            <div class="card">
-                <h3>FASHION & APPAREL</h3>
-                <div class="value">4,890</div>
-                <div class="status-bar"><div class="progress" style="width: 55%;"></div></div>
-            </div>
-            
-            <div class="card" style="grid-column: 1 / -1;">
-                <h3>LIVE DATABASE TRANSACTION FEED</h3>
-                <div style="font-family: monospace; font-size: 0.7rem; color: var(--neon); line-height: 1.5;">
-                    > FETCHING CATEGORY_DATA... SUCCESS<br>
-                    > MAPPING ASSETS: MOBILE_PHONES, VEHICLES, ELECTRONICS... DONE<br>
-                    > SYSTEM_STATUS: ALL INVENTORY MODULES ONLINE
-                </div>
+                <h3>ELECTRONICS</h3>
+                <div class="value">112 UNITS</div>
+                <div class="status-bar"><div class="progress" style="width: 70%;"></div></div>
             </div>
         </div>
     </div>
 
+    <div id="iphone-overlay">
+        <div class="close-btn" onclick="hideIphones()">CLOSE [X]</div>
+        <h2 style="color: var(--neon); letter-spacing: 5px; text-shadow: 0 0 10px var(--neon);">IPHONE MASTER DATABASE (6 - 17 PRO MAX)</h2>
+        
+        <table class="iphone-table">
+            <thead>
+                <tr>
+                    <th>MODEL</th>
+                    <th>DISPLAY</th>
+                    <th>CHIP/PROCESSOR</th>
+                    <th>RAM</th>
+                    <th>BATTERY</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>iPhone 6 / 6 Plus</td><td>4.7" / 5.5" Retina</td><td>A8 Chip</td><td>1GB</td><td>1810/2915 mAh</td></tr>
+                <tr><td>iPhone 6S / 6S Plus</td><td>4.7" / 5.5" 3D Touch</td><td>A9 Chip</td><td>2GB</td><td>1715/2750 mAh</td></tr>
+                <tr><td>iPhone 7 / 7 Plus</td><td>4.7" / 5.5" Retina HD</td><td>A10 Fusion</td><td>2GB/3GB</td><td>1960/2900 mAh</td></tr>
+                <tr><td>iPhone 8 / 8 Plus</td><td>4.7" / 5.5" True Tone</td><td>A11 Bionic</td><td>2GB/3GB</td><td>1821/2691 mAh</td></tr>
+                <tr><td>iPhone X</td><td>5.8" Super Retina OLED</td><td>A11 Bionic</td><td>3GB</td><td>2716 mAh</td></tr>
+                
+                <tr><td>iPhone 11</td><td>6.1" Liquid Retina</td><td>A13 Bionic</td><td>4GB</td><td>3110 mAh</td></tr>
+                <tr><td>iPhone 11 Pro Max</td><td>6.5" Super Retina XDR</td><td>A13 Bionic</td><td>4GB</td><td>3969 mAh</td></tr>
+                <tr><td>iPhone 12</td><td>6.1" Super Retina XDR</td><td>A14 Bionic</td><td>4GB</td><td>2815 mAh</td></tr>
+                <tr><td>iPhone 12 Pro Max</td><td>6.7" Ceramic Shield</td><td>A14 Bionic</td><td>6GB</td><td>3687 mAh</td></tr>
+                
+                <tr><td>iPhone 13 Pro</td><td>6.1" 120Hz ProMotion</td><td>A15 Bionic</td><td>6GB</td><td>3095 mAh</td></tr>
+                <tr><td>iPhone 13 Pro Max</td><td>6.7" OLED</td><td>A15 Bionic</td><td>6GB</td><td>4352 mAh</td></tr>
+                <tr><td>iPhone 14 Pro</td><td>6.1" Dynamic Island</td><td>A16 Bionic</td><td>6GB</td><td>3200 mAh</td></tr>
+                <tr><td>iPhone 14 Pro Max</td><td>6.7" Always-On</td><td>A16 Bionic</td><td>6GB</td><td>4323 mAh</td></tr>
+                
+                <tr><td>iPhone 15</td><td>6.1" Dynamic Island</td><td>A16 Bionic</td><td>6GB</td><td>3349 mAh</td></tr>
+                <tr><td>iPhone 15 Pro Max</td><td>6.7" Titanium / 5x Zoom</td><td>A17 Pro</td><td>8GB</td><td>4441 mAh</td></tr>
+                
+                <tr><td>iPhone 16</td><td>6.1" Action Button</td><td>A18 Chip</td><td>8GB</td><td>3561 mAh</td></tr>
+                <tr><td>iPhone 16 Pro Max</td><td>6.9" Ultra Slim Bezels</td><td>A18 Pro</td><td>8GB</td><td>4676 mAh</td></tr>
+                
+                <tr><td>iPhone 17</td><td>6.1" 120Hz (All Models)</td><td>A19 Chip</td><td>8GB</td><td>3800 mAh*</td></tr>
+                <tr><td>iPhone 17 Air (Slim)</td><td>6.6" Ultra-Thin Design</td><td>A19 Chip</td><td>8GB</td><td>3200 mAh*</td></tr>
+                <tr><td>iPhone 17 Pro Max</td><td>6.9" 48MP Periscope</td><td>A19 Pro</td><td>12GB</td><td>4850 mAh*</td></tr>
+            </tbody>
+        </table>
+    </div>
+
     <script>
-        // Display Logged Email from Storage
+        // Set User ID
         const userEmail = localStorage.getItem('loggedEmail') || "Unauthorized";
         document.getElementById('user-display').innerText = `ID: ${userEmail}`;
+
+        // Overlay Controls
+        function showIphones() { document.getElementById('iphone-overlay').style.display = 'block'; }
+        function hideIphones() { document.getElementById('iphone-overlay').style.display = 'none'; }
 
         function logout() {
             localStorage.removeItem('loggedEmail');
             window.location.href = 'index.html';
         }
 
-        // Disable Right Click
+        // Context Protection
         document.addEventListener('contextmenu', e => e.preventDefault());
-
-        // Disable Inspect Shortcuts
         document.onkeydown = function(e) {
-            if(event.keyCode == 123 || 
-               (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) ||
-               (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) ||
-               (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) ||
-               (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0))) {
-                return false;
-            }
+            if(event.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0))) return false;
         };
     </script>
 </body>
