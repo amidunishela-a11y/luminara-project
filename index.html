@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LUMINARA 2026 | DUAL INTERFACE</title>
+    <title>LUMINARA 2026 | RESPONSIVE INTERFACE</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
             --neon: #00f2ff;
-            --glass: rgba(255, 255, 255, 0.02);
-            --border: rgba(255, 255, 255, 0.08);
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
             --error: #ff4d4d;
         }
 
@@ -21,7 +21,7 @@
             display: flex; overflow: hidden;
         }
 
-        /* --- New Tech Background --- */
+        /* --- Tech Background --- */
         .bg-grid {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-image: linear-gradient(var(--border) 1px, transparent 1px),
@@ -39,21 +39,23 @@
         }
 
         /* --- Split Container --- */
-        .split-container { display: flex; width: 100%; height: 100%; z-index: 10; }
+        .split-container { 
+            display: flex; width: 100%; height: 100%; z-index: 10; 
+            overflow-y: auto; /* Phone එකේදී scroll කිරීමට */
+        }
 
-        /* --- Left Side --- */
+        /* --- Left Side: Visuals --- */
         .visual-side {
             flex: 1.2; display: flex; flex-direction: column;
             justify-content: center; padding-left: 8%; position: relative;
         }
 
-        /* Floating 3D Cube Animation */
         .cube-container {
-            position: absolute; width: 400px; height: 400px;
+            position: absolute; width: 300px; height: 300px;
             left: 5%; top: 20%; z-index: -1; perspective: 1000px;
         }
         .glass-cube {
-            width: 150px; height: 150px; position: relative;
+            width: 120px; height: 120px; position: relative;
             transform-style: preserve-3d; animation: rotateCube 15s infinite linear;
             background: rgba(0, 242, 255, 0.05); border: 1px solid var(--neon);
             backdrop-filter: blur(10px);
@@ -61,70 +63,81 @@
         @keyframes rotateCube { from { transform: rotateX(0) rotateY(0); } to { transform: rotateX(360deg) rotateY(360deg); } }
 
         .system-title {
-            font-family: 'Orbitron'; font-size: 3.5rem; letter-spacing: 12px;
+            font-family: 'Orbitron'; font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: 12px;
             text-shadow: 0 0 30px var(--neon); margin: 0;
         }
         .system-tag { color: var(--neon); letter-spacing: 4px; opacity: 0.6; font-weight: 300; margin-top: 5px; }
 
         .monitor-logs {
-            margin-top: 40px; font-family: monospace; font-size: 0.75rem;
+            margin-top: 30px; font-family: monospace; font-size: 0.75rem;
             color: var(--neon); opacity: 0.4; line-height: 1.8;
         }
 
-        /* --- Right Side --- */
-        .auth-side { flex: 0.8; display: flex; justify-content: center; align-items: center; padding-right: 5%; }
+        /* --- Right Side: Login --- */
+        .auth-side { 
+            flex: 0.8; display: flex; justify-content: center; 
+            align-items: center; padding-right: 5%;
+        }
 
-        #auth-container { width: 100%; max-width: 400px; text-align: center; }
+        #auth-container { width: 100%; max-width: 380px; text-align: center; }
 
         #timer {
-            font-family: 'Orbitron'; font-size: 1.8rem; color: var(--neon);
-            text-shadow: 0 0 15px rgba(0, 242, 255, 0.5); margin-bottom: 30px;
+            font-family: 'Orbitron'; font-size: 1.6rem; color: var(--neon);
+            text-shadow: 0 0 15px rgba(0, 242, 255, 0.5); margin-bottom: 25px;
         }
 
         .glass-card {
             background: var(--glass); backdrop-filter: blur(30px);
-            border: 1px solid var(--border); border-radius: 35px; padding: 50px 40px;
+            border: 1px solid var(--border); border-radius: 30px; padding: 40px 30px;
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5); position: relative; overflow: hidden;
         }
 
-        /* Card Light Reflection */
-        .glass-card::after {
-            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent);
-            transform: rotate(45deg); animation: shine 5s infinite;
-        }
-        @keyframes shine { 0% { transform: translateX(-100%) rotate(45deg); } 100% { transform: translateX(100%) rotate(45deg); } }
-
         .glass-input {
-            width: 100%; padding: 16px; margin-bottom: 5px; background: rgba(0, 0, 0, 0.4);
-            border: 1px solid var(--border); border-radius: 14px; color: var(--neon);
+            width: 100%; padding: 14px; margin-bottom: 5px; background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border); border-radius: 12px; color: var(--neon);
             outline: none; box-sizing: border-box; font-family: 'Orbitron'; transition: 0.3s;
+            font-size: 0.9rem;
         }
-        .glass-input:focus { border-color: var(--neon); box-shadow: 0 0 15px rgba(0, 242, 255, 0.1); }
         .glass-input.input-error { border-color: var(--error); box-shadow: 0 0 10px rgba(255, 77, 77, 0.2); }
 
         .error-msg { color: var(--error); font-size: 0.7rem; text-align: left; margin-bottom: 12px; margin-left: 5px; display: none; }
 
         .glass-btn {
-            width: 100%; padding: 18px; background: var(--neon); border: none;
-            border-radius: 14px; color: #000; font-weight: bold; font-family: 'Orbitron';
-            cursor: pointer; transition: 0.4s; letter-spacing: 2px; margin-top: 15px;
+            width: 100%; padding: 16px; background: var(--neon); border: none;
+            border-radius: 12px; color: #000; font-weight: bold; font-family: 'Orbitron';
+            cursor: pointer; transition: 0.4s; letter-spacing: 2px; margin-top: 10px;
         }
-        .glass-btn:hover { background: #fff; box-shadow: 0 0 30px var(--neon); transform: translateY(-2px); }
+        .glass-btn:hover { background: #fff; box-shadow: 0 0 25px var(--neon); }
 
-        .icon-container { display: flex; justify-content: center; gap: 20px; margin-top: 40px; }
+        .icon-container { display: flex; justify-content: center; gap: 15px; margin-top: 30px; }
         .icon-card {
-            width: 55px; height: 55px; background: var(--glass); border: 1px solid var(--border);
-            border-radius: 15px; display: flex; justify-content: center; align-items: center;
+            width: 50px; height: 50px; background: var(--glass); border: 1px solid var(--border);
+            border-radius: 12px; display: flex; justify-content: center; align-items: center;
             text-decoration: none; transition: 0.4s; color: #94a3b8;
         }
-        .icon-card:hover { border-color: var(--color); color: var(--color); transform: translateY(-5px); }
 
+        /* --- Responsive Logic: Fixing the Overlap --- */
         @media (max-width: 950px) {
-            .split-container { flex-direction: column; }
-            .visual-side { padding: 40px 0; align-items: center; text-align: center; }
-            .auth-side { padding: 0 20px 40px 20px; }
+            body { overflow-y: auto; }
+            .split-container { 
+                flex-direction: column; 
+                height: auto; 
+                padding: 40px 20px;
+            }
+            .visual-side { 
+                padding-left: 0; 
+                align-items: center; 
+                text-align: center; 
+                margin-bottom: 50px;
+                flex: none;
+            }
+            .auth-side { 
+                padding-right: 0; 
+                width: 100%;
+                flex: none;
+            }
             .cube-container { display: none; }
+            .monitor-logs { display: none; } /* Phone එකේදී ඉඩ ඉතිරි කර ගැනීමට */
         }
     </style>
 </head>
@@ -139,12 +152,10 @@
                 <div class="glass-cube"></div>
             </div>
             <h1 class="system-title">LUMINARA</h1>
-            <p class="system-tag">QUANTUM ACCESS PROTOCOL 2026</p>
+            <p class="system-tag">ACCESS PROTOCOL 2026</p>
             <div class="monitor-logs">
-                [SYSTEM] CORE INITIALIZED... OK<br>
-                [STATUS] NEURAL LINK STABLE<br>
-                [DB_01] ENCRYPTION LAYER ACTIVE<br>
-                [GATE] WAITING FOR AUTHORIZATION_
+                [SYSTEM] ONLINE...<br>
+                [GATE] WAITING FOR PASSKEY_
             </div>
         </div>
 
@@ -153,7 +164,7 @@
                 <div id="timer">00d 00h 00m 00s</div>
                 
                 <div class="glass-card">
-                    <h2 style="font-family: 'Orbitron'; font-size: 0.85rem; letter-spacing: 3px; margin-bottom: 30px; opacity: 0.5;">AUTHENTICATE</h2>
+                    <h2 style="font-family: 'Orbitron'; font-size: 0.8rem; letter-spacing: 3px; margin-bottom: 25px; opacity: 0.5;">AUTHENTICATE</h2>
                     
                     <input type="email" id="email" placeholder="TERMINAL_ID" class="glass-input">
                     <div id="email-error" class="error-msg"></div>
