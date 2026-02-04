@@ -23,6 +23,9 @@ async function handleAuth() {
         const res = await response.json();
 
         if(res.result === "success") {
+            // අලුත් කොටස: පරිශීලකයාගේ Email එක Dashboard එකේ පෙන්වීමට මතක තබා ගැනීම
+            localStorage.setItem('loggedEmail', email); 
+            
             alert(res.message);
             
             // සාර්ථකව Login වූ පසු dashboard.html වෙත Redirect කිරීම
@@ -36,6 +39,7 @@ async function handleAuth() {
     } catch (e) {
         // Fallback: Fetch/CORS ගැටලුවක් ආවත් දත්ත Sheet එකට ගොස් ඇත්නම් Redirect කිරීම
         console.log("Authentication processing...");
+        localStorage.setItem('loggedEmail', email); // Fallback එකේදීත් email එක save කිරීම
         window.location.href = 'dashboard.html';
     }
 }
