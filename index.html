@@ -40,25 +40,24 @@
             z-index: -1;
         }
 
-        /* --- ENHANCED: Diagonal Scan Glow --- */
-        .scan-glow {
+        /* --- NEW EFFECT: Floating Neural Particles --- */
+        .particles-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            /* Glow එකේ තීව්‍රතාවය (Opacity) වැඩි කර ඇත */
-            background: linear-gradient(45deg, 
-                transparent 35%, 
-                rgba(0, 242, 255, 0.15) 45%, 
-                rgba(0, 242, 255, 0.3) 50%, 
-                rgba(0, 242, 255, 0.15) 55%, 
-                transparent 65%);
-            background-size: 400% 400%;
-            pointer-events: none;
-            z-index: 5;
-            animation: diagonalScan 6s infinite ease-in-out;
+            pointer-events: none; z-index: 0; overflow: hidden;
         }
 
-        @keyframes diagonalScan {
-            0% { background-position: -200% -200%; }
-            100% { background-position: 200% 200%; }
+        .particle {
+            position: absolute; background: var(--neon);
+            border-radius: 50%; opacity: 0.3;
+            filter: blur(1px);
+            animation: floatParticle 15s infinite linear;
+        }
+
+        @keyframes floatParticle {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            20% { opacity: 0.4; }
+            80% { opacity: 0.4; }
+            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
         }
 
         .split-container { display: flex; width: 100%; height: 100%; z-index: 10; overflow-y: auto; }
@@ -86,7 +85,6 @@
             text-shadow: 0 0 40px var(--neon); margin: 0;
         }
 
-        /* --- Added: Shape Animation Styles --- */
         .shape-path-container {
             position: relative;
             width: 100%;
@@ -131,7 +129,6 @@
 
         .system-tag { color: var(--neon); letter-spacing: 5px; opacity: 0.6; font-weight: 300; margin-top: 10px; }
 
-        /* --- New Glass Data Panels --- */
         .data-panels {
             display: flex; gap: 15px; margin-top: 40px;
         }
@@ -154,7 +151,6 @@
             border-left: 2px solid var(--neon); padding-left: 15px;
         }
 
-        /* --- Auth Side (Right) --- */
         .auth-side { flex: 0.8; display: flex; justify-content: center; align-items: center; padding-right: 5%; }
         #auth-container { width: 100%; max-width: 380px; text-align: center; }
         #timer {
@@ -188,7 +184,6 @@
             text-decoration: none; transition: 0.4s; color: #94a3b8; font-size: 1.2rem;
         }
 
-        /* Icon Glow Effects */
         .icon-card[style*="#ff0000"]:hover { color: #ff0000; border-color: #ff0000; box-shadow: 0 0 20px rgba(255, 0, 0, 0.4); }
         .icon-card[style*="#1877F2"]:hover { color: #1877F2; border-color: #1877F2; box-shadow: 0 0 20px rgba(24, 119, 242, 0.4); }
         .icon-card[style*="#25D366"]:hover { color: #25D366; border-color: #25D366; box-shadow: 0 0 20px rgba(37, 211, 102, 0.4); }
@@ -206,7 +201,8 @@
 <body oncontextmenu="return false;"> 
     <div class="bg-grid"></div>
     <div class="glow-overlay"></div>
-    <div class="scan-glow"></div>
+    
+    <div class="particles-container" id="particles"></div>
 
     <div class="split-container">
         <div class="visual-side">
@@ -267,6 +263,20 @@
     </div>
 
     <script>
+        // Particle Generator
+        const container = document.getElementById('particles');
+        for (let i = 0; i < 50; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            const size = Math.random() * 3 + 1;
+            p.style.width = size + 'px';
+            p.style.height = size + 'px';
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            p.style.animationDelay = Math.random() * 10 + 's';
+            container.appendChild(p);
+        }
+
         document.addEventListener('contextmenu', e => e.preventDefault());
         document.onkeydown = function(e) {
             if (event.keyCode == 123) return false;
