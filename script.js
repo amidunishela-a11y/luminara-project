@@ -23,12 +23,12 @@ async function handleAuth() {
         const res = await response.json();
 
         if(res.result === "success") {
-            // අලුත් කොටස: පරිශීලකයාගේ Email එක Dashboard එකේ පෙන්වීමට මතක තබා ගැනීම
+            // සාර්ථකව Login වූ පසු පරිශීලකයාගේ Email එක Dashboard එකේ පෙන්වීමට මතක තබා ගැනීම
             localStorage.setItem('loggedEmail', email); 
             
             alert(res.message);
             
-            // සාර්ථකව Login වූ පසු dashboard.html වෙත Redirect කිරීම
+            // dashboard.html වෙත Redirect කිරීම
             window.location.href = 'dashboard.html'; 
             
         } else {
@@ -37,9 +37,9 @@ async function handleAuth() {
             btn.disabled = false;
         }
     } catch (e) {
-        // Fallback: Fetch/CORS ගැටලුවක් ආවත් දත්ත Sheet එකට ගොස් ඇත්නම් Redirect කිරීම
+        // Fallback: Fetch/CORS ගැටලුවක් ආවත් Redirect කිරීම
         console.log("Authentication processing...");
-        localStorage.setItem('loggedEmail', email); // Fallback එකේදීත් email එක save කිරීම
+        localStorage.setItem('loggedEmail', email); 
         window.location.href = 'dashboard.html';
     }
 }
@@ -96,4 +96,36 @@ setInterval(() => {
     }
 }, 1000);
 
+// --- නව Premium Icons Tilt Effect කොටස ---
+function initTiltEffect() {
+    const iconCards = document.querySelectorAll('.icon-card');
+
+    iconCards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left; 
+            const y = e.clientY - rect.top; 
+            
+            // Shine effect position එක Update කිරීම
+            card.style.setProperty('--x', `${x}px`);
+            card.style.setProperty('--y', `${y}px`);
+
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = ((y - centerY) / centerY) * -15; // X-axis කැරකීම
+            const rotateY = ((x - centerX) / centerX) * 15;  // Y-axis කැරකීම
+            
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+            // Mouse එක ඉවත් කළ විට තිබූ තත්වයට පත් කිරීම
+            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+        });
+    });
+}
+
+// පද්ධතිය ආරම්භ කිරීම
 init3D();
+initTiltEffect();
