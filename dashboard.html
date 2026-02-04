@@ -8,7 +8,7 @@
     <style>
         :root { --neon: #00f2ff; --bg: #000a0f; --card-bg: rgba(0, 242, 255, 0.03); }
          
-            body {
+        body {
             margin: 0; background-color: var(--bg); color: #fff;
             font-family: 'Orbitron', sans-serif; overflow: hidden;
             display: flex; height: 100vh;
@@ -47,25 +47,25 @@
 
         /* Stats Grid */
         .grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;
         }
 
         .card {
             background: var(--card-bg); border: 1px solid rgba(0, 242, 255, 0.1);
-            padding: 25px; border-radius: 15px; position: relative;
+            padding: 20px; border-radius: 15px; position: relative;
             transition: 0.3s;
         }
 
-        .card:hover { border-color: var(--neon); box-shadow: 0 0 20px rgba(0, 242, 255, 0.1); }
+        .card:hover { border-color: var(--neon); box-shadow: 0 0 20px rgba(0, 242, 255, 0.1); transform: translateY(-5px); }
 
-        .card h3 { font-size: 0.7rem; color: #888; margin: 0 0 15px 0; letter-spacing: 2px; }
-        .card .value { font-size: 2.2rem; font-weight: bold; color: #fff; text-shadow: 0 0 10px var(--neon); }
+        .card h3 { font-size: 0.7rem; color: #888; margin: 0 0 10px 0; letter-spacing: 2px; }
+        .card .value { font-size: 1.8rem; font-weight: bold; color: #fff; text-shadow: 0 0 10px var(--neon); }
 
         /* Visual Elements */
         .status-bar {
             height: 4px; background: #222; border-radius: 2px; margin-top: 15px; overflow: hidden;
         }
-        .progress { height: 100%; background: var(--neon); width: 75%; box-shadow: 0 0 10px var(--neon); }
+        .progress { height: 100%; background: var(--neon); box-shadow: 0 0 10px var(--neon); }
 
         .terminate-btn {
             margin-top: auto; padding: 15px; background: transparent;
@@ -77,52 +77,83 @@
         .terminate-btn:hover { background: #ff4d4d; color: #fff; box-shadow: 0 0 20px rgba(255, 77, 77, 0.4); }
 
         @media (max-width: 768px) {
-            body { flex-direction: column; }
+            body { flex-direction: column; overflow-y: auto; }
             .sidebar { width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--neon); }
+            .content { padding: 20px; }
         }
     </style>
 </head>
 <body>
     <div class="sidebar">
         <div class="logo">LUMINARA</div>
-        <div class="nav-item active">OVERVIEW</div>
-        <div class="nav-item">SECURITY LOGS</div>
-        <div class="nav-item">DATABASE</div>
-        <div class="nav-item">CORE SETTINGS</div>
+        <div class="nav-item active">DASHBOARD</div>
+        <div class="nav-item">INVENTORY</div>
+        <div class="nav-item">MARKETPLACE</div>
+        <div class="nav-item">ANALYTICS</div>
         <button class="terminate-btn" onclick="logout()">TERMINATE SESSION</button>
     </div>
 
     <div class="content">
         <div class="header">
-            <h2 style="margin: 0; font-size: 1.2rem;">CORE SYSTEM DASHBOARD</h2>
-            <div class="user-id" id="user-display">GUEST_USER</div>
+            <h2 style="margin: 0; font-size: 1.1rem;">INVENTORY OVERVIEW</h2>
+            <div class="user-id" id="user-display">LOADING_ID...</div>
         </div>
 
         <div class="grid">
             <div class="card">
-                <h3>CORE STABILITY</h3>
-                <div class="value">98.4%</div>
-                <div class="status-bar"><div class="progress" style="width: 98%;"></div></div>
+                <h3>MOBILE PHONES</h3>
+                <div class="value">1,248</div>
+                <div class="status-bar"><div class="progress" style="width: 85%;"></div></div>
             </div>
 
             <div class="card">
-                <h3>AUTHORIZED IDENTITIES</h3>
-                <div class="value" id="user-count">SYNC...</div>
-                <div class="status-bar"><div class="progress" style="width: 45%; background: #00f2ff;"></div></div>
+                <h3>VEHICLES</h3>
+                <div class="value">452</div>
+                <div class="status-bar"><div class="progress" style="width: 60%; background: #00f2ff;"></div></div>
             </div>
 
             <div class="card">
-                <h3>SYSTEM UPTIME</h3>
-                <div class="value">15:23:46</div>
-                <p style="font-size: 0.6rem; color: #555; margin-top: 10px;">OPERATIONAL SINCE ACTIVATION</p>
+                <h3>ELECTRONIC ITEMS</h3>
+                <div class="value">3,105</div>
+                <div class="status-bar"><div class="progress" style="width: 92%;"></div></div>
+            </div>
+
+            <div class="card">
+                <h3>LAPTOPS & PC</h3>
+                <div class="value">864</div>
+                <div class="status-bar"><div class="progress" style="width: 70%;"></div></div>
+            </div>
+
+            <div class="card">
+                <h3>PC ACCESSORIES</h3>
+                <div class="value">5,420</div>
+                <div class="status-bar"><div class="progress" style="width: 45%;"></div></div>
+            </div>
+
+            <div class="card">
+                <h3>REAL ESTATE</h3>
+                <div class="value">124</div>
+                <div class="status-bar"><div class="progress" style="width: 30%;"></div></div>
+            </div>
+
+            <div class="card">
+                <h3>HOUSEHOLD ITEMS</h3>
+                <div class="value">2,150</div>
+                <div class="status-bar"><div class="progress" style="width: 78%;"></div></div>
+            </div>
+
+            <div class="card">
+                <h3>FASHION & APPAREL</h3>
+                <div class="value">4,890</div>
+                <div class="status-bar"><div class="progress" style="width: 55%;"></div></div>
             </div>
             
             <div class="card" style="grid-column: 1 / -1;">
-                <h3>LIVE ENCRYPTION FEED</h3>
+                <h3>LIVE DATABASE TRANSACTION FEED</h3>
                 <div style="font-family: monospace; font-size: 0.7rem; color: var(--neon); line-height: 1.5;">
-                    > AUTHENTICATING PACKET 0xFF21... SUCCESS<br>
-                    > UPDATING GLOBAL LEDGER... COMPLETED<br>
-                    > SECURE TUNNEL ESTABLISHED TO CORE_DATABASE
+                    > FETCHING CATEGORY_DATA... SUCCESS<br>
+                    > MAPPING ASSETS: MOBILE_PHONES, VEHICLES, ELECTRONICS... DONE<br>
+                    > SYSTEM_STATUS: ALL INVENTORY MODULES ONLINE
                 </div>
             </div>
         </div>
@@ -133,43 +164,24 @@
         const userEmail = localStorage.getItem('loggedEmail') || "Unauthorized";
         document.getElementById('user-display').innerText = `ID: ${userEmail}`;
 
-        // Dynamic User Count Simulation
-        document.getElementById('user-count').innerText = Math.floor(Math.random() * (500 - 100) + 100);
-
         function logout() {
             localStorage.removeItem('loggedEmail');
             window.location.href = 'index.html';
         }
-    </script>
-    <script>
-    // 1. Right Click කිරීම නතර කිරීම
-    document.addEventListener('contextmenu', function(e) {
-        e.preventDefault();
-    });
 
-    // 2. Keyboard Shortcuts (F12, Ctrl+Shift+I, etc.) නතර කිරීම
-    document.onkeydown = function(e) {
-        // F12 key එක
-        if(event.keyCode == 123) {
-            return false;
-        }
-        // Ctrl+Shift+I (Inspect)
-        if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
-            return false;
-        }
-        // Ctrl+Shift+C (Inspect Element)
-        if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) {
-            return false;
-        }
-        // Ctrl+Shift+J (Console)
-        if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
-            return false;
-        }
-        // Ctrl+U (View Source - කේතය බැලීම)
-        if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
-            return false;
-        }
-    };
-</script>
+        // Disable Right Click
+        document.addEventListener('contextmenu', e => e.preventDefault());
+
+        // Disable Inspect Shortcuts
+        document.onkeydown = function(e) {
+            if(event.keyCode == 123 || 
+               (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) ||
+               (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) ||
+               (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) ||
+               (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0))) {
+                return false;
+            }
+        };
+    </script>
 </body>
 </html>
