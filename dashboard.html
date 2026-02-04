@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUMINARA DASHBOARD</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            background: radial-gradient(circle at center, #001d3d 0%, #000 100%);
+            color: #00f2ff;
+            font-family: 'Orbitron', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        h1 {
+            font-size: 3rem;
+            text-shadow: 0 0 20px #00f2ff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .container {
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 242, 255, 0.2);
+            border-radius: 20px;
+            text-align: center;
+        }
+        .logout-btn {
+            margin-top: 30px;
+            padding: 12px 30px;
+            background: #00f2ff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+            transition: 0.3s;
+        }
+        .logout-btn:hover {
+            background: #fff;
+            box-shadow: 0 0 20px #00f2ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CORE ACCESS GRANTED</h1>
+        <p>Welcome to the Encrypted Central Command.</p>
+        <button class="logout-btn" onclick="window.location.href='index.html'">LOGOUT</button>
+    </div>
+</body>
+</html>
