@@ -1,34 +1,72 @@
-body { margin: 0; overflow: hidden; background-color: #000; font-family: 'Orbitron', sans-serif; }
+body { 
+    margin: 0; 
+    overflow: hidden; 
+    background-color: #000; 
+    font-family: 'Orbitron', sans-serif;
+    touch-action: none;
+}
 
 #ui-layer {
-    position: absolute; top: 40px; width: 100%; text-align: center; z-index: 100; pointer-events: none;
+    position: absolute; 
+    top: 5vh; 
+    width: 100%; 
+    text-align: center; 
+    z-index: 100; 
+    pointer-events: none;
 }
 
 #timer {
-    color: #fff; font-size: clamp(1.5rem, 5vw, 3.5rem); text-shadow: 0 0 20px #00f2ff;
+    color: #fff; 
+    font-size: clamp(1.8rem, 8vw, 3.5rem); 
+    text-shadow: 0 0 20px #00f2ff;
+    margin-top: 10px;
 }
 
-.label { letter-spacing: 8px; color: #00f2ff; opacity: 0.7; font-size: 0.7rem; }
+.label { 
+    letter-spacing: clamp(4px, 2vw, 10px); 
+    color: #00f2ff; 
+    opacity: 0.7; 
+    font-size: clamp(0.5rem, 2vw, 0.8rem); 
+}
 
 #sheet-data-container {
-    position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
-    width: 320px; height: 160px; background: rgba(0, 242, 255, 0.04);
-    border: 1px solid rgba(0, 242, 255, 0.2); border-radius: 12px;
-    padding: 15px; backdrop-filter: blur(10px); z-index: 200;
+    position: absolute; 
+    bottom: 5vh; 
+    left: 50%; 
+    transform: translateX(-50%);
+    width: 90%; 
+    max-width: 400px; 
+    height: 180px; 
+    background: rgba(0, 242, 255, 0.04);
+    border: 1px solid rgba(0, 242, 255, 0.2); 
+    border-radius: 15px;
+    padding: 15px; 
+    backdrop-filter: blur(10px); 
+    z-index: 200;
+    box-sizing: border-box;
 }
 
 #sheet-content {
-    color: #fff; font-size: 0.8rem; height: 120px; overflow-y: auto;
+    color: #fff; 
+    font-size: 0.85rem; 
+    height: 120px; 
+    overflow-y: auto;
 }
 
-/* Scrollbar Style */
-#sheet-content::-webkit-scrollbar { width: 4px; }
+#sheet-content::-webkit-scrollbar { width: 3px; }
 #sheet-content::-webkit-scrollbar-thumb { background: #00f2ff; border-radius: 10px; }
 
 .data-row {
-    padding: 6px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 0; 
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex; 
+    justify-content: space-between;
 }
 
-.name { color: #00f2ff; font-weight: bold; }
-.batch { color: #888; font-size: 0.65rem; }
+.name { color: #00f2ff; font-weight: bold; font-size: 0.8rem; }
+.batch { color: #888; font-size: 0.7rem; }
+
+@media (max-width: 600px) {
+    #sheet-data-container { height: 150px; bottom: 2vh; }
+    #sheet-content { height: 90px; }
+}
