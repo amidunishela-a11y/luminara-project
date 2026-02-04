@@ -60,7 +60,7 @@
             100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
         }
 
-        .split-container { display: flex; width: 100%; height: 100%; z-index: 10; overflow-y: auto; padding-bottom: 120px; }
+        .split-container { display: flex; width: 100%; height: 100%; z-index: 10; overflow-y: auto; padding-bottom: 80px; }
 
         /* --- Visual Side (Left) --- */
         .visual-side {
@@ -158,24 +158,29 @@
             border-left: 2px solid var(--neon); padding-left: 15px;
         }
 
+        /* --- NEW: Glass Divider Line --- */
+        .glass-divider {
+            width: 1px;
+            height: 60%;
+            background: linear-gradient(to bottom, transparent, rgba(0, 242, 255, 0.2), transparent);
+            align-self: center;
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.1);
+        }
+
         /* --- Auth Side --- */
         .auth-side { flex: 0.8; display: flex; justify-content: center; align-items: center; padding-right: 5%; }
-        #auth-container { width: 100%; max-width: 380px; text-align: center; transition: transform 0.5s ease; }
+        #auth-container { width: 100%; max-width: 380px; text-align: center; transition: all 0.5s ease; }
         #auth-container:hover { transform: translateY(-12px); }
 
         #timer {
             font-family: 'Orbitron'; font-size: 1.6rem; color: var(--neon);
             text-shadow: 0 0 15px rgba(0, 242, 255, 0.5); margin-bottom: 25px;
         }
-        
         .glass-card {
             background: var(--glass); backdrop-filter: blur(30px);
             border: 1px solid var(--border); border-radius: 30px; padding: 40px 30px;
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5); position: relative; overflow: hidden;
-            transition: all 0.4s ease;
         }
-        .glass-card:hover { border-color: rgba(0, 242, 255, 0.2); }
-
         .glass-input {
             width: 100%; padding: 14px; margin-bottom: 5px; background: rgba(0, 0, 0, 0.4);
             border: 1px solid var(--border); border-radius: 12px; color: var(--neon);
@@ -197,15 +202,7 @@
             border-radius: 12px; display: flex; justify-content: center; align-items: center;
             text-decoration: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); color: #94a3b8; font-size: 1.2rem;
         }
-        .icon-card:hover { 
-            transform: translateY(-8px) scale(1.1); 
-            color: var(--neon);
-            border-color: var(--neon);
-        }
-
-        .icon-card[style*="#ff0000"]:hover { box-shadow: 0 0 20px rgba(255, 0, 0, 0.4); }
-        .icon-card[style*="#1877F2"]:hover { box-shadow: 0 0 20px rgba(24, 119, 242, 0.4); }
-        .icon-card[style*="#25D366"]:hover { box-shadow: 0 0 20px rgba(37, 211, 102, 0.4); }
+        .icon-card:hover { transform: translateY(-8px) scale(1.1); color: var(--neon); border-color: var(--neon); }
 
         /* --- Bottom Glass Typewriter Box --- */
         .bottom-quote-box {
@@ -224,14 +221,10 @@
             z-index: 100;
             transition: all 0.4s ease;
         }
-        .bottom-quote-box:hover {
-            transform: translateX(-50%) translateY(-5px);
-            border-color: rgba(0, 242, 255, 0.2);
-        }
 
         #typewriter-text {
             font-family: 'Orbitron', monospace;
-            font-size: clamp(0.6rem, 2.5vw, 0.75rem);
+            font-size: 0.75rem;
             color: var(--neon);
             letter-spacing: 2px;
             text-transform: uppercase;
@@ -250,12 +243,20 @@
 
         @media (max-width: 950px) {
             body { overflow-y: auto; }
-            .split-container { flex-direction: column; height: auto; padding: 40px 20px 140px 20px; }
+            .split-container { flex-direction: column; height: auto; padding: 40px 20px; }
             .visual-side { padding-left: 0; align-items: center; text-align: center; margin-bottom: 40px; flex: none; }
             .auth-side { padding-right: 0; width: 100%; flex: none; }
             .cube-container, .monitor-logs, .data-panels { display: none; }
             .shape-path-container { margin: 10px auto; }
-            .bottom-quote-box { width: 95%; bottom: 10px; }
+            .bottom-quote-box { position: relative; left: 0; transform: none; margin: 20px auto; width: 100%; }
+            
+            /* Hide vertical line and show horizontal on mobile */
+            .glass-divider {
+                width: 80%;
+                height: 1px;
+                margin: 20px auto;
+                background: linear-gradient(to right, transparent, rgba(0, 242, 255, 0.2), transparent);
+            }
         }
     </style>
 </head>
@@ -302,6 +303,8 @@
                 [AUTHOR] AMIDU_NISHX
             </div>
         </div>
+
+        <div class="glass-divider"></div>
 
         <div class="auth-side">
             <div id="auth-container">
@@ -365,12 +368,13 @@
 
         function erase() {
             if (characterIndex > 0) {
-                textElement.textContent = phrases[phraseIndex].substring(0, characterIndex - 1);
+                textElement.textContent = phrases[phraseIndex].substring(0, characterIndex - 1 characterIndex - 1);
                 characterIndex--;
                 setTimeout(erase, 50);
             } else {
                 phraseIndex = (phraseIndex + 1) % phrases.length;
-                setTimeout(type, 500); characterIndex = 0;
+                characterIndex = 0;
+                setTimeout(type, 500);
             }
         }
 
