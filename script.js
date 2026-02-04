@@ -5,7 +5,7 @@ let state = "sphere";
 
 // Google Sheet URL
 const SHEET_ID = '1mDpVWrfZvCK3idWvhQMOZA0J8KVc0FPnLtTdg6xtyk';
-const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+const SHEET_URL = `https://docs.google.com/spreadsheets/d/1mDpVWrfZvCK3idWvhQMOZA0J8KVc0FPnLtTtdg6xtyk/gviz/tq?tqx=out:json`;
 
 async function loadSheetData() {
     try {
@@ -138,3 +138,4 @@ function animate() {
 }
 
 init();
+
