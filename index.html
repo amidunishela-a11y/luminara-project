@@ -158,38 +158,39 @@
             text-shadow: 0 0 15px rgba(0, 242, 255, 0.5); margin-bottom: 25px;
         }
 
-        /* --- UPDATED: Moving Neon Border for Glass Card --- */
+        /* --- UPDATED: Outer Moving Neon Border ONLY --- */
         .glass-card {
             background: var(--glass); backdrop-filter: blur(30px);
-            border: 1px solid var(--border); border-radius: 30px; padding: 40px 30px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5); position: relative; overflow: hidden;
+            border-radius: 30px; padding: 40px 30px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 1;
+            /* Border එක පෙන්වීමට අවකාශය සකසයි */
+            border: 1px solid transparent; 
         }
 
+        /* Border සෑදීමට පසුබිමේ කැරකෙන layer එක */
         .glass-card::before {
             content: '';
             position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 150%;
-            height: 150%;
-            background: conic-gradient(transparent, var(--neon), transparent 30%);
-            animation: rotateBorder 4s linear infinite;
-            transform-origin: center;
-            z-index: -1;
-            translate: -50% -50%;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: conic-gradient(from 0deg, transparent, var(--neon), transparent 30%);
+            border-radius: 32px;
+            animation: rotateNeon 4s linear infinite;
+            z-index: -2;
         }
 
+        /* Card එකේ ඇතුළත වර්ණය රඳවා ගැනීමට සහ border එක වෙන් කර පෙන්වීමට layer එක */
         .glass-card::after {
             content: '';
             position: absolute;
-            inset: 2px;
+            inset: 1px;
             background: #010306;
-            border-radius: 28px;
+            border-radius: 29px;
             z-index: -1;
-            opacity: 0.9;
         }
 
-        @keyframes rotateBorder {
+        @keyframes rotateNeon {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
@@ -199,7 +200,6 @@
             border: 1px solid var(--border); border-radius: 12px; color: var(--neon);
             outline: none; box-sizing: border-box; font-family: 'Orbitron'; transition: 0.3s;
             font-size: 0.9rem;
-            position: relative; z-index: 1;
         }
         .glass-input.input-error { border-color: var(--error); box-shadow: 0 0 10px rgba(255, 77, 77, 0.2); }
         .error-msg { color: var(--error); font-size: 0.7rem; text-align: left; margin-bottom: 12px; margin-left: 5px; display: none; }
@@ -207,11 +207,10 @@
             width: 100%; padding: 16px; background: var(--neon); border: none;
             border-radius: 12px; color: #000; font-weight: bold; font-family: 'Orbitron';
             cursor: pointer; transition: 0.4s; letter-spacing: 2px; margin-top: 10px;
-            position: relative; z-index: 1;
         }
         .glass-btn:hover { background: #fff; box-shadow: 0 0 25px var(--neon); }
 
-        .icon-container { display: flex; justify-content: center; gap: 15px; margin-top: 30px; position: relative; z-index: 1; }
+        .icon-container { display: flex; justify-content: center; gap: 15px; margin-top: 30px; }
         .icon-card {
             width: 50px; height: 50px; background: var(--glass); border: 1px solid var(--border);
             border-radius: 12px; display: flex; justify-content: center; align-items: center;
@@ -280,7 +279,7 @@
             <div id="auth-container">
                 <div id="timer">00d 00h 00m 00s</div>
                 <div class="glass-card">
-                    <h2 style="font-family: 'Orbitron'; font-size: 0.8rem; letter-spacing: 3px; margin-bottom: 25px; opacity: 0.5; position: relative; z-index: 1;">AUTHENTICATE</h2>
+                    <h2 style="font-family: 'Orbitron'; font-size: 0.8rem; letter-spacing: 3px; margin-bottom: 25px; opacity: 0.5;">AUTHENTICATE</h2>
                     <input type="email" id="email" placeholder="Email Input" class="glass-input">
                     <div id="email-error" class="error-msg"></div>
                     <input type="password" id="password" placeholder="PASSWORD" class="glass-input">
