@@ -3,57 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LUMINARA DASHBOARD</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <title>LUMINARA | CENTRAL COMMAND</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        :root { --neon: #00f2ff; --bg: #00050a; }
         body {
-            margin: 0;
-            background: radial-gradient(circle at center, #001d3d 0%, #000 100%);
-            color: #00f2ff;
-            font-family: 'Orbitron', sans-serif;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
+            margin: 0; background-color: var(--bg); color: #fff;
+            font-family: 'Orbitron', sans-serif; overflow-x: hidden;
         }
-        h1 {
-            font-size: 3rem;
-            text-shadow: 0 0 20px #00f2ff;
-            margin-bottom: 20px;
-            text-align: center;
+        /* Background Animation */
+        .bg-grid {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(rgba(0, 242, 255, 0.05) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(0, 242, 255, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px; z-index: -1;
         }
-        .container {
-            padding: 40px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 242, 255, 0.2);
-            border-radius: 20px;
-            text-align: center;
+
+        header {
+            padding: 20px; border-bottom: 1px solid var(--neon);
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(0, 242, 255, 0.02); backdrop-filter: blur(10px);
         }
-        .logout-btn {
-            margin-top: 30px;
-            padding: 12px 30px;
-            background: #00f2ff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            font-family: 'Orbitron', sans-serif;
-            transition: 0.3s;
+
+        .user-info { font-size: 0.8rem; color: var(--neon); text-transform: uppercase; }
+
+        .main-container {
+            max-width: 1000px; margin: 50px auto; padding: 20px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;
         }
-        .logout-btn:hover {
-            background: #fff;
-            box-shadow: 0 0 20px #00f2ff;
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(0, 242, 255, 0.1);
+            padding: 25px; border-radius: 15px; position: relative; overflow: hidden;
         }
+        .stat-card::before {
+            content: ""; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--neon);
+        }
+
+        h3 { color: var(--neon); margin-top: 0; font-size: 0.9rem; letter-spacing: 2px; }
+        .value { font-size: 2.5rem; font-weight: bold; text-shadow: 0 0 15px var(--neon); }
+
+        .btn-group { grid-column: 1 / -1; display: flex; gap: 15px; margin-top: 20px; }
+        .action-btn {
+            flex: 1; padding: 15px; background: transparent; border: 1px solid var(--neon);
+            color: var(--neon); cursor: pointer; font-family: 'Orbitron'; transition: 0.3s;
+        }
+        .action-btn:hover { background: var(--neon); color: #000; box-shadow: 0 0 20px var(--neon); }
+
+        .logout { color: #ff4d4d; border-color: #ff4d4d; }
+        .logout:hover { background: #ff4d4d; box-shadow: 0 0 20px #ff4d4d; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>CORE ACCESS GRANTED</h1>
-        <p>Welcome to the Encrypted Central Command.</p>
-        <button class="logout-btn" onclick="window.location.href='index.html'">LOGOUT</button>
+    <div class="bg-grid"></div>
+    
+    <header>
+        <div style="font-weight: bold; letter-spacing: 5px;">LUMINARA <span style="color: var(--neon);">CORE</span></div>
+        <div class="user-info" id="user-display">ID: GUEST_SESSION</div>
+    </header>
+
+    <div class="main-container">
+        <div class="stat-card">
+            <h3>SYSTEM STATUS</h3>
+            <div class="value">ACTIVE</div>
+            <p style="font-size: 0.7rem; color: #888;">Core stability at 98.4%</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>AUTHORIZED USERS</h3>
+            <div class="value" id="user-count">SYNC...</div>
+            <p style="font-size: 0.7rem; color: #888;">Live data from encrypted sheet</p>
+        </div>
+
+        <div class="btn-group">
+            <button class="action-btn">ACCESS DATABASE</button>
+            <button class="action-btn">EVENT AGENDA</button>
+            <button class="action-btn logout" onclick="logout()">TERMINATE SESSION</button>
+        </div>
     </div>
+
+    <script>
+        // Login වුණු User ගේ Email එක පෙන්වීම
+        const userEmail = localStorage.getItem('loggedEmail') || "Unauthorized";
+        document.getElementById('user-display').innerText = `ID: ${userEmail}`;
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('loggedEmail');
+            window.location.href = 'index.html';
+        }
+
+        // Live User Count එක පෙන්වීමට (උදාහරණයක් ලෙස)
+        async function fetchStats() {
+            // මෙතනට ඔයාගේ Google Sheet JSON link එක දාන්න පුළුවන්
+            // දැනට අපි සාමාන්‍ය අගයක් පෙන්වමු
+            document.getElementById('user-count').innerText = "128+"; 
+        }
+        fetchStats();
+    </script>
 </body>
 </html>
