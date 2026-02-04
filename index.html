@@ -6,7 +6,7 @@
     <title>LUMINARA 2026 SYSTEM</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div id="container"></div>
@@ -24,10 +24,24 @@
             <button onclick="handleAuth()" id="submit-btn" class="glass-btn">INITIALIZE AUTHORIZATION</button>
             <p id="info-msg">Unregistered identities will be automatically archived.</p>
             
-            <div class="social-icons">
-                <a href="#" target="_blank" class="icon fb"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" target="_blank" class="icon wa"><i class="fab fa-whatsapp"></i></a>
-                <a href="#" target="_blank" class="icon yt"><i class="fab fa-youtube"></i></a>
+            <div class="icon-container">
+                <a href="#" class="icon-card" style="--color: #ff0000; --delay: 0s;">
+                    <div class="shine"></div>
+                    <i class="fab fa-youtube"></i>
+                    <span>YouTube</span>
+                </a>
+
+                <a href="#" class="icon-card" style="--color: #0084ff; --delay: 0.5s;">
+                    <div class="shine"></div>
+                    <i class="fab fa-facebook-f"></i>
+                    <span>Facebook</span>
+                </a>
+
+                <a href="#" class="icon-card" style="--color: #25D366; --delay: 1s;">
+                    <div class="shine"></div>
+                    <i class="fab fa-whatsapp"></i>
+                    <span>WhatsApp</span>
+                </a>
             </div>
         </div>
     </div>
