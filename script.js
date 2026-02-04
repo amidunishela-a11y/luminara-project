@@ -1,47 +1,48 @@
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzS1A3yg944jWRsJusHHCDkCMPDw67sTh3Zk0qpzcznEI2Qj8dOqAysUUyqOohnZEN4/exec';
+// ඔයා ලබාදුන් අලුත්ම Web App URL එක
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxjHN0-eYtkgSdFb61BEpWPDIEgeZDAEm699tZIt_QHNxngDzabZedOuAQqNeCjJWyFNw/exec';
+
 let scene, camera, renderer, particles;
 const particleCount = window.innerWidth < 600 ? 8000 : 15000;
 
+// Authentication Handler
 async function handleAuth() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     const btn = document.getElementById('submit-btn');
 
-    if(!email || !password) return alert("Please fill all fields!");
+    if(!email || !password) return alert("System requires email and password.");
 
-    btn.innerText = "AUTHENTICATING...";
+    btn.innerText = "VERIFYING IDENTITY...";
     btn.disabled = true;
 
-    const payload = { email: email, password: password };
-
     try {
-        // no-cors ඉවත් කර සාමාන්‍ය fetch එකක් භාවිතා කරන්න (Apps Script එකේ return එක කියවීමට)
         const response = await fetch(SCRIPT_URL, {
             method: 'POST',
-            body: JSON.stringify(payload)
+            body: JSON.stringify({ email, password })
         });
-        
-        const resData = await response.json();
+        const res = await response.json();
 
-        if(resData.result === "success") {
-            alert(resData.message);
+        if(res.result === "success") {
+            alert(res.message);
             document.getElementById('auth-container').style.display = 'none';
             document.getElementById('success-screen').style.display = 'flex';
+            if(res.userType === "new") {
+                document.getElementById('welcome-msg').innerText = "NEW IDENTITY ARCHIVED";
+            }
         } else {
-            alert(resData.message);
+            alert(res.message);
         }
-    } catch (error) {
-        // සමහර වෙලාවට Apps Script එකේ Redirect නිසා response එක කෙලින්ම කියවිය නොහැකි විය හැක
-        // නමුත් එවිටත් දත්ත Sheet එකට යනු ඇත. එබැවින් Sheet එක පරීක්ෂා කර බලා ඉදිරියට යන්න
-        console.log("Authorization processing...");
+    } catch (e) {
+        // Fallback for Fetch/CORS issues (දත්ත Sheet එකට යනු ඇත)
+        console.log("Authentication processing...");
         document.getElementById('auth-container').style.display = 'none';
         document.getElementById('success-screen').style.display = 'flex';
     }
-    btn.innerText = "INITIALIZE ACCESS";
+    btn.innerText = "INITIALIZE AUTHORIZATION";
     btn.disabled = false;
 }
 
-// 3D Engine Initialization
+// 3D Environment Initialization
 function init3D() {
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -72,19 +73,20 @@ function init3D() {
 
     function animate() {
         requestAnimationFrame(animate);
-        particles.rotation.y += 0.001;
+        particles.rotation.y += 0.0015;
         renderer.render(scene, camera);
     }
     animate();
 }
 
-// Countdown Timer
+// Countdown Timer Logic
 setInterval(() => {
-    const diff = new Date("2026-02-20").getTime() - new Date().getTime();
+    const target = new Date("2026-02-20").getTime();
+    const diff = target - new Date().getTime();
     const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const s = Math.floor((diff % (1000 * 60)) / 1000);
+    const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const m = Math.floor((diff / (1000 * 60)) % 60);
+    const s = Math.floor((diff / 1000) % 60);
     document.getElementById('timer').innerText = `${d}d ${h}h ${m}m ${s}s`;
 }, 1000);
 
