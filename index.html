@@ -19,7 +19,7 @@
             margin: 0; padding: 0; background: #02050a; color: #fff;
             font-family: 'Inter', sans-serif; height: 100vh;
             display: flex; overflow: hidden;
-            user-select: none; /* අකුරු කොපි කිරීම වැළැක්වීමට */
+            user-select: none;
         }
 
         /* --- Tech Background --- */
@@ -107,11 +107,37 @@
         }
         .glass-btn:hover { background: #fff; box-shadow: 0 0 25px var(--neon); }
 
+        /* --- Social Icons Glow Section --- */
         .icon-container { display: flex; justify-content: center; gap: 15px; margin-top: 30px; }
         .icon-card {
             width: 50px; height: 50px; background: var(--glass); border: 1px solid var(--border);
             border-radius: 12px; display: flex; justify-content: center; align-items: center;
             text-decoration: none; transition: 0.4s; color: #94a3b8;
+            font-size: 1.2rem;
+        }
+
+        /* YouTube Glow */
+        .icon-card[style*="#ff0000"]:hover {
+            color: #ff0000;
+            border-color: #ff0000;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.4), inset 0 0 10px rgba(255, 0, 0, 0.2);
+            transform: translateY(-5px);
+        }
+
+        /* Facebook Glow */
+        .icon-card[style*="#1877F2"]:hover {
+            color: #1877F2;
+            border-color: #1877F2;
+            box-shadow: 0 0 20px rgba(24, 119, 242, 0.4), inset 0 0 10px rgba(24, 119, 242, 0.2);
+            transform: translateY(-5px);
+        }
+
+        /* WhatsApp Glow */
+        .icon-card[style*="#25D366"]:hover {
+            color: #25D366;
+            border-color: #25D366;
+            box-shadow: 0 0 20px rgba(37, 211, 102, 0.4), inset 0 0 10px rgba(37, 211, 102, 0.2);
+            transform: translateY(-5px);
         }
 
         @media (max-width: 950px) {
@@ -123,7 +149,8 @@
         }
     </style>
 </head>
-<body oncontextmenu="return false;"> <div class="bg-grid"></div>
+<body oncontextmenu="return false;"> 
+    <div class="bg-grid"></div>
     <div class="glow-overlay"></div>
 
     <div class="split-container">
@@ -160,15 +187,13 @@
     </div>
 
     <script>
-        // --- 1. පද්ධති ආරක්ෂක කේතය (Anti-Inspect) ---
         document.addEventListener('contextmenu', e => e.preventDefault());
         document.onkeydown = function(e) {
-            if (event.keyCode == 123) return false; // F12
+            if (event.keyCode == 123) return false;
             if (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'C'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) return false;
-            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; // Ctrl+U
+            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
         };
 
-        // --- 2. පවතින Logic කොටස් ---
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxjHN0-eYtkgSdFb61BEpWPDIEgeZDAEm699tZIt_QHNxngDzabZedOuAQqNeCjJWyFNw/exec';
 
         async function handleAuth() {
