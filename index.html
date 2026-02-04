@@ -151,50 +151,52 @@
             border-left: 2px solid var(--neon); padding-left: 15px;
         }
 
+        /* --- UPDATED: Outer Moving Neon Border ONLY & Hover Lift --- */
         .auth-side { flex: 0.8; display: flex; justify-content: center; align-items: center; padding-right: 5%; }
-        #auth-container { width: 100%; max-width: 380px; text-align: center; }
-        #timer {
-            font-family: 'Orbitron'; font-size: 1.6rem; color: var(--neon);
-            text-shadow: 0 0 15px rgba(0, 242, 255, 0.5); margin-bottom: 25px;
-        }
+        #auth-container { width: 100%; max-width: 380px; text-align: center; transition: transform 0.4s ease; }
+        #auth-container:hover { transform: translateY(-15px); }
 
-        /* --- UPDATED: Moving Neon Electric Trace for Glass Card --- */
         .glass-card {
-            background: var(--glass); backdrop-filter: blur(30px);
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(30px);
             border-radius: 30px; padding: 40px 30px;
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
             position: relative;
             z-index: 1;
-            border: 1px solid rgba(255, 255, 255, 0.05); /* Very faint base border */
+            border: 1px solid transparent; 
             overflow: hidden;
         }
 
-        /* Animated Neon Trace Layer */
+        /* Border Animation Layer */
         .glass-card::before {
             content: '';
             position: absolute;
-            inset: -2px; /* Pulls slightly outside the card */
-            /* conic-gradient defines the thin "electrical" stream */
+            inset: -2px;
             background: conic-gradient(from 0deg, transparent 70%, var(--neon) 95%, transparent 100%);
-            animation: electricTrace 3s linear infinite;
-            z-index: -1;
+            animation: rotateNeon 3s linear infinite;
+            z-index: -2;
             border-radius: 32px;
         }
 
-        /* Content Mask to keep the card dark and glass-like */
+        /* Inner Mask to block center light */
         .glass-card::after {
             content: '';
             position: absolute;
-            inset: 1px; /* Creates the border width effect */
+            inset: 1px; 
             background: #010306;
             border-radius: 29px;
             z-index: -1;
             opacity: 0.95;
         }
 
-        @keyframes electricTrace {
+        @keyframes rotateNeon {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
+        }
+
+        #timer {
+            font-family: 'Orbitron'; font-size: 1.6rem; color: var(--neon);
+            text-shadow: 0 0 15px rgba(0, 242, 255, 0.5); margin-bottom: 25px;
         }
 
         .glass-input {
