@@ -6,39 +6,43 @@ body { margin: 0; overflow: hidden; background-color: #000; font-family: 'Orbitr
 
 #auth-container {
     position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    z-index: 300; width: 90%; max-width: 400px;
+    z-index: 300; width: 90%; max-width: 420px;
 }
 
+/* Glassmorphism Effect */
 .glass-card {
-    background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px;
-    padding: 35px; text-align: center; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
+    background: rgba(255, 255, 255, 0.04); backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 242, 255, 0.2); border-radius: 20px;
+    padding: 40px; text-align: center; box-shadow: 0 0 40px rgba(0, 242, 255, 0.1);
 }
 
-.glass-card h2 { color: #fff; margin-bottom: 25px; letter-spacing: 3px; font-size: 1.2rem; }
+.glass-card h2 { color: #fff; margin-bottom: 30px; letter-spacing: 3px; font-size: 1.3rem; }
 
 .glass-input {
-    width: 100%; padding: 14px; margin-bottom: 15px; background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 10px; color: #fff;
+    width: 100%; padding: 14px; margin-bottom: 15px; background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(0, 242, 255, 0.25); border-radius: 10px; color: #00f2ff;
     outline: none; box-sizing: border-box; font-family: 'Orbitron', sans-serif;
 }
 
-.glass-input:focus { border-color: #00f2ff; box-shadow: 0 0 10px rgba(0, 242, 255, 0.4); }
-
 .glass-btn {
-    width: 100%; padding: 14px; background: #00f2ff; border: none; border-radius: 10px;
-    color: #000; font-weight: bold; cursor: pointer; transition: 0.3s; letter-spacing: 2px;
+    width: 100%; padding: 15px; background: #00f2ff; border: none; border-radius: 10px;
+    color: #000; font-weight: bold; cursor: pointer; transition: 0.4s; letter-spacing: 2px;
 }
 
-.glass-btn:hover { background: #fff; box-shadow: 0 0 25px #00f2ff; transform: scale(1.02); }
+.glass-btn:hover { background: #fff; box-shadow: 0 0 25px #00f2ff; }
 
-#hint-text { color: #888; font-size: 0.65rem; margin-top: 15px; letter-spacing: 1px; }
+#info-msg { color: #888; font-size: 0.65rem; margin-top: 15px; letter-spacing: 1px; }
 
 #success-screen {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background: radial-gradient(circle at center, #001d3d 0%, #000 100%);
     display: flex; justify-content: center; align-items: center; z-index: 1000;
 }
-
 .success-content { text-align: center; color: #00f2ff; }
-.success-content h1 { font-size: clamp(1.2rem, 8vw, 3rem); text-shadow: 0 0 30px #00f2ff; margin-bottom: 20px; }
+
+#sheet-data-container {
+    position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+    width: 300px; height: 100px; background: rgba(0, 242, 255, 0.05);
+    border: 1px solid rgba(0, 242, 255, 0.2); border-radius: 10px; padding: 10px;
+}
+#sheet-content { color: #fff; font-size: 0.7rem; height: 70px; overflow-y: auto; }
