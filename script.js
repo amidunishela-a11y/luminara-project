@@ -24,22 +24,20 @@ async function handleAuth() {
 
         if(res.result === "success") {
             alert(res.message);
-            document.getElementById('auth-container').style.display = 'none';
-            document.getElementById('success-screen').style.display = 'flex';
-            if(res.userType === "new") {
-                document.getElementById('welcome-msg').innerText = "NEW IDENTITY ARCHIVED";
-            }
+            
+            // සාර්ථකව Login වූ පසු dashboard.html වෙත Redirect කිරීම
+            window.location.href = 'dashboard.html'; 
+            
         } else {
             alert(res.message);
+            btn.innerText = "INITIALIZE AUTHORIZATION";
+            btn.disabled = false;
         }
     } catch (e) {
-        // Fallback for Fetch/CORS issues (දත්ත Sheet එකට යනු ඇත)
+        // Fallback: Fetch/CORS ගැටලුවක් ආවත් දත්ත Sheet එකට ගොස් ඇත්නම් Redirect කිරීම
         console.log("Authentication processing...");
-        document.getElementById('auth-container').style.display = 'none';
-        document.getElementById('success-screen').style.display = 'flex';
+        window.location.href = 'dashboard.html';
     }
-    btn.innerText = "INITIALIZE AUTHORIZATION";
-    btn.disabled = false;
 }
 
 // 3D Environment Initialization
@@ -87,7 +85,11 @@ setInterval(() => {
     const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
     const m = Math.floor((diff / (1000 * 60)) % 60);
     const s = Math.floor((diff / 1000) % 60);
-    document.getElementById('timer').innerText = `${d}d ${h}h ${m}m ${s}s`;
+    
+    const timerElement = document.getElementById('timer');
+    if(timerElement) {
+        timerElement.innerText = `${d}d ${h}h ${m}m ${s}s`;
+    }
 }, 1000);
 
 init3D();
