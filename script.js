@@ -1,9 +1,9 @@
 let scene, camera, renderer, particles;
-const particleCount = 18000;
+const particleCount = window.innerWidth < 600 ? 10000 : 18000;
 let spherePoints = [], textPoints = [];
 let state = "sphere";
 
-// --- GOOGLE SHEET CONFIGURATION ---
+// Google Sheet URL
 const SHEET_ID = '1mDpVWrfZvCK3idWvhQMOZA0J8KVc0FPnLtTdg6xtyk';
 const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
 
@@ -11,31 +11,21 @@ async function loadSheetData() {
     try {
         const response = await fetch(SHEET_URL);
         const text = await response.text();
-        // Google eken ena JSON format eka clean karanna ona
         const json = JSON.parse(text.substring(47).slice(0, -2));
         const rows = json.table.rows;
-
         let html = "";
-        // Aluthma entries 12k reverse order ekata gannawa
-        const recentRows = rows.slice().reverse().slice(0, 12);
-
-        recentRows.forEach(row => {
+        rows.slice().reverse().slice(0, 12).forEach(row => {
             const name = row.c[0] ? row.c[0].v : "Unknown User";
-            const batch = row.c[2] ? row.c[2].v : ""; // Column C wala batch eka
-            html += `
-            <div class="data-row">
-                <span class="name">▶ ${name}</span>
-                <span class="batch">${batch}</span>
-            </div>`;
+            const batch = row.c[2] ? row.c[2].v : "";
+            html += `<div class="data-row"><span class="name">▶ ${name}</span><span class="batch">${batch}</span></div>`;
         });
         document.getElementById('sheet-content').innerHTML = html;
     } catch (e) {
-        console.error("Sheet Error:", e);
         document.getElementById('sheet-content').innerHTML = "Updating Database...";
     }
 }
 
-// --- 16-DAY COUNTDOWN ---
+// Timer Logic (16 Days)
 const targetDate = new Date().getTime() + (16 * 24 * 60 * 60 * 1000);
 function updateTimer() {
     const diff = targetDate - new Date().getTime();
@@ -46,7 +36,7 @@ function updateTimer() {
     document.getElementById('timer').innerText = `${d}d ${h}h ${m}m ${s}s`;
 }
 
-// --- 3D ENGINE (THREE.JS) ---
+// 3D Text Generation
 function createTextCoords() {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
@@ -61,7 +51,7 @@ function createTextCoords() {
     for (let y = 0; y < 200; y += 1) {
         for (let x = 0; x < 800; x += 1) {
             if (imgData[(y * 800 + x) * 4] > 128) {
-                pts.push((x - 400) * 0.012, (100 - y) * 0.012, 0);
+                pts.push((x - 400) * 0.015, (100 - y) * 0.015, 0);
             }
         }
     }
@@ -74,9 +64,11 @@ function createTextCoords() {
 function init() {
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = 6;
+    camera.position.z = window.innerWidth < 600 ? 8 : 6;
+
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     document.getElementById('container').appendChild(renderer.domElement);
 
     createTextCoords();
@@ -94,13 +86,24 @@ function init() {
 
     geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
     const mat = new THREE.PointsMaterial({
-        size: 0.007, color: 0x00f2ff, transparent: true, blending: THREE.AdditiveBlending, opacity: 0.8
+        size: window.innerWidth < 600 ? 0.015 : 0.008, 
+        color: 0x00f2ff, 
+        transparent: true, 
+        blending: THREE.AdditiveBlending, 
+        opacity: 0.8 
     });
     particles = new THREE.Points(geo, mat);
     scene.add(particles);
 
-    // CLICK TO TOGGLE
-    window.addEventListener('click', () => {
+    // Resize Handler
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    // Morph Toggle
+    const handleAction = () => {
         state = (state === "sphere") ? "text" : "sphere";
         const target = (state === "text") ? textPoints : spherePoints;
         const posAttr = particles.geometry.attributes.position;
@@ -111,10 +114,13 @@ function init() {
                 onUpdate: () => posAttr.needsUpdate = true
             });
         }
-    });
+    };
+
+    window.addEventListener('click', handleAction);
+    window.addEventListener('touchstart', (e) => { e.preventDefault(); handleAction(); }, {passive: false});
 
     setInterval(updateTimer, 1000);
-    setInterval(loadSheetData, 30000); // 30s update
+    setInterval(loadSheetData, 30000);
     loadSheetData();
     animate();
 }
@@ -122,13 +128,12 @@ function init() {
 function animate() {
     requestAnimationFrame(animate);
     if(state === "sphere") {
-        particles.rotation.y += 0.003;
+        particles.rotation.y += 0.002;
     } else {
         particles.rotation.y *= 0.95; 
     }
-    // Lightning pulse effect
     const time = Date.now() * 0.005;
-    particles.material.opacity = 0.5 + Math.sin(time) * 0.4;
+    particles.material.opacity = 0.6 + Math.sin(time) * 0.3;
     renderer.render(scene, camera);
 }
 
