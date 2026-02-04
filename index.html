@@ -132,6 +132,7 @@
         .data-panels {
             display: flex; gap: 15px; margin-top: 40px;
         }
+        /* UPDATED: Glass Panel Hover effect */
         .glass-panel {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(10px);
@@ -139,9 +140,14 @@
             border-radius: 12px;
             padding: 15px 20px;
             min-width: 120px;
-            transition: 0.3s;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .glass-panel:hover { background: rgba(0, 242, 255, 0.05); border-color: rgba(0, 242, 255, 0.3); }
+        .glass-panel:hover { 
+            background: rgba(0, 242, 255, 0.05); 
+            border-color: rgba(0, 242, 255, 0.3);
+            transform: translateY(-8px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
         .panel-label { font-size: 0.6rem; color: var(--neon); opacity: 0.6; letter-spacing: 2px; margin-bottom: 5px; }
         .panel-value { font-family: 'Orbitron'; font-size: 0.9rem; color: #fff; }
 
@@ -153,7 +159,10 @@
 
         /* --- Auth Side --- */
         .auth-side { flex: 0.8; display: flex; justify-content: center; align-items: center; padding-right: 5%; }
-        #auth-container { width: 100%; max-width: 380px; text-align: center; }
+        #auth-container { width: 100%; max-width: 380px; text-align: center; transition: all 0.5s ease; }
+        /* UPDATED: Auth Container Hover lift */
+        #auth-container:hover { transform: translateY(-12px); }
+
         #timer {
             font-family: 'Orbitron'; font-size: 1.6rem; color: var(--neon);
             text-shadow: 0 0 15px rgba(0, 242, 255, 0.5); margin-bottom: 25px;
@@ -162,7 +171,11 @@
             background: var(--glass); backdrop-filter: blur(30px);
             border: 1px solid var(--border); border-radius: 30px; padding: 40px 30px;
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5); position: relative; overflow: hidden;
+            transition: border-color 0.4s;
         }
+        /* UPDATED: Glass Card Hover highlight */
+        .glass-card:hover { border-color: rgba(0, 242, 255, 0.2); }
+
         .glass-input {
             width: 100%; padding: 14px; margin-bottom: 5px; background: rgba(0, 0, 0, 0.4);
             border: 1px solid var(--border); border-radius: 12px; color: var(--neon);
@@ -176,20 +189,25 @@
             border-radius: 12px; color: #000; font-weight: bold; font-family: 'Orbitron';
             cursor: pointer; transition: 0.4s; letter-spacing: 2px; margin-top: 10px;
         }
-        .glass-btn:hover { background: #fff; box-shadow: 0 0 25px var(--neon); }
+        .glass-btn:hover { background: #fff; box-shadow: 0 0 25px var(--neon); transform: scale(1.02); }
 
         .icon-container { display: flex; justify-content: center; gap: 15px; margin-top: 30px; }
+        /* UPDATED: Icon Card Hover lift */
         .icon-card {
             width: 50px; height: 50px; background: var(--glass); border: 1px solid var(--border);
             border-radius: 12px; display: flex; justify-content: center; align-items: center;
-            text-decoration: none; transition: 0.4s; color: #94a3b8; font-size: 1.2rem;
+            text-decoration: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            color: #94a3b8; font-size: 1.2rem;
+        }
+        .icon-card:hover {
+            transform: translateY(-8px) scale(1.1);
         }
 
         .icon-card[style*="#ff0000"]:hover { color: #ff0000; border-color: #ff0000; box-shadow: 0 0 20px rgba(255, 0, 0, 0.4); }
         .icon-card[style*="#1877F2"]:hover { color: #1877F2; border-color: #1877F2; box-shadow: 0 0 20px rgba(24, 119, 242, 0.4); }
         .icon-card[style*="#25D366"]:hover { color: #25D366; border-color: #25D366; box-shadow: 0 0 20px rgba(37, 211, 102, 0.4); }
 
-        /* --- NEW: Bottom Glass Typewriter Box --- */
+        /* --- Bottom Glass Typewriter Box --- */
         .bottom-quote-box {
             position: fixed;
             bottom: 20px;
@@ -204,7 +222,15 @@
             padding: 12px 20px;
             text-align: center;
             z-index: 100;
+            transition: all 0.4s ease;
         }
+        /* UPDATED: Typewriter Box Hover lift */
+        .bottom-quote-box:hover {
+            transform: translateX(-50%) translateY(-5px);
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(0, 242, 255, 0.2);
+        }
+
         #typewriter-text {
             font-family: 'Orbitron', monospace;
             font-size: 0.75rem;
