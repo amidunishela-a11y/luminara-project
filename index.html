@@ -40,15 +40,19 @@
             z-index: -1;
         }
 
-        /* --- Neural Particles --- */
+        /* --- Floating Neural Particles --- */
         .particles-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none; z-index: 0; overflow: hidden;
         }
+
         .particle {
-            position: absolute; background: var(--neon); border-radius: 50%; opacity: 0.3;
-            filter: blur(1px); animation: floatParticle 15s infinite linear;
+            position: absolute; background: var(--neon);
+            border-radius: 50%; opacity: 0.3;
+            filter: blur(1px);
+            animation: floatParticle 15s infinite linear;
         }
+
         @keyframes floatParticle {
             0% { transform: translateY(100vh) scale(0); opacity: 0; }
             20%, 80% { opacity: 0.4; }
@@ -85,7 +89,7 @@
         /* --- Glass Divider --- */
         .glass-divider { width: 1px; height: 60%; background: linear-gradient(to bottom, transparent, rgba(0, 242, 255, 0.2), transparent); align-self: center; }
 
-        /* --- Right Side: Auth --- */
+        /* --- Auth Side --- */
         .auth-side { flex: 0.8; display: flex; justify-content: center; align-items: center; padding-right: 5%; }
         #auth-container { width: 100%; max-width: 380px; text-align: center; transition: transform 0.5s ease; }
         #auth-container:hover { transform: translateY(-12px); }
@@ -105,8 +109,20 @@
         .icon-card { width: 50px; height: 50px; background: var(--glass); border: 1px solid var(--border); border-radius: 12px; display: flex; justify-content: center; align-items: center; text-decoration: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); color: #94a3b8; font-size: 1.2rem; }
         .icon-card:hover { transform: translateY(-8px) scale(1.1); color: var(--neon); border-color: var(--neon); }
 
+        /* --- Added: Blinking Message --- */
+        .blink-msg {
+            color: var(--neon);
+            font-family: 'Orbitron';
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            animation: textBlink 1.5s infinite;
+        }
+        @keyframes textBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+
         /* --- Bottom Typewriter --- */
         .bottom-quote-box { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 600px; background: rgba(255, 255, 255, 0.01); backdrop-filter: blur(15px); border: 1px solid var(--border); border-radius: 15px; padding: 12px 20px; text-align: center; z-index: 100; transition: 0.4s; }
+        .bottom-quote-box:hover { transform: translateX(-50%) translateY(-5px); border-color: rgba(0, 242, 255, 0.2); }
         #typewriter-text { font-family: 'Orbitron', monospace; font-size: clamp(0.6rem, 2.5vw, 0.75rem); color: var(--neon); letter-spacing: 2px; text-transform: uppercase; }
         .cursor { display: inline-block; width: 8px; height: 14px; background: var(--neon); margin-left: 5px; animation: blink 0.8s infinite; vertical-align: middle; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
@@ -160,6 +176,7 @@
                     </div>
 
                     <div id="step-2" style="display: none;">
+                        <div class="blink-msg">CHECK YOUR EMAIL BOX</div>
                         <input type="text" id="otp-code" placeholder="ENTER 6-DIGIT CODE" class="glass-input">
                         <button onclick="handleVerifyAndSignUp()" id="submit-btn" class="glass-btn">VERIFY & SIGN UP</button>
                     </div>
@@ -177,7 +194,7 @@
     <div class="bottom-quote-box"><span id="typewriter-text"></span><span class="cursor"></span></div>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwfh_WdzF0VBc5tibaFjvV7R6AS5QQNjMW4G2nScDZ6VqsLQL0uMurBQj1xTVulSQMklQ/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby11_2pqAOLKXsD_tfyEGVqlloMYke14Q6RK5-lQmBfxDiATvr2tPoVfwuY4NoVYLiwMA/exec';
         let serverOTP = "";
 
         // Particles
