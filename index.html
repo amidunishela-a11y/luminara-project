@@ -60,7 +60,7 @@
             100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
         }
 
-        .split-container { display: flex; width: 100%; height: 100%; z-index: 10; overflow-y: auto; padding-bottom: 80px; }
+        .split-container { display: flex; width: 100%; height: 100%; z-index: 10; overflow-y: auto; padding-bottom: 120px; }
 
         /* --- Visual Side (Left) --- */
         .visual-side {
@@ -145,6 +145,15 @@
             border-left: 2px solid var(--neon); padding-left: 15px;
         }
 
+        /* --- Glass Divider Line --- */
+        .glass-divider {
+            width: 1px;
+            height: 60%;
+            background: linear-gradient(to bottom, transparent, rgba(0, 242, 255, 0.2), transparent);
+            align-self: center;
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.1);
+        }
+
         /* --- Auth Side --- */
         .auth-side { flex: 0.8; display: flex; justify-content: center; align-items: center; padding-right: 5%; }
         #auth-container { width: 100%; max-width: 380px; text-align: center; transition: transform 0.5s ease; }
@@ -197,26 +206,24 @@
 
         @media (max-width: 950px) {
             body { overflow-y: auto; }
-            .split-container { flex-direction: column; height: auto; padding: 40px 20px 140px 20px; }
+            .split-container { flex-direction: column; height: auto; padding: 40px 20px; }
             .visual-side { padding-left: 0; align-items: center; text-align: center; margin-bottom: 40px; flex: none; }
             .auth-side { padding-right: 0; width: 100%; flex: none; }
             .cube-container, .monitor-logs, .data-panels { display: none; }
             .shape-path-container { margin: 10px auto; }
-            .bottom-quote-box { width: 95%; bottom: 10px; position: relative; left: 0; transform: none; margin: 20px auto; }
+            .bottom-quote-box { position: relative; left: 0; transform: none; margin: 20px auto; width: 100%; }
+            .glass-divider { width: 80%; height: 1px; margin: 20px auto; background: linear-gradient(to right, transparent, rgba(0, 242, 255, 0.2), transparent); }
         }
     </style>
 </head>
 <body oncontextmenu="return false;"> 
     <div class="bg-grid"></div>
     <div class="glow-overlay"></div>
-    
     <div class="particles-container" id="particles"></div>
 
     <div class="split-container">
         <div class="visual-side">
-            <div class="cube-container">
-                <div class="glass-cube"></div>
-            </div>
+            <div class="cube-container"><div class="glass-cube"></div></div>
             <h1 class="system-title">DARK NEO</h1>
             <div class="shape-path-container">
                 <div class="moving-path"></div>
@@ -225,19 +232,15 @@
                 <div class="shape triangle"></div>
             </div>
             <p class="system-tag">ACCESS PROTOCOL 2026</p>
-
             <div class="data-panels">
                 <div class="glass-panel"><div class="panel-label">CORE_LINK</div><div class="panel-value">ACTIVE</div></div>
                 <div class="glass-panel"><div class="panel-label">STABILITY</div><div class="panel-value">98.4%</div></div>
                 <div class="glass-panel"><div class="panel-label">SECURETY</div><div class="panel-value">100%</div></div>
             </div>
-
-            <div class="monitor-logs">
-                [SYSTEM] ONLINE...<br>
-                [GATE] WAITING FOR PASSKEY_<br>
-                [AUTHOR] AMIDU_NISHX
-            </div>
+            <div class="monitor-logs">[SYSTEM] ONLINE...<br>[GATE] WAITING FOR PASSKEY_<br>[AUTHOR] AMIDU_NISHX</div>
         </div>
+
+        <div class="glass-divider"></div>
 
         <div class="auth-side">
             <div id="auth-container">
@@ -273,8 +276,7 @@
     </div>
 
     <script>
-        // Configuration
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwUWddX760-QZCv63tMvP7YCppg03w2oR8ez4bpdMeWreElPPz5AMojIzUVVioVYkl3Xg/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby11_2pqAOLKXsD_tfyEGVqlloMYke14Q6RK5-lQmBfxDiATvr2tPoVfwuY4NoVYLiwMA/exec';
         let receivedOTP = "";
 
         // Particle Generator
@@ -283,8 +285,7 @@
             const p = document.createElement('div');
             p.className = 'particle';
             const size = Math.random() * 3 + 1;
-            p.style.width = size + 'px';
-            p.style.height = size + 'px';
+            p.style.width = size + 'px'; p.style.height = size + 'px';
             p.style.left = Math.random() * 100 + 'vw';
             p.style.animationDuration = (Math.random() * 10 + 10) + 's';
             p.style.animationDelay = Math.random() * 10 + 's';
@@ -294,14 +295,15 @@
         // Typewriter Effect
         const phrases = ["THE FUTURE BELONGS TO THOSE WHO BELIEVE.", "LUMINARA 2026: BEYOND THE HORIZON.", "CONNECTING THE DIGITAL NEURAL NETWORK.", "GET MORE INFO CLICK SOCIAL MEDIA ICON."];
         let phraseIndex = 0, characterIndex = 0;
-        const textElement = document.getElementById('typewriter-text');
         function type() {
+            const textElement = document.getElementById('typewriter-text');
             if (characterIndex < phrases[phraseIndex].length) {
                 textElement.textContent += phrases[phraseIndex].charAt(characterIndex);
                 characterIndex++; setTimeout(type, 100);
             } else { setTimeout(erase, 2000); }
         }
         function erase() {
+            const textElement = document.getElementById('typewriter-text');
             if (characterIndex > 0) {
                 textElement.textContent = phrases[phraseIndex].substring(0, characterIndex - 1);
                 characterIndex--; setTimeout(erase, 50);
@@ -309,23 +311,15 @@
         }
         window.onload = type;
 
-        // Logic: Send OTP
+        // AUTH LOGIC
         async function handleGetOTP() {
             const email = document.getElementById('email');
             const password = document.getElementById('password');
             const otpBtn = document.getElementById('otp-btn');
-            
-            // Basic Validation
-            if (!email.value.includes("@")) { 
-                email.classList.add('input-error'); 
-                document.getElementById('email-error').style.display = 'block'; 
-                return; 
-            }
-            if (!password.value) { 
-                password.classList.add('input-error'); 
-                document.getElementById('password-error').style.display = 'block'; 
-                return; 
-            }
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!emailPattern.test(email.value)) { email.classList.add('input-error'); document.getElementById('email-error').style.display = 'block'; return; }
+            if (!password.value) { password.classList.add('input-error'); document.getElementById('password-error').style.display = 'block'; return; }
 
             otpBtn.innerText = "SENDING...";
             otpBtn.disabled = true;
@@ -340,15 +334,11 @@
                     receivedOTP = res.otp;
                     document.getElementById('step-1').style.display = 'none';
                     document.getElementById('step-2').style.display = 'block';
-                    alert("OTP Code Sent to: " + email.value);
-                } else {
-                    alert("Error: " + res.message);
-                    otpBtn.disabled = false; otpBtn.innerText = "GET CODE";
-                }
-            } catch (e) { alert("Server Error. Try again."); otpBtn.disabled = false; otpBtn.innerText = "GET CODE"; }
+                    alert("Code sent to: " + email.value);
+                } else { alert("Error: " + res.message); otpBtn.disabled = false; otpBtn.innerText = "GET CODE"; }
+            } catch (e) { alert("Server connection failed."); otpBtn.disabled = false; otpBtn.innerText = "GET CODE"; }
         }
 
-        // Logic: Verify & Save to Sheet
         async function handleVerifyAndSignUp() {
             const userOTP = document.getElementById('otp-code').value;
             const email = document.getElementById('email').value;
@@ -356,9 +346,7 @@
             const btn = document.getElementById('submit-btn');
 
             if (userOTP == receivedOTP) {
-                btn.innerText = "FINALIZING...";
-                btn.disabled = true;
-
+                btn.innerText = "SAVING..."; btn.disabled = true;
                 try {
                     const response = await fetch(SCRIPT_URL, {
                         method: 'POST',
@@ -369,10 +357,8 @@
                         localStorage.setItem('loggedEmail', email);
                         window.location.href = 'dashboard.html';
                     }
-                } catch (e) { alert("Finalization Failed."); btn.disabled = false; btn.innerText = "VERIFY & SIGN UP"; }
-            } else {
-                alert("Incorrect OTP! Check your email.");
-            }
+                } catch (e) { alert("Error saving data."); btn.disabled = false; btn.innerText = "VERIFY & SIGN UP"; }
+            } else { alert("Incorrect OTP!"); }
         }
 
         setInterval(() => {
