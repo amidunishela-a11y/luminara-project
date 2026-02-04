@@ -30,11 +30,9 @@
             cursor: pointer; color: #888; transition: 0.3s; font-size: 0.85rem;
         }
 
-        .nav-item.active, .nav-item:hover {
-            color: var(--neon); background: rgba(0, 242, 255, 0.1);
-        }
+        .nav-item.active, .nav-item:hover { color: var(--neon); background: rgba(0, 242, 255, 0.1); }
 
-        /* Main Content Area */
+        /* Main Content */
         .content { flex: 1; padding: 30px; overflow-y: auto; position: relative; }
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 20px; }
         .user-id { font-family: 'Orbitron'; font-size: 0.7rem; color: var(--neon); letter-spacing: 2px; }
@@ -86,7 +84,6 @@
             body { flex-direction: column; overflow-y: auto; }
             .sidebar { width: 100%; height: auto; border-right: none; }
             #inventory-overlay { padding: 15px; }
-            td, th { font-size: 0.7rem; padding: 10px; }
         }
     </style>
 </head>
@@ -111,7 +108,7 @@
                 <h3>MOBILE CLUSTER</h3>
                 <div class="value">GLOBAL BRANDS</div>
                 <div class="status-bar"><div class="progress" style="width: 95%;"></div></div>
-                <p style="font-size: 0.6rem; color: var(--neon); margin-top: 10px;">CLICK TO ACCESS INVENTORY</p>
+                <p style="font-size: 0.6rem; color: var(--neon); margin-top: 10px;">ACCESS MASTER DATABASE</p>
             </div>
             
             <div class="card">
@@ -141,8 +138,8 @@
             <button class="tab-btn active" onclick="showBrand('apple', this)"><i class="fab fa-apple"></i> APPLE</button>
             <button class="tab-btn" onclick="showBrand('samsung', this)"><i class="fas fa-mobile-alt"></i> SAMSUNG</button>
             <button class="tab-btn" onclick="showBrand('google', this)"><i class="fab fa-google"></i> PIXEL</button>
-            <button class="tab-btn" onclick="showBrand('vivo', this)"><i class="fas fa-v"></i> VIVO</button>
-            <button class="tab-btn" onclick="showBrand('huawei', this)"><i class="fas fa-h"></i> HUAWEI</button>
+            <button class="tab-btn" onclick="showBrand('vivo', this)"><i class="fas fa-bolt"></i> VIVO</button>
+            <button class="tab-btn" onclick="showBrand('huawei', this)"><i class="fas fa-shield-alt"></i> HUAWEI</button>
             <button class="tab-btn" onclick="showBrand('honor', this)"><i class="fas fa-medal"></i> HONOR</button>
         </div>
 
@@ -151,9 +148,9 @@
                 <thead>
                     <tr>
                         <th>MODEL NAME</th>
-                        <th>DISPLAY / TECH</th>
-                        <th>CHIP / RAM</th>
-                        <th>BATTERY</th>
+                        <th>DISPLAY / TECHNOLOGY</th>
+                        <th>PROCESSOR / RAM</th>
+                        <th>BATTERY UNIT</th>
                     </tr>
                 </thead>
                 <tbody id="table-body"></tbody>
@@ -164,59 +161,112 @@
     <script>
         const deviceData = {
             apple: {
-                title: "APPLE IPHONE DATABASE",
+                title: "APPLE IPHONE COMPREHENSIVE LIST",
                 logo: '<i class="fab fa-apple"></i>',
                 items: [
-                    {m: "iPhone 17 Pro Max (Upcoming)", s: "6.9\" ProMotion OLED", c: "A19 Pro / 12GB", b: "4850 mAh"},
-                    {m: "iPhone 16 Pro Max", s: "6.9\" Super Retina", c: "A18 Pro / 8GB", b: "4676 mAh"},
-                    {m: "iPhone X (Legacy)", s: "5.8\" Super Retina", c: "A11 Bionic / 3GB", b: "2716 mAh"},
-                    {m: "iPhone 6 (Legacy)", s: "4.7\" Retina HD", c: "A8 Chip / 1GB", b: "1810 mAh"}
+                    {m: "iPhone 17 Pro Max (Predicted)", s: "6.9\" ProMotion OLED (2000 nits)", c: "A19 Pro (2nm) / 12GB", b: "4850 mAh"},
+                    {m: "iPhone 16 Pro Max", s: "6.9\" LTPO Super Retina", c: "A18 Pro (3nm) / 8GB", b: "4676 mAh"},
+                    {m: "iPhone 15 Pro Max", s: "6.7\" Titanium Build", c: "A17 Pro / 8GB", b: "4441 mAh"},
+                    {m: "iPhone 14 Pro Max", s: "6.7\" Always-On Display", c: "A16 Bionic / 6GB", b: "4323 mAh"},
+                    {m: "iPhone 13 Pro Max", s: "6.7\" 120Hz ProMotion", c: "A15 Bionic / 6GB", b: "4352 mAh"},
+                    {m: "iPhone 12 Pro Max", s: "6.7\" Ceramic Shield", c: "A14 Bionic / 6GB", b: "3687 mAh"},
+                    {m: "iPhone 11 Pro Max", s: "6.5\" Super Retina XDR", c: "A13 Bionic / 4GB", b: "3969 mAh"},
+                    {m: "iPhone XS Max", s: "6.5\" OLED", c: "A12 Bionic / 4GB", b: "3174 mAh"},
+                    {m: "iPhone X", s: "5.8\" First OLED iPhone", c: "A11 Bionic / 3GB", b: "2716 mAh"},
+                    {m: "iPhone 8 Plus", s: "5.5\" Retina HD", c: "A11 Bionic / 3GB", b: "2691 mAh"},
+                    {m: "iPhone 7 Plus", s: "5.5\" Water Resistant", c: "A10 Fusion / 3GB", b: "2900 mAh"},
+                    {m: "iPhone 6S Plus", s: "5.5\" 3D Touch", c: "A9 Chip / 2GB", b: "2750 mAh"},
+                    {m: "iPhone 6 Plus", s: "5.5\" Retina", c: "A8 Chip / 1GB", b: "2915 mAh"}
                 ]
             },
             samsung: {
-                title: "SAMSUNG GALAXY DATABASE",
+                title: "SAMSUNG GALAXY S-SERIES EVOLUTION",
                 logo: '<i class="fas fa-mobile-alt" style="color:#034ea2;"></i>',
                 items: [
-                    {m: "Galaxy S24 Ultra", s: "6.8\" Dynamic AMOLED 2X", c: "SD 8 Gen 3 / 12GB", b: "5000 mAh"},
-                    {m: "Galaxy S21 Ultra", s: "6.8\" Dynamic AMOLED", c: "Exynos 2100 / 12GB", b: "5000 mAh"},
-                    {m: "Galaxy S10 (Legacy)", s: "6.1\" Dynamic AMOLED", c: "Exynos 9820 / 8GB", b: "3400 mAh"},
-                    {m: "Galaxy S1 (2010 Legacy)", s: "4.0\" Super AMOLED", c: "Hummingbird / 512MB", b: "1500 mAh"}
+                    {m: "Galaxy S24 Ultra", s: "6.8\" Dynamic AMOLED 2X", c: "Snapdragon 8 Gen 3 / 12GB", b: "5000 mAh"},
+                    {m: "Galaxy S23 Ultra", s: "6.8\" 200MP Camera Tech", c: "SD 8 Gen 2 / 12GB", b: "5000 mAh"},
+                    {m: "Galaxy S22 Ultra", s: "6.8\" Integrated S-Pen", c: "SD 8 Gen 1 / 12GB", b: "5000 mAh"},
+                    {m: "Galaxy S21 Ultra", s: "6.8\" Dual Telephoto", c: "Exynos 2100 / 12GB", b: "5000 mAh"},
+                    {m: "Galaxy S20 Ultra", s: "6.9\" 100x Space Zoom", c: "Exynos 990 / 12GB", b: "5000 mAh"},
+                    {m: "Galaxy S10+", s: "6.4\" Dynamic AMOLED", c: "Exynos 9820 / 8GB", b: "4100 mAh"},
+                    {m: "Galaxy S9+", s: "6.2\" Infinity Display", c: "Exynos 9810 / 6GB", b: "3500 mAh"},
+                    {m: "Galaxy S8+", s: "6.2\" First Bezel-less", c: "Exynos 8895 / 4GB", b: "3500 mAh"},
+                    {m: "Galaxy S7 Edge", s: "5.5\" Curved Screen", c: "Exynos 8890 / 4GB", b: "3600 mAh"},
+                    {m: "Galaxy S6 Edge", s: "5.1\" Dual Curve", c: "Exynos 7420 / 3GB", b: "2600 mAh"},
+                    {m: "Galaxy S5", s: "5.1\" Fingerprint/Water Res", c: "SD 801 / 2GB", b: "2800 mAh"},
+                    {m: "Galaxy S4", s: "5.0\" Full HD", c: "Exynos 5 / 2GB", b: "2600 mAh"},
+                    {m: "Galaxy S3", s: "4.8\" HD Super AMOLED", c: "Exynos 4 / 1GB", b: "2100 mAh"},
+                    {m: "Galaxy S2", s: "4.3\" Slim Design", c: "Dual-core / 1GB", b: "1650 mAh"},
+                    {m: "Galaxy S1 (2010)", s: "4.0\" Super AMOLED", c: "Hummingbird / 512MB", b: "1500 mAh"}
                 ]
             },
             google: {
-                title: "GOOGLE PIXEL DATABASE",
+                title: "GOOGLE PIXEL ECOSYSTEM",
                 logo: '<i class="fab fa-google" style="color:#4285F4;"></i>',
                 items: [
-                    {m: "Pixel 9 Pro XL", s: "6.8\" LTPO OLED", c: "Tensor G4 / 16GB", b: "5060 mAh"},
-                    {m: "Pixel 6 Pro", s: "6.7\" LTPO OLED", c: "Google Tensor / 12GB", b: "5003 mAh"},
-                    {m: "Pixel 1 (Legacy)", s: "5.0\" AMOLED", c: "SD 821 / 4GB", b: "2770 mAh"}
+                    {m: "Pixel 9 Pro XL", s: "6.8\" LTPO OLED Super Actua", c: "Tensor G4 / 16GB", b: "5060 mAh"},
+                    {m: "Pixel 8 Pro", s: "6.7\" Actua Display", c: "Tensor G3 / 12GB", b: "5050 mAh"},
+                    {m: "Pixel 7 Pro", s: "6.7\" LTPO OLED", c: "Tensor G2 / 12GB", b: "5000 mAh"},
+                    {m: "Pixel 6 Pro", s: "6.7\" First Tensor Chip", c: "Google Tensor / 12GB", b: "5003 mAh"},
+                    {m: "Pixel 5", s: "6.0\" OLED 90Hz", c: "SD 765G / 8GB", b: "4080 mAh"},
+                    {m: "Pixel 4 XL", s: "6.3\" Face Unlock Tech", c: "SD 855 / 6GB", b: "3700 mAh"},
+                    {m: "Pixel 3 XL", s: "6.3\" P-OLED", c: "SD 845 / 4GB", b: "3430 mAh"},
+                    {m: "Pixel 2 XL", s: "6.0\" P-OLED", c: "SD 835 / 4GB", b: "3520 mAh"},
+                    {m: "Pixel 1 XL (2016)", s: "5.5\" AMOLED", c: "SD 821 / 4GB", b: "3450 mAh"}
                 ]
             },
             vivo: {
-                title: "VIVO V/X SERIES DATABASE",
+                title: "VIVO X & V SERIES EVOLUTION",
                 logo: '<i class="fas fa-bolt" style="color:#415fff;"></i>',
                 items: [
-                    {m: "Vivo X100 Ultra", s: "6.78\" AMOLED 2K", c: "SD 8 Gen 3 / 16GB", b: "5500 mAh"},
-                    {m: "Vivo V30 Pro", s: "6.78\" AMOLED", c: "Dimensity 8200 / 12GB", b: "5000 mAh"},
-                    {m: "Vivo X1 (2012 Legacy)", s: "4.7\" IPS LCD", c: "Dual-core / 1GB", b: "2000 mAh"}
+                    {m: "Vivo X200 Pro (Upcoming)", s: "6.78\" Satellite Comm", c: "Dimensity 9400 / 16GB", b: "6000 mAh"},
+                    {m: "Vivo X100 Ultra", s: "6.78\" Samsung E7 AMOLED", c: "SD 8 Gen 3 / 16GB", b: "5500 mAh"},
+                    {m: "Vivo X90 Pro+", s: "6.78\" 1-inch Sensor", c: "SD 8 Gen 2 / 12GB", b: "4700 mAh"},
+                    {m: "Vivo X80 Pro", s: "6.78\" LTPO3 AMOLED", c: "SD 8 Gen 1 / 12GB", b: "4700 mAh"},
+                    {m: "Vivo X70 Pro+", s: "6.78\" Zeiss Optics", c: "SD 888+ / 12GB", b: "4500 mAh"},
+                    {m: "Vivo X60 Pro+", s: "6.56\" Gimbal Stab", c: "SD 888 / 12GB", b: "4200 mAh"},
+                    {m: "Vivo V30 Pro", s: "6.78\" 3D Curved", c: "Dimensity 8200 / 12GB", b: "5000 mAh"},
+                    {m: "Vivo V20", s: "6.44\" AMOLED", c: "SD 720G / 8GB", b: "4000 mAh"},
+                    {m: "Vivo V15 Pro", s: "6.39\" Pop-up Camera", c: "SD 675 / 6GB", b: "3700 mAh"},
+                    {m: "Vivo NEX 3", s: "6.89\" Waterfall Display", c: "SD 855+ / 8GB", b: "4500 mAh"},
+                    {m: "Vivo Xplay 3S (2013)", s: "6.0\" First 2K Display", c: "SD 800 / 3GB", b: "3200 mAh"},
+                    {m: "Vivo X1 (2012)", s: "4.7\" World's Slimmest", c: "Dual-core / 1GB", b: "2000 mAh"}
                 ]
             },
             huawei: {
-                title: "HUAWEI MATE/PURA DATABASE",
+                title: "HUAWEI MATE & PURA LEGACY",
                 logo: '<i class="fas fa-shield-alt" style="color:#cf0a2c;"></i>',
                 items: [
-                    {m: "Huawei Pura 70 Ultra", s: "6.8\" LTPO OLED", c: "Kirin 9010 / 16GB", b: "5200 mAh"},
-                    {m: "Huawei Mate 60 Pro", s: "6.82\" LTPO OLED", c: "Kirin 9000S / 12GB", b: "5000 mAh"},
-                    {m: "Huawei Ascend P1 (Legacy)", s: "4.3\" Super AMOLED", c: "Dual-core / 1GB", b: "1670 mAh"}
+                    {m: "Huawei Mate 70 Pro (Upcoming)", s: "6.8\" HarmonyOS Next", c: "Kirin 9100 / 16GB", b: "5500 mAh"},
+                    {m: "Huawei Pura 70 Ultra", s: "6.8\" Retractable Cam", c: "Kirin 9010 / 16GB", b: "5200 mAh"},
+                    {m: "Huawei Mate 60 Pro", s: "6.82\" Sat Calling", c: "Kirin 9000S / 12GB", b: "5000 mAh"},
+                    {m: "Huawei Mate 50 Pro", s: "6.74\" XMAGE Camera", c: "SD 8+ Gen 1 / 8GB", b: "4700 mAh"},
+                    {m: "Huawei Mate 40 Pro", s: "6.76\" 88° Curved", c: "Kirin 9000 / 8GB", b: "4400 mAh"},
+                    {m: "Huawei P30 Pro", s: "6.47\" 50x Zoom", c: "Kirin 980 / 8GB", b: "4200 mAh"},
+                    {m: "Huawei Mate 20 Pro", s: "6.39\" Matrix Camera", c: "Kirin 980 / 6GB", b: "4200 mAh"},
+                    {m: "Huawei P20 Pro", s: "6.1\" First Triple Cam", c: "Kirin 970 / 6GB", b: "4000 mAh"},
+                    {m: "Huawei Mate 10 Pro", s: "6.0\" NPU Focus", c: "Kirin 970 / 6GB", b: "4000 mAh"},
+                    {m: "Huawei P10", s: "5.1\" Leica Dual Cam", c: "Kirin 960 / 4GB", b: "3200 mAh"},
+                    {m: "Huawei Mate 7 (2014)", s: "6.0\" Fingerprint Scan", c: "Kirin 925 / 2GB", b: "4100 mAh"},
+                    {m: "Huawei Ascend P1 (2012)", s: "4.3\" Super AMOLED", c: "TI OMAP 4460 / 1GB", b: "1670 mAh"}
                 ]
             },
             honor: {
-                title: "HONOR MAGIC SERIES DATABASE",
+                title: "HONOR FLAGSHIP CHRONICLES",
                 logo: '<i class="fas fa-medal" style="color:#c69c6d;"></i>',
                 items: [
-                    {m: "Honor Magic 6 Pro", s: "6.8\" LTPO OLED", c: "SD 8 Gen 3 / 12GB", b: "5600 mAh"},
-                    {m: "Honor 90", s: "6.7\" AMOLED", c: "SD 7 Gen 1 / 12GB", b: "5000 mAh"},
-                    {m: "Honor 6 (2014 Legacy)", s: "5.0\" IPS LCD", c: "Kirin 920 / 3GB", b: "3100 mAh"}
+                    {m: "Honor Magic 7 Pro (Upcoming)", s: "6.82\" AI Defocus", c: "SD 8 Elite / 16GB", b: "5850 mAh"},
+                    {m: "Honor Magic 6 Pro", s: "6.8\" 5000 nits Peak", c: "SD 8 Gen 3 / 12GB", b: "5600 mAh"},
+                    {m: "Honor Magic 5 Pro", s: "6.81\" LTPO OLED", c: "SD 8 Gen 2 / 12GB", b: "5100 mAh"},
+                    {m: "Honor Magic 4 Pro", s: "6.81\" 100W Wireless", c: "SD 8 Gen 1 / 8GB", b: "4600 mAh"},
+                    {m: "Honor Magic 3 Pro", s: "6.76\" IMAX Enhanced", c: "SD 888+ / 8GB", b: "4600 mAh"},
+                    {m: "Honor 90", s: "6.7\" No-Flicker", c: "SD 7 Gen 1 / 12GB", b: "5000 mAh"},
+                    {m: "Honor 50", s: "6.57\" Curved Display", c: "SD 778G / 8GB", b: "4300 mAh"},
+                    {m: "Honor 30 Pro+", s: "6.57\" OLED 90Hz", c: "Kirin 990 5G / 8GB", b: "4000 mAh"},
+                    {m: "Honor 20 Pro", s: "6.26\" Punch-hole", c: "Kirin 980 / 8GB", b: "4000 mAh"},
+                    {m: "Honor 10", s: "5.84\" Aurora Design", c: "Kirin 970 / 4GB", b: "3400 mAh"},
+                    {m: "Honor 8 (2016)", s: "5.2\" Dual Glass", c: "Kirin 950 / 4GB", b: "3000 mAh"},
+                    {m: "Honor 6 (2014)", s: "5.0\" Cat6 LTE", c: "Kirin 920 / 3GB", b: "3100 mAh"}
                 ]
             }
         };
@@ -247,13 +297,11 @@
 
         function closeInventory() { document.getElementById('inventory-overlay').style.display = 'none'; }
 
-        // User Storage
         const userEmail = localStorage.getItem('loggedEmail') || "Unauthorized";
         document.getElementById('user-display').innerText = `ID: ${userEmail}`;
 
         function logout() { localStorage.removeItem('loggedEmail'); window.location.href = 'index.html'; }
 
-        // Protection
         document.addEventListener('contextmenu', e => e.preventDefault());
         document.onkeydown = function(e) {
             if(event.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0))) return false;
