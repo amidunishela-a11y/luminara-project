@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LUMINARA | CENTRAL COMMAND</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root { --neon: #00f2ff; --bg: #000a0f; --card-bg: rgba(0, 242, 255, 0.03); }
          
         body {
             margin: 0; background-color: var(--bg); color: #fff;
-            font-family: 'Orbitron', sans-serif; overflow: hidden;
+            font-family: 'Inter', sans-serif; overflow: hidden;
             display: flex; height: 100vh;
         }
 
@@ -22,11 +22,11 @@
             backdrop-filter: blur(10px); z-index: 10;
         }
 
-        .logo { font-size: 1.5rem; font-weight: bold; color: var(--neon); letter-spacing: 4px; margin-bottom: 50px; }
+        .logo { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; font-weight: bold; color: var(--neon); letter-spacing: 4px; margin-bottom: 50px; }
 
         .nav-item {
             padding: 15px; margin-bottom: 10px; border-radius: 8px;
-            cursor: pointer; color: #888; transition: 0.3s; font-size: 0.8rem;
+            cursor: pointer; color: #888; transition: 0.3s; font-size: 0.85rem; font-weight: 500;
         }
 
         .nav-item.active, .nav-item:hover {
@@ -43,7 +43,7 @@
             padding-bottom: 20px;
         }
 
-        .user-id { font-size: 0.7rem; color: var(--neon); text-transform: uppercase; letter-spacing: 2px; }
+        .user-id { font-family: 'Orbitron'; font-size: 0.7rem; color: var(--neon); text-transform: uppercase; letter-spacing: 2px; }
 
         /* Grid & Cards */
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
@@ -53,38 +53,35 @@
             padding: 25px; border-radius: 15px; transition: 0.3s; cursor: pointer;
         }
         .card:hover { border-color: var(--neon); box-shadow: 0 0 20px rgba(0, 242, 255, 0.1); transform: translateY(-5px); }
-        .card h3 { font-size: 0.7rem; color: #888; margin: 0 0 15px 0; letter-spacing: 2px; }
-        .card .value { font-size: 2.2rem; font-weight: bold; color: #fff; text-shadow: 0 0 10px var(--neon); }
+        .card h3 { font-family: 'Orbitron'; font-size: 0.7rem; color: #888; margin: 0 0 15px 0; letter-spacing: 2px; }
+        .card .value { font-family: 'Orbitron'; font-size: 2.2rem; font-weight: bold; color: #fff; text-shadow: 0 0 10px var(--neon); }
 
-        /* iPhone List Modal/Overlay */
-        #iphone-overlay {
+        /* --- Inventory Overlay --- */
+        #inventory-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 10, 15, 0.98); z-index: 100;
-            display: none; padding: 40px; overflow-y: auto; box-sizing: border-box;
-            backdrop-filter: blur(20px);
+            background: rgba(0, 5, 10, 0.98); z-index: 100;
+            display: none; flex-direction: column; padding: 30px; box-sizing: border-box;
+            backdrop-filter: blur(25px);
         }
 
-        .close-btn {
-            position: sticky; top: 0; float: right; color: #ff4d4d;
-            font-size: 1rem; cursor: pointer; border: 1px solid #ff4d4d;
-            padding: 10px 20px; border-radius: 5px; transition: 0.3s;
-            background: rgba(0,0,0,0.5); z-index: 101;
-        }
+        .overlay-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .close-btn { color: #ff4d4d; border: 1px solid #ff4d4d; padding: 8px 20px; border-radius: 5px; cursor: pointer; transition: 0.3s; font-family: 'Orbitron'; }
         .close-btn:hover { background: #ff4d4d; color: #fff; }
 
-        .iphone-table {
-            width: 100%; border-collapse: collapse; margin-top: 60px;
-            font-size: 0.75rem; color: #ddd;
+        /* Brand Tabs */
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 10px; }
+        .tab-btn {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(0, 242, 255, 0.2);
+            color: #ccc; padding: 10px 20px; border-radius: 5px; cursor: pointer;
+            white-space: nowrap; font-family: 'Orbitron'; font-size: 0.7rem; transition: 0.3s;
         }
+        .tab-btn.active { background: var(--neon); color: #000; font-weight: bold; }
 
-        .iphone-table th {
-            text-align: left; border-bottom: 2px solid var(--neon);
-            padding: 15px; color: var(--neon); letter-spacing: 2px;
-            background: rgba(0, 242, 255, 0.05); position: sticky; top: 0;
-        }
-
-        .iphone-table td { padding: 12px 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .iphone-table tr:hover { background: rgba(0, 242, 255, 0.08); }
+        .table-container { flex: 1; overflow-y: auto; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; }
+        table { width: 100%; border-collapse: collapse; color: #ddd; font-size: 0.9rem; }
+        th { background: rgba(0, 242, 255, 0.1); color: var(--neon); text-align: left; padding: 15px; position: sticky; top: 0; font-family: 'Orbitron'; font-size: 0.7rem; }
+        td { padding: 12px 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        tr:hover { background: rgba(0, 242, 255, 0.05); }
 
         .status-bar { height: 4px; background: #222; border-radius: 2px; margin-top: 15px; overflow: hidden; }
         .progress { height: 100%; background: var(--neon); box-shadow: 0 0 10px var(--neon); }
@@ -99,9 +96,8 @@
         @media (max-width: 768px) {
             body { flex-direction: column; overflow-y: auto; }
             .sidebar { width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--neon); }
-            #iphone-overlay { padding: 15px; }
-            .iphone-table { font-size: 0.55rem; }
-            .iphone-table th, .iphone-table td { padding: 8px; }
+            #inventory-overlay { padding: 15px; }
+            td, th { font-size: 0.75rem; padding: 10px; }
         }
     </style>
 </head>
@@ -109,28 +105,28 @@
 
     <div class="sidebar">
         <div class="logo">LUMINARA</div>
-        <div class="nav-item active">OVERVIEW</div>
-        <div class="nav-item">SECURITY LOGS</div>
+        <div class="nav-item active">DASHBOARD</div>
+        <div class="nav-item">SECURITY</div>
         <div class="nav-item">DATABASE</div>
-        <button class="terminate-btn" onclick="logout()">TERMINATE SESSION</button>
+        <button class="terminate-btn" onclick="logout()">TERMINATE</button>
     </div>
 
     <div class="content">
         <div class="header">
-            <h2 style="margin: 0; font-size: 1.2rem;">CORE SYSTEM DASHBOARD</h2>
-            <div class="user-id" id="user-display">GUEST_USER</div>
+            <h2 style="font-family: 'Orbitron'; font-size: 1.1rem; letter-spacing: 2px;">CENTRAL COMMAND</h2>
+            <div class="user-id" id="user-display">SYNCING...</div>
         </div>
 
         <div class="grid">
-            <div class="card" onclick="showIphones()">
-                <h3>MOBILE PHONES (IPHONE)</h3>
-                <div class="value">24 MODELS</div>
-                <div class="status-bar"><div class="progress" style="width: 95%;"></div></div>
-                <p style="font-size: 0.6rem; color: var(--neon); margin-top: 10px;">EXPAND INVENTORY DATA</p>
+            <div class="card" onclick="openInventory()">
+                <h3>SMARTPHONE CLUSTER</h3>
+                <div class="value">6 BRANDS</div>
+                <div class="status-bar"><div class="progress" style="width: 90%;"></div></div>
+                <p style="font-size: 0.7rem; color: var(--neon); margin-top: 10px; font-weight: 600;">CLICK TO ANALYZE DATA</p>
             </div>
 
             <div class="card">
-                <h3>VEHICLES</h3>
+                <h3>VEHICLE UNITS</h3>
                 <div class="value">04 UNITS</div>
                 <div class="status-bar"><div class="progress" style="width: 45%;"></div></div>
             </div>
@@ -143,58 +139,96 @@
         </div>
     </div>
 
-    <div id="iphone-overlay">
-        <div class="close-btn" onclick="hideIphones()">CLOSE [X]</div>
-        <h2 style="color: var(--neon); letter-spacing: 5px; text-shadow: 0 0 10px var(--neon);">IPHONE MASTER DATABASE (6 - 17 PRO MAX)</h2>
-        
-        <table class="iphone-table">
-            <thead>
-                <tr>
-                    <th>MODEL</th>
-                    <th>DISPLAY</th>
-                    <th>CHIP/PROCESSOR</th>
-                    <th>RAM</th>
-                    <th>BATTERY</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td>iPhone 6 / 6 Plus</td><td>4.7" / 5.5" Retina</td><td>A8 Chip</td><td>1GB</td><td>1810/2915 mAh</td></tr>
-                <tr><td>iPhone 6S / 6S Plus</td><td>4.7" / 5.5" 3D Touch</td><td>A9 Chip</td><td>2GB</td><td>1715/2750 mAh</td></tr>
-                <tr><td>iPhone 7 / 7 Plus</td><td>4.7" / 5.5" Retina HD</td><td>A10 Fusion</td><td>2GB/3GB</td><td>1960/2900 mAh</td></tr>
-                <tr><td>iPhone 8 / 8 Plus</td><td>4.7" / 5.5" True Tone</td><td>A11 Bionic</td><td>2GB/3GB</td><td>1821/2691 mAh</td></tr>
-                <tr><td>iPhone X</td><td>5.8" Super Retina OLED</td><td>A11 Bionic</td><td>3GB</td><td>2716 mAh</td></tr>
-                
-                <tr><td>iPhone 11</td><td>6.1" Liquid Retina</td><td>A13 Bionic</td><td>4GB</td><td>3110 mAh</td></tr>
-                <tr><td>iPhone 11 Pro Max</td><td>6.5" Super Retina XDR</td><td>A13 Bionic</td><td>4GB</td><td>3969 mAh</td></tr>
-                <tr><td>iPhone 12</td><td>6.1" Super Retina XDR</td><td>A14 Bionic</td><td>4GB</td><td>2815 mAh</td></tr>
-                <tr><td>iPhone 12 Pro Max</td><td>6.7" Ceramic Shield</td><td>A14 Bionic</td><td>6GB</td><td>3687 mAh</td></tr>
-                
-                <tr><td>iPhone 13 Pro</td><td>6.1" 120Hz ProMotion</td><td>A15 Bionic</td><td>6GB</td><td>3095 mAh</td></tr>
-                <tr><td>iPhone 13 Pro Max</td><td>6.7" OLED</td><td>A15 Bionic</td><td>6GB</td><td>4352 mAh</td></tr>
-                <tr><td>iPhone 14 Pro</td><td>6.1" Dynamic Island</td><td>A16 Bionic</td><td>6GB</td><td>3200 mAh</td></tr>
-                <tr><td>iPhone 14 Pro Max</td><td>6.7" Always-On</td><td>A16 Bionic</td><td>6GB</td><td>4323 mAh</td></tr>
-                
-                <tr><td>iPhone 15</td><td>6.1" Dynamic Island</td><td>A16 Bionic</td><td>6GB</td><td>3349 mAh</td></tr>
-                <tr><td>iPhone 15 Pro Max</td><td>6.7" Titanium / 5x Zoom</td><td>A17 Pro</td><td>8GB</td><td>4441 mAh</td></tr>
-                
-                <tr><td>iPhone 16</td><td>6.1" Action Button</td><td>A18 Chip</td><td>8GB</td><td>3561 mAh</td></tr>
-                <tr><td>iPhone 16 Pro Max</td><td>6.9" Ultra Slim Bezels</td><td>A18 Pro</td><td>8GB</td><td>4676 mAh</td></tr>
-                
-                <tr><td>iPhone 17</td><td>6.1" 120Hz (All Models)</td><td>A19 Chip</td><td>8GB</td><td>3800 mAh*</td></tr>
-                <tr><td>iPhone 17 Air (Slim)</td><td>6.6" Ultra-Thin Design</td><td>A19 Chip</td><td>8GB</td><td>3200 mAh*</td></tr>
-                <tr><td>iPhone 17 Pro Max</td><td>6.9" 48MP Periscope</td><td>A19 Pro</td><td>12GB</td><td>4850 mAh*</td></tr>
-            </tbody>
-        </table>
+    <div id="inventory-overlay">
+        <div class="overlay-header">
+            <h2 style="font-family: 'Orbitron'; color: var(--neon); letter-spacing: 3px; font-size: 1rem;">DEVICE MASTER DATABASE</h2>
+            <div class="close-btn" onclick="closeInventory()">CLOSE [X]</div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showBrand('apple', this)">IPHONE</button>
+            <button class="tab-btn" onclick="showBrand('samsung', this)">SAMSUNG</button>
+            <button class="tab-btn" onclick="showBrand('google', this)">PIXEL</button>
+            <button class="tab-btn" onclick="showBrand('vivo', this)">VIVO</button>
+            <button class="tab-btn" onclick="showBrand('huawei', this)">HUAWEI</button>
+            <button class="tab-btn" onclick="showBrand('honor', this)">HONOR</button>
+        </div>
+
+        <div class="table-container">
+            <table id="device-table">
+                <thead>
+                    <tr>
+                        <th>MODEL</th>
+                        <th>DISPLAY</th>
+                        <th>PROCESSOR</th>
+                        <th>BATTERY</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                    </tbody>
+            </table>
+        </div>
     </div>
 
     <script>
-        // Set User ID
+        const deviceData = {
+            apple: [
+                {m: "iPhone 16 Pro Max", d: "6.9\" OLED", p: "A18 Pro", b: "4676 mAh"},
+                {m: "iPhone 15 Pro Max", d: "6.7\" OLED", p: "A17 Pro", b: "4441 mAh"},
+                {m: "iPhone 13 Pro Max", d: "6.7\" OLED", p: "A15 Bionic", b: "4352 mAh"},
+                {m: "iPhone 11", d: "6.1\" LCD", p: "A13 Bionic", b: "3110 mAh"},
+                {m: "iPhone 6 Plus", d: "5.5\" LCD", p: "A8 Chip", b: "2915 mAh"}
+            ],
+            samsung: [
+                {m: "Galaxy S24 Ultra", d: "6.8\" AMOLED", p: "Snapdragon 8 Gen 3", b: "5000 mAh"},
+                {m: "Galaxy Z Fold 6", d: "7.6\" Foldable", p: "Snapdragon 8 Gen 3", b: "4400 mAh"},
+                {m: "Galaxy S23 FE", d: "6.4\" AMOLED", p: "Exynos 2200", b: "4500 mAh"}
+            ],
+            google: [
+                {m: "Pixel 9 Pro XL", d: "6.8\" LTPO OLED", p: "Google Tensor G4", b: "5060 mAh"},
+                {m: "Pixel 8 Pro", d: "6.7\" OLED", p: "Google Tensor G3", b: "5050 mAh"}
+            ],
+            vivo: [
+                {m: "Vivo X100 Pro", d: "6.78\" AMOLED", p: "Dimensity 9300", b: "5400 mAh"},
+                {m: "Vivo V30 Pro", d: "6.78\" AMOLED", p: "Dimensity 8200", b: "5000 mAh"}
+            ],
+            huawei: [
+                {m: "Pura 70 Ultra", d: "6.8\" OLED", p: "Kirin 9010", b: "5200 mAh"},
+                {m: "Mate 60 Pro", d: "6.82\" OLED", p: "Kirin 9000S", b: "5000 mAh"}
+            ],
+            honor: [
+                {m: "Magic 6 Pro", d: "6.8\" OLED", p: "Snapdragon 8 Gen 3", b: "5600 mAh"},
+                {m: "Honor 200 Pro", d: "6.78\" OLED", p: "Snapdragon 8s Gen 3", b: "5200 mAh"}
+            ]
+        };
+
+        function showBrand(brand, btn) {
+            // Update Active Button
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Update Table
+            const body = document.getElementById('table-body');
+            body.innerHTML = deviceData[brand].map(d => `
+                <tr>
+                    <td>${d.m}</td>
+                    <td>${d.d}</td>
+                    <td>${d.p}</td>
+                    <td>${d.b}</td>
+                </tr>
+            `).join('');
+        }
+
+        function openInventory() {
+            document.getElementById('inventory-overlay').style.display = 'flex';
+            showBrand('apple', document.querySelector('.tab-btn')); // Default show Apple
+        }
+
+        function closeInventory() { document.getElementById('inventory-overlay').style.display = 'none'; }
+
+        // User Setup
         const userEmail = localStorage.getItem('loggedEmail') || "Unauthorized";
         document.getElementById('user-display').innerText = `ID: ${userEmail}`;
-
-        // Overlay Controls
-        function showIphones() { document.getElementById('iphone-overlay').style.display = 'block'; }
-        function hideIphones() { document.getElementById('iphone-overlay').style.display = 'none'; }
 
         function logout() {
             localStorage.removeItem('loggedEmail');
