@@ -64,6 +64,50 @@
             font-family: 'Orbitron'; font-size: clamp(2.5rem, 6vw, 4rem); letter-spacing: 15px;
             text-shadow: 0 0 40px var(--neon); margin: 0;
         }
+
+        /* --- Added: Shape Animation Styles --- */
+        .shape-path-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            height: 40px;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .moving-path {
+            position: absolute;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neon), transparent);
+            opacity: 0.4;
+        }
+
+        .shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(0, 242, 255, 0.5);
+            filter: drop-shadow(0 0 8px var(--neon));
+        }
+
+        .circle { width: 10px; height: 10px; border-radius: 50%; animation: shapeMove 5s infinite linear; }
+        .square { width: 9px; height: 9px; animation: shapeMove 7s infinite linear -2s; }
+        .triangle { 
+            width: 0; height: 0; background: transparent; border: none; filter: drop-shadow(0 0 6px var(--neon));
+            border-left: 6px solid transparent; border-right: 6px solid transparent;
+            border-bottom: 10px solid rgba(0, 242, 255, 0.6);
+            animation: shapeMove 6s infinite linear -4s;
+        }
+
+        @keyframes shapeMove {
+            0% { left: 0%; transform: rotate(0deg); opacity: 0; }
+            10%, 90% { opacity: 0.8; }
+            50% { filter: brightness(1.5) drop-shadow(0 0 15px var(--neon)); transform: rotate(180deg) scale(1.2); }
+            100% { left: 100%; transform: rotate(360deg); opacity: 0; }
+        }
+
         .system-tag { color: var(--neon); letter-spacing: 5px; opacity: 0.6; font-weight: 300; margin-top: 10px; }
 
         /* --- New Glass Data Panels --- */
@@ -134,6 +178,7 @@
             .visual-side { padding-left: 0; align-items: center; text-align: center; margin-bottom: 40px; flex: none; }
             .auth-side { padding-right: 0; width: 100%; flex: none; }
             .cube-container, .monitor-logs, .data-panels { display: none; }
+            .shape-path-container { margin: 10px auto; }
         }
     </style>
 </head>
@@ -147,6 +192,14 @@
                 <div class="glass-cube"></div>
             </div>
             <h1 class="system-title">DARK NEO</h1>
+            
+            <div class="shape-path-container">
+                <div class="moving-path"></div>
+                <div class="shape circle"></div>
+                <div class="shape square"></div>
+                <div class="shape triangle"></div>
+            </div>
+
             <p class="system-tag">ACCESS PROTOCOL 2026</p>
 
             <div class="data-panels">
@@ -251,4 +304,3 @@
     </script>
 </body>
 </html>
-
