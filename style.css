@@ -1,6 +1,6 @@
 body { margin: 0; overflow: hidden; background-color: #000; font-family: 'Orbitron', sans-serif; touch-action: none; }
 
-#ui-layer { text-align: center; margin-bottom: 20px; pointer-events: none; }
+#ui-layer { text-align: center; margin-bottom: 25px; pointer-events: none; }
 #timer { color: #fff; font-size: clamp(1.5rem, 6vw, 2.5rem); text-shadow: 0 0 15px #00f2ff; }
 .label { letter-spacing: 5px; color: #00f2ff; opacity: 0.7; font-size: 0.7rem; }
 
@@ -12,25 +12,27 @@ body { margin: 0; overflow: hidden; background-color: #000; font-family: 'Orbitr
 .glass-card {
     background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px;
-    padding: 30px; text-align: center; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+    padding: 35px; text-align: center; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
 }
 
-.glass-card h2 { color: #fff; margin-bottom: 20px; letter-spacing: 2px; }
+.glass-card h2 { color: #fff; margin-bottom: 25px; letter-spacing: 3px; font-size: 1.2rem; }
 
 .glass-input {
-    width: 100%; padding: 12px; margin-bottom: 15px; background: rgba(255, 255, 255, 0.1);
+    width: 100%; padding: 14px; margin-bottom: 15px; background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 10px; color: #fff;
-    outline: none; box-sizing: border-box; transition: 0.3s;
+    outline: none; box-sizing: border-box; font-family: 'Orbitron', sans-serif;
 }
 
-.glass-input:focus { border-color: #00f2ff; box-shadow: 0 0 10px rgba(0, 242, 255, 0.3); }
+.glass-input:focus { border-color: #00f2ff; box-shadow: 0 0 10px rgba(0, 242, 255, 0.4); }
 
 .glass-btn {
-    width: 100%; padding: 12px; background: #00f2ff; border: none; border-radius: 10px;
+    width: 100%; padding: 14px; background: #00f2ff; border: none; border-radius: 10px;
     color: #000; font-weight: bold; cursor: pointer; transition: 0.3s; letter-spacing: 2px;
 }
 
-.glass-btn:hover { background: #fff; box-shadow: 0 0 20px #00f2ff; }
+.glass-btn:hover { background: #fff; box-shadow: 0 0 25px #00f2ff; transform: scale(1.02); }
+
+#hint-text { color: #888; font-size: 0.65rem; margin-top: 15px; letter-spacing: 1px; }
 
 #success-screen {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -39,12 +41,4 @@ body { margin: 0; overflow: hidden; background-color: #000; font-family: 'Orbitr
 }
 
 .success-content { text-align: center; color: #00f2ff; }
-.success-content h1 { font-size: clamp(1.5rem, 8vw, 3rem); text-shadow: 0 0 30px #00f2ff; margin-bottom: 20px; }
-
-#sheet-data-container {
-    position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
-    width: 300px; height: 120px; background: rgba(0, 242, 255, 0.05);
-    border: 1px solid rgba(0, 242, 255, 0.2); border-radius: 10px; padding: 10px;
-}
-#sheet-content { color: #fff; font-size: 0.75rem; height: 80px; overflow-y: auto; }
-.data-row { padding: 5px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); display: flex; justify-content: space-between; }
+.success-content h1 { font-size: clamp(1.2rem, 8vw, 3rem); text-shadow: 0 0 30px #00f2ff; margin-bottom: 20px; }
