@@ -60,7 +60,7 @@
             100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
         }
 
-        .split-container { display: flex; width: 100%; height: 100%; z-index: 10; overflow-y: auto; padding-bottom: 120px; }
+        .split-container { display: flex; width: 100%; height: 100%; z-index: 10; overflow-y: auto; padding-bottom: 80px; }
 
         /* --- Visual Side (Left) --- */
         .visual-side {
@@ -129,26 +129,13 @@
 
         .system-tag { color: var(--neon); letter-spacing: 5px; opacity: 0.6; font-weight: 300; margin-top: 10px; }
 
-        .data-panels {
-            display: flex; gap: 15px; margin-top: 40px;
-        }
-        
+        .data-panels { display: flex; gap: 15px; margin-top: 40px; }
         .glass-panel {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 15px 20px;
-            min-width: 120px;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px);
+            border: 1px solid var(--border); border-radius: 12px; padding: 15px 20px;
+            min-width: 120px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .glass-panel:hover { 
-            background: rgba(0, 242, 255, 0.05); 
-            border-color: rgba(0, 242, 255, 0.3);
-            transform: translateY(-8px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        }
-        
+        .glass-panel:hover { background: rgba(0, 242, 255, 0.05); border-color: rgba(0, 242, 255, 0.3); transform: translateY(-8px); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); }
         .panel-label { font-size: 0.6rem; color: var(--neon); opacity: 0.6; letter-spacing: 2px; margin-bottom: 5px; }
         .panel-value { font-family: 'Orbitron'; font-size: 0.9rem; color: #fff; }
 
@@ -163,22 +150,22 @@
         #auth-container { width: 100%; max-width: 380px; text-align: center; transition: transform 0.5s ease; }
         #auth-container:hover { transform: translateY(-12px); }
 
-        #timer {
-            font-family: 'Orbitron'; font-size: 1.6rem; color: var(--neon);
-            text-shadow: 0 0 15px rgba(0, 242, 255, 0.5); margin-bottom: 25px;
-        }
+        #timer { font-family: 'Orbitron'; font-size: 1.6rem; color: var(--neon); text-shadow: 0 0 15px rgba(0, 242, 255, 0.5); margin-bottom: 25px; }
+        
         .glass-card {
             background: var(--glass); backdrop-filter: blur(30px);
             border: 1px solid var(--border); border-radius: 30px; padding: 40px 30px;
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5); position: relative; overflow: hidden;
+            transition: all 0.4s ease;
         }
+        .glass-card:hover { border-color: rgba(0, 242, 255, 0.2); }
+
         .glass-input {
             width: 100%; padding: 14px; margin-bottom: 5px; background: rgba(0, 0, 0, 0.4);
             border: 1px solid var(--border); border-radius: 12px; color: var(--neon);
             outline: none; box-sizing: border-box; font-family: 'Orbitron'; transition: 0.3s;
             font-size: 0.9rem;
         }
-        /* --- NEW: Input Error Styles --- */
         .glass-input.input-error { border-color: var(--error) !important; box-shadow: 0 0 10px rgba(255, 77, 77, 0.3); }
         .error-msg { color: var(--error); font-size: 0.7rem; text-align: left; margin-bottom: 12px; margin-left: 5px; display: none; }
 
@@ -187,53 +174,30 @@
             border-radius: 12px; color: #000; font-weight: bold; font-family: 'Orbitron';
             cursor: pointer; transition: 0.4s; letter-spacing: 2px; margin-top: 10px;
         }
-        .glass-btn:hover { background: #fff; box-shadow: 0 0 25px var(--neon); }
+        .glass-btn:hover { background: #fff; box-shadow: 0 0 25px var(--neon); transform: scale(1.02); }
 
         .icon-container { display: flex; justify-content: center; gap: 15px; margin-top: 30px; }
         .icon-card {
             width: 50px; height: 50px; background: var(--glass); border: 1px solid var(--border);
             border-radius: 12px; display: flex; justify-content: center; align-items: center;
-            text-decoration: none; transition: 0.4s; color: #94a3b8; font-size: 1.2rem;
+            text-decoration: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); color: #94a3b8; font-size: 1.2rem;
         }
-
-        .icon-card[style*="#ff0000"]:hover { color: #ff0000; border-color: #ff0000; box-shadow: 0 0 20px rgba(255, 0, 0, 0.4); }
-        .icon-card[style*="#1877F2"]:hover { color: #1877F2; border-color: #1877F2; box-shadow: 0 0 20px rgba(24, 119, 242, 0.4); }
-        .icon-card[style*="#25D366"]:hover { color: #25D366; border-color: #25D366; box-shadow: 0 0 20px rgba(37, 211, 102, 0.4); }
+        .icon-card:hover { transform: translateY(-8px) scale(1.1); color: var(--neon); border-color: var(--neon); }
 
         /* --- Bottom Glass Typewriter Box --- */
         .bottom-quote-box {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 600px;
-            background: rgba(255, 255, 255, 0.01);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--border);
-            border-radius: 15px;
-            padding: 12px 20px;
-            text-align: center;
-            z-index: 100;
-            transition: all 0.4s ease;
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 600px; background: rgba(255, 255, 255, 0.01);
+            backdrop-filter: blur(15px); border: 1px solid var(--border); border-radius: 15px;
+            padding: 12px 20px; text-align: center; z-index: 100; transition: all 0.4s ease;
         }
-        #typewriter-text {
-            font-family: 'Orbitron', monospace;
-            font-size: clamp(0.6rem, 2.5vw, 0.75rem);
-            color: var(--neon);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            min-height: 1.2em;
-        }
-        .cursor {
-            display: inline-block; width: 8px; height: 14px; background: var(--neon);
-            margin-left: 5px; animation: blink 0.8s infinite; vertical-align: middle;
-        }
+        #typewriter-text { font-family: 'Orbitron', monospace; font-size: clamp(0.6rem, 2.5vw, 0.75rem); color: var(--neon); letter-spacing: 2px; text-transform: uppercase; min-height: 1.2em; }
+        .cursor { display: inline-block; width: 8px; height: 14px; background: var(--neon); margin-left: 5px; animation: blink 0.8s infinite; vertical-align: middle; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
         @media (max-width: 950px) {
             body { overflow-y: auto; }
-            .split-container { flex-direction: column; height: auto; padding: 40px 20px; }
+            .split-container { flex-direction: column; height: auto; padding: 40px 20px 140px 20px; }
             .visual-side { padding-left: 0; align-items: center; text-align: center; margin-bottom: 40px; flex: none; }
             .auth-side { padding-right: 0; width: 100%; flex: none; }
             .cube-container, .monitor-logs, .data-panels { display: none; }
@@ -254,29 +218,18 @@
                 <div class="glass-cube"></div>
             </div>
             <h1 class="system-title">DARK NEO</h1>
-            
             <div class="shape-path-container">
                 <div class="moving-path"></div>
                 <div class="shape circle"></div>
                 <div class="shape square"></div>
                 <div class="shape triangle"></div>
             </div>
-
             <p class="system-tag">ACCESS PROTOCOL 2026</p>
 
             <div class="data-panels">
-                <div class="glass-panel">
-                    <div class="panel-label">CORE_LINK</div>
-                    <div class="panel-value">ACTIVE</div>
-                </div>
-                <div class="glass-panel">
-                    <div class="panel-label">STABILITY</div>
-                    <div class="panel-value">98.4%</div>
-                </div>
-                <div class="glass-panel">
-                    <div class="panel-label">SECURETY</div>
-                    <div class="panel-value">100%</div>
-                </div>
+                <div class="glass-panel"><div class="panel-label">CORE_LINK</div><div class="panel-value">ACTIVE</div></div>
+                <div class="glass-panel"><div class="panel-label">STABILITY</div><div class="panel-value">98.4%</div></div>
+                <div class="glass-panel"><div class="panel-label">SECURETY</div><div class="panel-value">100%</div></div>
             </div>
 
             <div class="monitor-logs">
@@ -291,11 +244,20 @@
                 <div id="timer">00d 00h 00m 00s</div>
                 <div class="glass-card">
                     <h2 style="font-family: 'Orbitron'; font-size: 0.8rem; letter-spacing: 3px; margin-bottom: 25px; opacity: 0.5;">AUTHENTICATE</h2>
-                    <input type="email" id="email" placeholder="Email Input" class="glass-input">
-                    <div id="email-error" class="error-msg">INVALID EMAIL FORMAT</div>
-                    <input type="password" id="password" placeholder="PASSWORD" class="glass-input">
-                    <div id="password-error" class="error-msg">KEY REQUIRED</div>
-                    <button onclick="handleAuth()" id="submit-btn" class="glass-btn">Sign Up</button>
+                    
+                    <div id="step-1">
+                        <input type="email" id="email" placeholder="Email Input" class="glass-input">
+                        <div id="email-error" class="error-msg">INVALID EMAIL FORMAT</div>
+                        <input type="password" id="password" placeholder="PASSWORD" class="glass-input">
+                        <div id="password-error" class="error-msg">KEY REQUIRED</div>
+                        <button onclick="handleGetOTP()" id="otp-btn" class="glass-btn">GET CODE</button>
+                    </div>
+
+                    <div id="step-2" style="display: none;">
+                        <input type="text" id="otp-code" placeholder="ENTER 6-DIGIT CODE" class="glass-input">
+                        <button onclick="handleVerifyAndSignUp()" id="submit-btn" class="glass-btn">VERIFY & SIGN UP</button>
+                    </div>
+
                     <div class="icon-container">
                         <a href="https://www.youtube.com/@Techarksl123" class="icon-card" style="--color: #ff0000;"><i class="fab fa-youtube"></i></a>
                         <a href="https://www.youtube.com/@Techarksl123" class="icon-card" style="--color: #1877F2;"><i class="fab fa-facebook-f"></i></a>
@@ -311,6 +273,10 @@
     </div>
 
     <script>
+        // Configuration
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwUWddX760-QZCv63tMvP7YCppg03w2oR8ez4bpdMeWreElPPz5AMojIzUVVioVYkl3Xg/exec';
+        let receivedOTP = "";
+
         // Particle Generator
         const container = document.getElementById('particles');
         for (let i = 0; i < 50; i++) {
@@ -326,82 +292,87 @@
         }
 
         // Typewriter Effect
-        const phrases = [
-            "THE FUTURE BELONGS TO THOSE WHO BELIEVE.",
-            "LUMINARA 2026: BEYOND THE HORIZON.",
-            "CONNECTING THE DIGITAL NEURAL NETWORK.",
-            "GET MORE INFO CLICK SOCIAL MEDIA ICON."
-        ];
-        let phraseIndex = 0;
-        let characterIndex = 0;
+        const phrases = ["THE FUTURE BELONGS TO THOSE WHO BELIEVE.", "LUMINARA 2026: BEYOND THE HORIZON.", "CONNECTING THE DIGITAL NEURAL NETWORK.", "GET MORE INFO CLICK SOCIAL MEDIA ICON."];
+        let phraseIndex = 0, characterIndex = 0;
         const textElement = document.getElementById('typewriter-text');
-
         function type() {
             if (characterIndex < phrases[phraseIndex].length) {
                 textElement.textContent += phrases[phraseIndex].charAt(characterIndex);
-                characterIndex++;
-                setTimeout(type, 100);
-            } else {
-                setTimeout(erase, 2000);
-            }
+                characterIndex++; setTimeout(type, 100);
+            } else { setTimeout(erase, 2000); }
         }
-
         function erase() {
             if (characterIndex > 0) {
                 textElement.textContent = phrases[phraseIndex].substring(0, characterIndex - 1);
-                characterIndex--;
-                setTimeout(erase, 50);
-            } else {
-                phraseIndex = (phraseIndex + 1) % phrases.length;
-                characterIndex = 0;
-                setTimeout(type, 500);
-            }
+                characterIndex--; setTimeout(erase, 50);
+            } else { phraseIndex = (phraseIndex + 1) % phrases.length; characterIndex = 0; setTimeout(type, 500); }
         }
-
         window.onload = type;
 
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxjHN0-eYtkgSdFb61BEpWPDIEgeZDAEm699tZIt_QHNxngDzabZedOuAQqNeCjJWyFNw/exec';
-
-        async function handleAuth() {
-            const emailInput = document.getElementById('email');
-            const passwordInput = document.getElementById('password');
-            const emailError = document.getElementById('email-error');
-            const passwordError = document.getElementById('password-error');
-            const btn = document.getElementById('submit-btn');
-
-            // Reset errors
-            emailInput.classList.remove('input-error');
-            passwordInput.classList.remove('input-error');
-            emailError.style.display = 'none';
-            passwordError.style.display = 'none';
-
-            // Email Regex Validation
-            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        // Logic: Send OTP
+        async function handleGetOTP() {
+            const email = document.getElementById('email');
+            const password = document.getElementById('password');
+            const otpBtn = document.getElementById('otp-btn');
             
-            if (!emailPattern.test(emailInput.value)) {
-                emailInput.classList.add('input-error');
-                emailError.style.display = 'block';
-                return;
+            // Basic Validation
+            if (!email.value.includes("@")) { 
+                email.classList.add('input-error'); 
+                document.getElementById('email-error').style.display = 'block'; 
+                return; 
+            }
+            if (!password.value) { 
+                password.classList.add('input-error'); 
+                document.getElementById('password-error').style.display = 'block'; 
+                return; 
             }
 
-            if (!passwordInput.value) {
-                passwordInput.classList.add('input-error');
-                passwordError.style.display = 'block';
-                return;
-            }
-
-            btn.innerText = "AUTHENTICATING..."; btn.disabled = true;
+            otpBtn.innerText = "SENDING...";
+            otpBtn.disabled = true;
 
             try {
-                const response = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ email: emailInput.value, password: passwordInput.value }) });
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: 'sendOTP', email: email.value })
+                });
                 const res = await response.json();
-                if(res.result === "success") {
-                    localStorage.setItem('loggedEmail', emailInput.value);
-                    window.location.href = 'dashboard.html';
+                if (res.result === "success") {
+                    receivedOTP = res.otp;
+                    document.getElementById('step-1').style.display = 'none';
+                    document.getElementById('step-2').style.display = 'block';
+                    alert("OTP Code Sent to: " + email.value);
                 } else {
-                    btn.innerText = "INITIALIZE"; btn.disabled = false;
+                    alert("Error: " + res.message);
+                    otpBtn.disabled = false; otpBtn.innerText = "GET CODE";
                 }
-            } catch (e) { window.location.href = 'dashboard.html'; }
+            } catch (e) { alert("Server Error. Try again."); otpBtn.disabled = false; otpBtn.innerText = "GET CODE"; }
+        }
+
+        // Logic: Verify & Save to Sheet
+        async function handleVerifyAndSignUp() {
+            const userOTP = document.getElementById('otp-code').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const btn = document.getElementById('submit-btn');
+
+            if (userOTP == receivedOTP) {
+                btn.innerText = "FINALIZING...";
+                btn.disabled = true;
+
+                try {
+                    const response = await fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'verifyAndSave', email: email, password: password })
+                    });
+                    const res = await response.json();
+                    if (res.result === "success") {
+                        localStorage.setItem('loggedEmail', email);
+                        window.location.href = 'dashboard.html';
+                    }
+                } catch (e) { alert("Finalization Failed."); btn.disabled = false; btn.innerText = "VERIFY & SIGN UP"; }
+            } else {
+                alert("Incorrect OTP! Check your email.");
+            }
         }
 
         setInterval(() => {
@@ -411,15 +382,8 @@
             }
         }, 1000);
 
-        // Remove error highlight on input
-        document.getElementById('email').addEventListener('input', function() {
-            this.classList.remove('input-error');
-            document.getElementById('email-error').style.display = 'none';
-        });
-        document.getElementById('password').addEventListener('input', function() {
-            this.classList.remove('input-error');
-            document.getElementById('password-error').style.display = 'none';
-        });
+        document.getElementById('email').addEventListener('input', () => { document.getElementById('email').classList.remove('input-error'); document.getElementById('email-error').style.display = 'none'; });
+        document.getElementById('password').addEventListener('input', () => { document.getElementById('password').classList.remove('input-error'); document.getElementById('password-error').style.display = 'none'; });
     </script>
 </body>
 </html>
