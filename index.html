@@ -16,26 +16,21 @@
             <div id="timer">16d 00h 00m 00s</div>
         </div>
 
-        <div class="glass-card" id="auth-form">
-            <h2 id="form-title">Login</h2>
+        <div class="glass-card">
+            <h2>System Access</h2>
             <input type="email" id="email" placeholder="Email Address" class="glass-input">
             <input type="password" id="password" placeholder="Password" class="glass-input">
-            <button onclick="handleAuth()" id="submit-btn" class="glass-btn">ACCESS SYSTEM</button>
-            <p id="toggle-text">Don't have an account? <a href="#" onclick="toggleMode()">Sign Up</a></p>
+            <button onclick="handleAuth()" id="submit-btn" class="glass-btn">INITIALIZE ACCESS</button>
+            <p id="hint-text">New users will be automatically registered.</p>
         </div>
     </div>
 
     <div id="success-screen" style="display:none;">
         <div class="success-content">
             <h1>LUMINARA CORE ACTIVATED</h1>
-            <p>Welcome back, Authorized User.</p>
-            <button onclick="location.reload()" class="glass-btn" style="width:200px;">LOGOUT</button>
+            <p>Authentication Successful. Welcome to the Core.</p>
+            <button onclick="location.reload()" class="glass-btn" style="width:200px;">TERMINATE SESSION</button>
         </div>
-    </div>
-
-    <div id="sheet-data-container">
-        <div class="label" style="font-size: 0.6rem; color: #00f2ff; margin-bottom: 8px;">LIVE LOGS</div>
-        <div id="sheet-content">Synchronizing...</div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
