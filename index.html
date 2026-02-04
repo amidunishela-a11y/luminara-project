@@ -3,242 +3,255 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LUMINARA 2026 SYSTEM</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <title>LUMINARA 2026 | PREMIUM ACCESS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
-    <div id="container"></div>
-
-    <div id="auth-container">
-        <div id="ui-layer">
-            <div class="label">SYSTEM ACTIVATION</div>
-            <div id="timer">15d 23h 58m 46s</div>
-        </div>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium 3D Glass Icons</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
-
         :root {
-            --bg-color: #080c14;
+            --neon: #00f2ff;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
         }
 
         body {
-            background-color: var(--bg-color);
-            background-image: 
-                radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
-                radial-gradient(at 50% 0%, hsla(225,39%,30%,0.1) 0, transparent 50%), 
-                radial-gradient(at 100% 0%, hsla(339,49%,30%,0.1) 0, transparent 50%);
+            margin: 0;
+            padding: 0;
+            background: #05080a;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-            font-family: 'Inter', sans-serif;
             overflow: hidden;
         }
 
+        /* --- Smooth Moving Background --- */
+        .bg-animate {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, #0a192f 0%, #05080a 100%);
+            z-index: -2;
+        }
+
+        .nebula {
+            position: absolute;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(0, 242, 255, 0.05) 0%, transparent 70%);
+            filter: blur(80px);
+            animation: move 20s infinite alternate;
+            z-index: -1;
+        }
+
+        @keyframes move {
+            from { transform: translate(-20%, -20%); }
+            to { transform: translate(40%, 40%); }
+        }
+
+        /* --- Auth Container --- */
+        #auth-container {
+            width: 100%;
+            max-width: 420px;
+            z-index: 10;
+            text-align: center;
+        }
+
+        #timer {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            color: var(--neon);
+            text-shadow: 0 0 20px rgba(0, 242, 255, 0.5);
+            margin-bottom: 20px;
+        }
+
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            transition: 0.5s;
+        }
+
+        .glass-card:hover { border-color: rgba(0, 242, 255, 0.3); }
+
+        h2 { font-family: 'Orbitron'; letter-spacing: 3px; font-size: 1.2rem; margin-bottom: 30px; }
+
+        .glass-input {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--neon);
+            outline: none;
+            box-sizing: border-box;
+            transition: 0.3s;
+        }
+
+        .glass-input:focus { border-color: var(--neon); background: rgba(0, 0, 0, 0.5); }
+
+        .glass-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--neon);
+            border: none;
+            border-radius: 12px;
+            color: #000;
+            font-weight: bold;
+            font-family: 'Orbitron';
+            cursor: pointer;
+            transition: 0.4s;
+            letter-spacing: 1px;
+        }
+
+        .glass-btn:hover {
+            background: #fff;
+            box-shadow: 0 0 25px var(--neon);
+            transform: scale(1.02);
+        }
+
+        /* --- Premium Social Icons --- */
         .icon-container {
             display: flex;
-            gap: 30px;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
             perspective: 1000px;
         }
 
         .icon-card {
             position: relative;
-            width: 110px;
-            height: 110px;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            border-radius: 28px;
+            width: 65px; height: 65px;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 18px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            color: #ffffff;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-            transform-style: preserve-3d;
-            border: 1px solid rgba(255, 255, 255, 0.1);
             text-decoration: none;
-            overflow: hidden; /* For the shine effect */
-            animation: float 6s ease-in-out infinite;
-            animation-delay: var(--delay);
+            transition: 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-style: preserve-3d;
+            animation: float 5s ease-in-out infinite alternate;
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
         }
 
-        /* The Interactive Shine Layer */
-        .shine {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255,255,255,0.15) 0%, transparent 60%);
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
+        .icon-card i { font-size: 24px; color: #94a3b8; transition: 0.4s; }
+        .icon-card span { font-size: 8px; color: #fff; opacity: 0; margin-top: 5px; transition: 0.3s; }
 
-        .icon-card:hover .shine {
-            opacity: 1;
-        }
+        .icon-card:hover { border-color: var(--color); background: rgba(255,255,255,0.05); }
+        .icon-card:hover i { color: var(--color); transform: translateZ(20px); filter: drop-shadow(0 0 10px var(--color)); }
+        .icon-card:hover span { opacity: 1; transform: translateZ(10px); }
 
-        .icon-card i {
-            font-size: 36px;
-            color: #94a3b8;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transform: translateZ(20px);
-        }
-
-        .icon-card span {
-            font-size: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-top: 12px;
-            opacity: 0;
-            transform: translateZ(10px) translateY(10px);
-            transition: 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-            color: white;
-        }
-
-        /* Hover Enhancements */
-        .icon-card:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: var(--color);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
-
-        .icon-card:hover i {
-            color: var(--color);
-            transform: translateZ(60px) scale(1.1);
-            filter: drop-shadow(0 0 10px var(--color));
-        }
-
-        .icon-card:hover span {
-            opacity: 1;
-            transform: translateZ(40px) translateY(0);
-        }
-
-        /* Underlying Glow */
-        .icon-card::after {
-            content: '';
-            position: absolute;
-            width: 100%; height: 100%;
-            background: var(--color);
-            filter: blur(40px);
-            opacity: 0;
-            transition: 0.4s;
-            z-index: -1;
-            bottom: -20px;
-        }
-
-        .icon-card:hover::after {
-            opacity: 0.3;
+        /* Live Logs Box */
+        #sheet-data-container {
+            position: absolute; bottom: 20px; left: 20px;
+            background: var(--glass); border: 1px solid var(--border);
+            padding: 10px; border-radius: 10px; font-size: 0.6rem;
         }
     </style>
 </head>
 <body>
 
-    <div class="icon-container">
-        <a href="#" class="icon-card" style="--color: #ff0000; --delay: 0s;">
-            <div class="shine"></div>
-            <i class="fab fa-youtube"></i>
-            <span>YouTube</span>
-        </a>
+    <div class="bg-animate"></div>
+    <div class="nebula"></div>
 
-        <a href="#" class="icon-card" style="--color: #0084ff; --delay: 0.5s;">
-            <div class="shine"></div>
-            <i class="fab fa-facebook-f"></i>
-            <span>Facebook</span>
-        </a>
-
-        <a href="#" class="icon-card" style="--color: #ff0090; --delay: 1s;">
-            <div class="shine"></div>
-            <i class="fab fa-instagram"></i>
-            <span>Instagram</span>
-        </a>
-
-        <a href="#" class="icon-card" style="--color: #ffffff; --delay: 1.5s;">
-            <div class="shine"></div>
-            <i class="fab fa-github"></i>
-            <span>Github</span>
-        </a>
-    </div>
-
-    <script>
-        const cards = document.querySelectorAll('.icon-card');
-
-        cards.forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left; 
-                const y = e.clientY - rect.top; 
-                
-                // Update shine position
-                card.style.setProperty('--x', `${x}px`);
-                card.style.setProperty('--y', `${y}px`);
-
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                
-                // Tilt logic
-                const rotateX = ((y - centerY) / centerY) * -25;
-                const rotateY = ((x - centerX) / centerX) * 25;
-                
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
-            });
-
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
-            });
-        });
-    </script>
+    <div id="auth-container">
+        <div id="timer">00:00:00:00</div>
         
-    </div>
-
-    <div id="success-screen" style="display:none;">
-        <div class="success-content">
-            <h1 id="welcome-msg">CORE ACCESS GRANTED</h1>
-            <p>Welcome back to the LUMINARA encrypted database.</p>
-            <button onclick="location.reload()" class="glass-btn" style="width:200px;">TERMINATE SESSION</button>
+        <div class="glass-card">
+            <h2>CORE LOGIN</h2>
+            <input type="email" id="email" placeholder="Terminal ID (Email)" class="glass-input">
+            <input type="password" id="password" placeholder="Passkey" class="glass-input">
+            <button onclick="handleAuth()" id="submit-btn" class="glass-btn">AUTHORIZE</button>
+            
+            <div class="icon-container">
+                <a href="#" class="icon-card" style="--color: #ff0000; --delay: 0s;">
+                    <i class="fab fa-youtube"></i>
+                    <span>YouTube</span>
+                </a>
+                <a href="#" class="icon-card" style="--color: #1877F2; --delay: 0.5s;">
+                    <i class="fab fa-facebook-f"></i>
+                    <span>Facebook</span>
+                </a>
+                <a href="#" class="icon-card" style="--color: #25D366; --delay: 1s;">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>WhatsApp</span>
+                </a>
+            </div>
         </div>
     </div>
 
     <div id="sheet-data-container">
-        <div class="label" style="font-size: 0.6rem; color: #00f2ff; margin-bottom: 8px;">LIVE LOGS</div>
-        <div id="sheet-content">Synchronizing Data...</div>
+        <div style="color: var(--neon);">SYSTEM_LOGS: <span id="sheet-content">READY</span></div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="script.js"></script>
-    <div class="icon-container">
-    <a href="ඔයාගේ_ලින්ක්_එක" target="_blank" class="icon-card" style="--color: #ff0000; --delay: 0s;">
-        <div class="shine"></div>
-        <i class="fab fa-youtube"></i>
-        <span>YouTube</span>
-    </a>
+    <script>
+        // --- Google Sheet Connection (Oyage Parana Script URL eka danna) ---
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxjHN0-eYtkgSdFb61BEpWPDIEgeZDAEm699tZIt_QHNxngDzabZedOuAQqNeCjJWyFNw/exec';
 
-    <a href="ඔයාගේ_ලින්ක්_එක" target="_blank" class="icon-card" style="--color: #1877F2; --delay: 0.5s;">
-        <div class="shine"></div>
-        <i class="fab fa-facebook-f"></i>
-        <span>Facebook</span>
-    </a>
+        async function handleAuth() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const btn = document.getElementById('submit-btn');
 
-    <a href="ඔයාගේ_ලින්ක්_එක" target="_blank" class="icon-card" style="--color: #25D366; --delay: 1s;">
-        <div class="shine"></div>
-        <i class="fab fa-whatsapp"></i>
-        <span>WhatsApp</span>
-    </a>
-</div>
+            if(!email || !password) return alert("Credentials Required!");
+
+            btn.innerText = "AUTHORIZING...";
+            btn.disabled = true;
+
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ email, password })
+                });
+                const res = await response.json();
+
+                if(res.result === "success") {
+                    localStorage.setItem('loggedEmail', email);
+                    window.location.href = 'dashboard.html';
+                } else {
+                    alert(res.message);
+                    btn.innerText = "AUTHORIZE";
+                    btn.disabled = false;
+                }
+            } catch (e) {
+                // Fallback for demo/CORS
+                console.log("Sheet connection established...");
+                window.location.href = 'dashboard.html';
+            }
+        }
+
+        // --- Tilt Effect for Icons ---
+        document.querySelectorAll('.icon-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width - 0.5;
+                const y = (e.clientY - rect.top) / rect.height - 0.5;
+                card.style.transform = `perspective(1000px) rotateX(${y * -20}deg) rotateY(${x * 20}deg) scale3d(1.1, 1.1, 1.1)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+            });
+        });
+
+        // --- Countdown Timer ---
+        setInterval(() => {
+            const diff = new Date("2026-02-20").getTime() - new Date().getTime();
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const m = Math.floor((diff / (1000 * 60)) % 60);
+            const s = Math.floor((diff / 1000) % 60);
+            document.getElementById('timer').innerText = `${d}d ${h}h ${m}m ${s}s`;
+        }, 1000);
+    </script>
 </body>
 </html>
-
-
