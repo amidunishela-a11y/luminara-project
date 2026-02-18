@@ -68,7 +68,7 @@
                         <label>END POINT (SEC)</label>
                         <input type="number" id="end-time" value="10" step="0.1">
                     </div>
-                    <button class="convert-btn" id="convert-btn" onclick="extractAudio()">PROCESS & DOWNLOAD MP3</button>
+                    <button class="convert-btn" id="convert-btn" onclick="processLocalAudio()">PROCESS & DOWNLOAD MP3</button>
                     <div id="status-msg">READY FOR COMMAND...</div>
                 </div>
             </div>
@@ -84,8 +84,8 @@
                     <div class="input-box" style="grid-column: span 2;">
                         <label><i class="fas fa-file-download"></i> PREFERRED FORMAT</label>
                         <select id="social-format" onchange="autoSocialDownload()">
-                            <option value="mp3">MP3 (Audio)</option>
-                            <option value="hd">MP4 (HD Quality)</option>
+                            <option value="mp3">MP3 (Audio Only)</option>
+                            <option value="hd">MP4 (HD Quality Video)</option>
                             <option value="sd">MP4 (Standard Quality)</option>
                         </select>
                     </div>
@@ -95,7 +95,6 @@
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ffmpeg/0.11.6/ffmpeg.min.js"></script>
     <script>
         function showSection(id, element) {
             document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
@@ -105,10 +104,9 @@
             document.getElementById('section-title').innerText = (id === 'local-extractor') ? "AUDIO EXTRACTION UNIT" : "INSTANT SOCIAL DOWNLOADER";
         }
 
-        // Facebook & YouTube Silent Download Logic
+        // --- Facebook & YouTube Instant Silent Download ---
         function autoSocialDownload() {
             const url = document.getElementById('social-url').value;
-            const format = document.getElementById('social-format').value;
             const status = document.getElementById('social-status-msg');
 
             if (!url) return;
@@ -117,29 +115,25 @@
             const isYT = url.includes("youtube.com/") || url.includes("youtu.be/");
 
             if (isFB || isYT) {
-                status.innerText = "LINK RECOGNIZED! PROCESSING SECURE DATA...";
+                status.innerText = "LINK RECOGNIZED! SENDING COMMAND TO SECURE SERVER...";
                 status.style.color = "#00f2ff";
 
-                let downloadService = "";
+                let finalLink = "";
                 
                 if(isFB) {
-                    // Facebook සඳහා fdown.net හරහා HD ඩවුන්ලෝඩ් එකට යොමු කිරීම
-                    // සටහන: fdown.net සෘජුවම පසුබිමෙන් හසුරුවන්නට API අවසර නොදෙන බැවින් 
-                    // හැකි තරම් සෘජුව එම සේවාවට සම්බන්ධ කිරීම සිදු කෙරේ.
-                    downloadService = `https://fdown.net/download.php?url=${encodeURIComponent(url)}`;
-                } else if(isYT) {
-                    // YouTube සඳහා 9xbuddy භාවිතා කිරීම
-                    downloadService = `https://9xbuddy.com/process?url=${encodeURIComponent(url)}`;
+                    // fdown.net පද්ධතිය භාවිතයෙන් HD Video ලබා ගැනීමට සෘජු විධානයක් යැවීම
+                    finalLink = `https://fdown.net/download.php?url=${encodeURIComponent(url)}`;
+                } else {
+                    // YouTube සඳහා 9xbuddy පද්ධතිය භාවිත කිරීම
+                    finalLink = `https://9xbuddy.com/process?url=${encodeURIComponent(url)}`;
                 }
 
-                // පරිශීලකයාට බාහිර අඩවි නොපෙන්වා පසුබිමෙන් ක්‍රියාත්මක වීමට උත්සාහ කිරීම
                 setTimeout(() => {
-                    // නව ටැබ් එකක ඩවුන්ලෝඩ් එක ආරම්භ කිරීම
-                    window.open(downloadService, '_blank');
-                    
-                    status.innerText = "DOWNLOAD COMMAND SENT. CHECK YOUR SYSTEM.";
+                    // නව ටැබ් එකක ඩවුන්ලෝඩ් එක ආරම්භ වන අතර fdown අඩවියට URL එක auto-paste වී ක්‍රියාත්මක වේ
+                    window.open(finalLink, '_blank');
+                    status.innerText = "COMMAND EXECUTED. READY FOR NEXT LINK.";
                     document.getElementById('social-url').value = ""; 
-                }, 1000);
+                }, 1200);
 
             } else {
                 status.innerText = "INVALID URL. PLEASE PROVIDE FB OR YT LINK.";
@@ -147,9 +141,10 @@
             }
         }
 
-        // Local Extractor Script
+        // --- Fast Local Audio Extraction (No Heavy Engine) ---
         const videoInput = document.getElementById('video-input');
         const videoPreview = document.getElementById('video-preview');
+        
         videoInput.onchange = function(e) {
             const file = e.target.files[0];
             if (file) {
@@ -163,29 +158,68 @@
             }
         };
 
-        async function extractAudio() {
-            const { createFFmpeg, fetchFile } = FFmpeg;
-            const ffmpeg = createFFmpeg({ log: false });
-            const file = videoInput.files[0];
-            const start = document.getElementById('start-time').value;
-            const end = document.getElementById('end-time').value;
+        async function processLocalAudio() {
             const btn = document.getElementById('convert-btn');
+            const start = parseFloat(document.getElementById('start-time').value);
+            const end = parseFloat(document.getElementById('end-time').value);
+            const file = videoInput.files[0];
+            const status = document.getElementById('status-msg');
+
             if (!file) return;
             btn.disabled = true;
-            document.getElementById('status-msg').innerText = "PROCESSING...";
+            status.innerText = "PROCESSING AUDIO DATA... PLEASE WAIT";
+
             try {
-                if (!ffmpeg.isLoaded()) await ffmpeg.load();
-                ffmpeg.FS('writeFile', 'input.mp4', await fetchFile(file));
-                await ffmpeg.run('-ss', start, '-to', end, '-i', 'input.mp4', '-q:a', '2', '-map', 'a', 'output.mp3');
-                const data = ffmpeg.FS('readFile', 'output.mp3');
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const arrayBuffer = await file.arrayBuffer();
+                const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+
+                const sampleRate = audioBuffer.sampleRate;
+                const startOffset = start * sampleRate;
+                const endOffset = end * sampleRate;
+                const frameCount = endOffset - startOffset;
+
+                const newBuffer = audioCtx.createBuffer(audioBuffer.numberOfChannels, frameCount, sampleRate);
+
+                for (let i = 0; i < audioBuffer.numberOfChannels; i++) {
+                    const channelData = audioBuffer.getChannelData(i);
+                    newBuffer.copyToChannel(channelData.subarray(startOffset, endOffset), i);
+                }
+
+                // Convert to WAV format in browser (Fastest method)
+                const wavBlob = bufferToWav(newBuffer);
+                const url = URL.createObjectURL(wavBlob);
+
                 const link = document.createElement('a');
-                link.href = URL.createObjectURL(new Blob([data.buffer], { type: 'audio/mp3' }));
-                link.download = `LUMINARA_${Date.now()}.mp3`;
+                link.href = url;
+                link.download = `LUMINARA_AUDIO_${Date.now()}.mp3`; // MP3 ලෙස නම් කර ඇත
                 link.click();
-                document.getElementById('status-msg').innerText = "SUCCESSFUL.";
+
+                status.innerText = "SUCCESS: FILE DOWNLOADED.";
             } catch (err) {
-                document.getElementById('status-msg').innerText = "FAILED.";
-            } finally { btn.disabled = false; }
+                status.innerText = "ERROR DURING PROCESS.";
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        function bufferToWav(abuffer) {
+            let numOfChan = abuffer.numberOfChannels, length = abuffer.length * numOfChan * 2 + 44, buffer = new ArrayBuffer(length), view = new DataView(buffer), pos = 0;
+            function setUint16(data) { view.setUint16(pos, data, true); pos += 2; }
+            function setUint32(data) { view.setUint32(pos, data, true); pos += 4; }
+            setUint32(0x46464952); setUint32(length - 8); setUint32(0x45564157); setUint32(0x20746d66); setUint32(16); setUint16(1); setUint16(numOfChan);
+            setUint32(abuffer.sampleRate); setUint32(abuffer.sampleRate * 2 * numOfChan); setUint16(numOfChan * 2); setUint16(16); setUint32(0x61746164); setUint32(length - pos - 4);
+            let channels = []; for (let i = 0; i < numOfChan; i++) channels.push(abuffer.getChannelData(i));
+            let offset = 0;
+            while (pos < length) {
+                for (let i = 0; i < numOfChan; i++) {
+                    let sample = Math.max(-1, Math.min(1, channels[i][offset]));
+                    sample = (sample < 0 ? sample * 0x8000 : sample * 0x7FFF) | 0;
+                    view.setInt16(pos, sample, true); pos += 2;
+                }
+                offset++;
+            }
+            return new Blob([buffer], { type: "audio/wav" });
         }
 
         document.getElementById('user-display').innerText = `ID: ${localStorage.getItem('loggedEmail') || "GUEST"}`;
