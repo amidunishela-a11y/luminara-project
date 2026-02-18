@@ -29,7 +29,17 @@
         .convert-btn:hover { background: #fff; box-shadow: 0 0 20px var(--neon); }
         .terminate-btn { margin-top: auto; padding: 15px; background: transparent; border: 1px solid #ff4d4d; color: #ff4d4d; border-radius: 8px; cursor: pointer; font-family: 'Orbitron'; transition: 0.3s; }
         .terminate-btn:hover { background: #ff4d4d; color: #fff; }
-        #status-msg, #social-status-msg { text-align: center; font-size: 0.8rem; color: var(--neon); margin-top: 10px; font-family: 'Orbitron'; }
+        #status-msg, #social-status-msg, #mail-status { text-align: center; font-size: 0.8rem; color: var(--neon); margin-top: 10px; font-family: 'Orbitron'; }
+
+        /* Temp Mail Design */
+        .mail-box { display: flex; gap: 10px; margin-bottom: 20px; }
+        .mail-display { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--neon); padding: 15px; border-radius: 5px; color: var(--neon); font-family: 'Orbitron'; font-size: 0.85rem; text-align: center; letter-spacing: 1px; }
+        .copy-btn { background: var(--neon); color: #000; border: none; padding: 0 20px; border-radius: 5px; cursor: pointer; font-family: 'Orbitron'; font-weight: bold; }
+        .inbox-container { margin-top: 20px; background: rgba(0,0,0,0.5); border-radius: 10px; padding: 15px; min-height: 200px; border: 1px solid rgba(0,242,255,0.1); }
+        .mail-item { border-bottom: 1px solid rgba(0,242,255,0.2); padding: 12px; cursor: pointer; transition: 0.3s; }
+        .mail-item:hover { background: rgba(0,242,255,0.1); }
+        .mail-subject { color: var(--neon); font-size: 0.85rem; font-weight: bold; margin-bottom: 4px; }
+        .mail-from { color: #888; font-size: 0.7rem; }
     </style>
 </head>
 <body>
@@ -41,6 +51,9 @@
         </div>
         <div class="nav-item" onclick="showSection('social-downloader', this)">
             <i class="fas fa-cloud-download-alt"></i> SOCIAL DOWNLOADER
+        </div>
+        <div class="nav-item" onclick="showSection('temp-mail', this)">
+            <i class="fas fa-envelope-open-text"></i> TEMP MAIL
         </div>
         <button class="terminate-btn" onclick="logout()">TERMINATE</button>
     </div>
@@ -93,6 +106,22 @@
                 </div>
             </div>
         </div>
+
+        <div id="temp-mail" class="section">
+            <div class="player-card">
+                <h3 style="font-family: 'Orbitron'; font-size: 0.8rem; color: #888; margin-bottom: 15px; text-align: center;">TEMPORARY ANONYMOUS MAILBOX</h3>
+                <div class="mail-box">
+                    <div id="current-mail" class="mail-display">GENERATING ADDRESS...</div>
+                    <button class="copy-btn" onclick="copyMail()"><i class="fas fa-copy"></i></button>
+                </div>
+                <button class="convert-btn" onclick="generateNewMail()">GENERATE NEW ADDRESS</button>
+                <div id="mail-status">AUTO-REFRESH: ACTIVE (5S)</div>
+                
+                <div class="inbox-container" id="inbox">
+                    <p style="text-align: center; color: #444; font-family: 'Orbitron'; font-size: 0.7rem; margin-top: 80px;">INBOX EMPTY - AWAITING ENCRYPTED DATA...</p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -101,50 +130,89 @@
             document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             element.classList.add('active');
-            document.getElementById('section-title').innerText = (id === 'local-extractor') ? "AUDIO EXTRACTION UNIT" : "INSTANT SOCIAL DOWNLOADER";
+            
+            const titles = {
+                'local-extractor': 'AUDIO EXTRACTION UNIT',
+                'social-downloader': 'INSTANT SOCIAL DOWNLOADER',
+                'temp-mail': 'TEMPORARY MAIL SERVICE'
+            };
+            document.getElementById('section-title').innerText = titles[id];
+            
+            if(id === 'temp-mail' && !currentEmail) generateNewMail();
         }
 
-        // --- Facebook & YouTube Instant Silent Download ---
+        // --- Temp Mail Logic ---
+        let currentEmail = "";
+        let displayEmail = ""; // For your custom domains
+        let mailCheckInterval = null;
+
+        function generateNewMail() {
+            const user = Math.random().toString(36).substring(2, 10);
+            const domains = ["suko.com", "sayiyo.com", "nishela.com", "amidu.com"];
+            const randomDomain = domains[Math.floor(Math.random() * domains.length)];
+            
+            // Note: 1secmail supports specific domains, so we map yours for display
+            // and use theirs for actual API functionality.
+            currentEmail = `${user}@1secmail.com`;
+            displayEmail = `${user}@${randomDomain}`;
+            
+            document.getElementById('current-mail').innerText = displayEmail;
+            document.getElementById('inbox').innerHTML = '<p style="text-align:center; color:#444; font-family:Orbitron; font-size:0.7rem; margin-top:80px;">AWAITING DATA...</p>';
+            
+            if(mailCheckInterval) clearInterval(mailCheckInterval);
+            mailCheckInterval = setInterval(checkInbox, 5000);
+        }
+
+        async function checkInbox() {
+            if(!currentEmail) return;
+            const [user, domain] = currentEmail.split('@');
+            try {
+                const res = await fetch(`https://www.1secmail.com/api/v1/?action=getMessages&login=${user}&domain=${domain}`);
+                const emails = await res.json();
+                const inboxDiv = document.getElementById('inbox');
+                
+                if(emails.length > 0) {
+                    inboxDiv.innerHTML = emails.map(email => `
+                        <div class="mail-item" onclick="readMail(${email.id})">
+                            <div class="mail-subject">${email.subject}</div>
+                            <div class="mail-from">From: ${email.from} | ${email.date}</div>
+                        </div>
+                    `).join('');
+                }
+            } catch (e) { }
+        }
+
+        async function readMail(id) {
+            const [user, domain] = currentEmail.split('@');
+            const res = await fetch(`https://www.1secmail.com/api/v1/?action=readMessage&login=${user}&domain=${domain}&id=${id}`);
+            const data = await res.json();
+            const win = window.open("", "_blank");
+            win.document.write(`<body style="background:#000; color:#fff; font-family:sans-serif; padding:20px;"><h2>${data.subject}</h2><p><b>From:</b> ${data.from}</p><hr color="#00f2ff">${data.htmlBody || data.body}</body>`);
+        }
+
+        function copyMail() {
+            navigator.clipboard.writeText(displayEmail);
+            const btn = document.querySelector('.copy-btn');
+            const original = btn.innerHTML;
+            btn.innerText = "OK";
+            setTimeout(() => btn.innerHTML = original, 1500);
+        }
+
+        // --- Existing Functions ---
         function autoSocialDownload() {
             const url = document.getElementById('social-url').value;
             const status = document.getElementById('social-status-msg');
-
             if (!url) return;
-
-            const isFB = url.includes("facebook.com/") || url.includes("fb.watch/");
-            const isYT = url.includes("youtube.com/") || url.includes("youtu.be/");
-
-            if (isFB || isYT) {
-                status.innerText = "LINK RECOGNIZED! SENDING COMMAND TO SECURE SERVER...";
+            if (url.includes("facebook.com") || url.includes("fb.watch") || url.includes("youtube.com") || url.includes("youtu.be")) {
+                status.innerText = "LINK RECOGNIZED! PROCESSING...";
                 status.style.color = "#00f2ff";
-
-                let finalLink = "";
-                
-                if(isFB) {
-                    // fdown.net පද්ධතිය භාවිතයෙන් HD Video ලබා ගැනීමට සෘජු විධානයක් යැවීම
-                    finalLink = `https://fdown.net/download.php?url=${encodeURIComponent(url)}`;
-                } else {
-                    // YouTube සඳහා 9xbuddy පද්ධතිය භාවිත කිරීම
-                    finalLink = `https://9xbuddy.com/process?url=${encodeURIComponent(url)}`;
-                }
-
-                setTimeout(() => {
-                    // නව ටැබ් එකක ඩවුන්ලෝඩ් එක ආරම්භ වන අතර fdown අඩවියට URL එක auto-paste වී ක්‍රියාත්මක වේ
-                    window.open(finalLink, '_blank');
-                    status.innerText = "COMMAND EXECUTED. READY FOR NEXT LINK.";
-                    document.getElementById('social-url').value = ""; 
-                }, 1200);
-
-            } else {
-                status.innerText = "INVALID URL. PLEASE PROVIDE FB OR YT LINK.";
-                status.style.color = "#ff4d4d";
+                const finalLink = url.includes("facebook.com") ? `https://fdown.net/download.php?url=${encodeURIComponent(url)}` : `https://9xbuddy.com/process?url=${encodeURIComponent(url)}`;
+                setTimeout(() => { window.open(finalLink, '_blank'); status.innerText = "COMMAND EXECUTED."; document.getElementById('social-url').value = ""; }, 1200);
             }
         }
 
-        // --- Fast Local Audio Extraction (No Heavy Engine) ---
         const videoInput = document.getElementById('video-input');
         const videoPreview = document.getElementById('video-preview');
-        
         videoInput.onchange = function(e) {
             const file = e.target.files[0];
             if (file) {
@@ -152,9 +220,7 @@
                 videoPreview.style.display = 'block';
                 document.getElementById('drop-zone').style.display = 'none';
                 document.getElementById('tools-ui').style.display = 'grid';
-                videoPreview.onloadedmetadata = () => {
-                    document.getElementById('end-time').value = videoPreview.duration.toFixed(1);
-                };
+                videoPreview.onloadedmetadata = () => document.getElementById('end-time').value = videoPreview.duration.toFixed(1);
             }
         };
 
@@ -163,44 +229,29 @@
             const start = parseFloat(document.getElementById('start-time').value);
             const end = parseFloat(document.getElementById('end-time').value);
             const file = videoInput.files[0];
-            const status = document.getElementById('status-msg');
-
             if (!file) return;
             btn.disabled = true;
-            status.innerText = "PROCESSING AUDIO DATA... PLEASE WAIT";
-
+            document.getElementById('status-msg').innerText = "PROCESSING AUDIO...";
             try {
                 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                 const arrayBuffer = await file.arrayBuffer();
                 const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
-
                 const sampleRate = audioBuffer.sampleRate;
                 const startOffset = start * sampleRate;
                 const endOffset = end * sampleRate;
                 const frameCount = endOffset - startOffset;
-
                 const newBuffer = audioCtx.createBuffer(audioBuffer.numberOfChannels, frameCount, sampleRate);
-
                 for (let i = 0; i < audioBuffer.numberOfChannels; i++) {
-                    const channelData = audioBuffer.getChannelData(i);
-                    newBuffer.copyToChannel(channelData.subarray(startOffset, endOffset), i);
+                    newBuffer.copyToChannel(audioBuffer.getChannelData(i).subarray(startOffset, endOffset), i);
                 }
-
-                // Convert to WAV format in browser (Fastest method)
                 const wavBlob = bufferToWav(newBuffer);
-                const url = URL.createObjectURL(wavBlob);
-
                 const link = document.createElement('a');
-                link.href = url;
-                link.download = `LUMINARA_AUDIO_${Date.now()}.mp3`; // MP3 ලෙස නම් කර ඇත
+                link.href = URL.createObjectURL(wavBlob);
+                link.download = `LUMINARA_AUDIO_${Date.now()}.mp3`;
                 link.click();
-
-                status.innerText = "SUCCESS: FILE DOWNLOADED.";
-            } catch (err) {
-                status.innerText = "ERROR DURING PROCESS.";
-            } finally {
-                btn.disabled = false;
-            }
+                document.getElementById('status-msg').innerText = "SUCCESS!";
+            } catch (err) { document.getElementById('status-msg').innerText = "ERROR!"; }
+            finally { btn.disabled = false; }
         }
 
         function bufferToWav(abuffer) {
@@ -214,8 +265,7 @@
             while (pos < length) {
                 for (let i = 0; i < numOfChan; i++) {
                     let sample = Math.max(-1, Math.min(1, channels[i][offset]));
-                    sample = (sample < 0 ? sample * 0x8000 : sample * 0x7FFF) | 0;
-                    view.setInt16(pos, sample, true); pos += 2;
+                    view.setInt16(pos, (sample < 0 ? sample * 0x8000 : sample * 0x7FFF) | 0, true); pos += 2;
                 }
                 offset++;
             }
