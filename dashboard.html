@@ -8,78 +8,25 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --neon: #00f2ff; --bg: #000a0f; --card-bg: rgba(0, 242, 255, 0.05); }
-        
-        body {
-            margin: 0; background-color: var(--bg); color: #fff;
-            font-family: 'Inter', sans-serif; display: flex; height: 100vh; overflow: hidden;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            width: 260px; background: rgba(0, 0, 0, 0.9);
-            border-right: 1px solid rgba(0, 242, 255, 0.2);
-            display: flex; flex-direction: column; padding: 20px;
-            backdrop-filter: blur(10px); z-index: 10;
-        }
-
+        body { margin: 0; background-color: var(--bg); color: #fff; font-family: 'Inter', sans-serif; display: flex; height: 100vh; overflow: hidden; }
+        .sidebar { width: 260px; background: rgba(0, 0, 0, 0.9); border-right: 1px solid rgba(0, 242, 255, 0.2); display: flex; flex-direction: column; padding: 20px; backdrop-filter: blur(10px); z-index: 10; }
         .logo { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; font-weight: bold; color: var(--neon); letter-spacing: 4px; margin-bottom: 50px; }
-
-        /* Main Content */
         .content { flex: 1; padding: 30px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; }
-        
         .header { width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 15px; }
-
-        /* Media Player Container */
-        .player-card {
-            width: 100%; max-width: 850px; background: var(--card-bg);
-            border: 1px solid rgba(0, 242, 255, 0.2); padding: 25px;
-            border-radius: 15px; box-shadow: 0 0 30px rgba(0, 242, 255, 0.1);
-        }
-
-        #video-preview { 
-            width: 100%; 
-            max-height: 400px; 
-            border-radius: 10px; 
-            border: 1px solid var(--neon); 
-            background: #000; 
-            display: none; /* පසුව පෙන්වනු ලැබේ */
-            margin-bottom: 20px;
-        }
-
-        .upload-placeholder {
-            height: 250px; border: 2px dashed rgba(0, 242, 255, 0.3);
-            display: flex; flex-direction: column; justify-content: center;
-            align-items: center; cursor: pointer; border-radius: 10px; transition: 0.3s;
-        }
+        .player-card { width: 100%; max-width: 850px; background: var(--card-bg); border: 1px solid rgba(0, 242, 255, 0.2); padding: 25px; border-radius: 15px; box-shadow: 0 0 30px rgba(0, 242, 255, 0.1); }
+        #video-preview { width: 100%; max-height: 400px; border-radius: 10px; border: 1px solid var(--neon); background: #000; display: none; margin-bottom: 20px; }
+        .upload-placeholder { height: 250px; border: 2px dashed rgba(0, 242, 255, 0.3); display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; border-radius: 10px; transition: 0.3s; }
         .upload-placeholder:hover { background: rgba(0, 242, 255, 0.1); border-color: var(--neon); }
-
-        /* Controls */
-        .tools-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
-            padding: 20px; background: rgba(0,0,0,0.5); border-radius: 10px; display: none;
-        }
-
+        .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 20px; background: rgba(0,0,0,0.5); border-radius: 10px; display: none; }
         .input-box { display: flex; flex-direction: column; gap: 8px; }
         .input-box label { font-family: 'Orbitron'; font-size: 0.65rem; color: var(--neon); letter-spacing: 1px; }
-        .input-box input { 
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(0, 242, 255, 0.2);
-            color: #fff; padding: 12px; border-radius: 5px; outline: none; font-family: 'Orbitron';
-        }
-
-        .convert-btn {
-            grid-column: span 2; background: var(--neon); color: #000;
-            border: none; padding: 16px; border-radius: 8px; font-family: 'Orbitron';
-            font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 0.9rem;
-            text-transform: uppercase;
-        }
+        .input-box input { background: rgba(255,255,255,0.05); border: 1px solid rgba(0, 242, 255, 0.2); color: #fff; padding: 12px; border-radius: 5px; outline: none; font-family: 'Orbitron'; }
+        .convert-btn { grid-column: span 2; background: var(--neon); color: #000; border: none; padding: 16px; border-radius: 8px; font-family: 'Orbitron'; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 0.9rem; text-transform: uppercase; }
         .convert-btn:hover { background: #fff; box-shadow: 0 0 20px var(--neon); transform: translateY(-2px); }
-        .convert-btn:disabled { background: #333; color: #666; cursor: not-allowed; transform: none; box-shadow: none; }
-
+        .convert-btn:disabled { background: #333; color: #666; cursor: not-allowed; }
         #status-msg { grid-column: span 2; text-align: center; font-size: 0.75rem; color: var(--neon); margin-top: 10px; font-family: 'Orbitron'; }
-
         .terminate-btn { margin-top: auto; padding: 15px; background: transparent; border: 1px solid #ff4d4d; color: #ff4d4d; border-radius: 8px; cursor: pointer; font-family: 'Orbitron'; transition: 0.3s; }
         .terminate-btn:hover { background: #ff4d4d; color: #fff; }
-
     </style>
 </head>
 <body>
@@ -101,7 +48,7 @@
             
             <div class="upload-placeholder" id="drop-zone" onclick="document.getElementById('video-input').click()">
                 <i class="fas fa-file-import" style="font-size: 2.5rem; color: var(--neon); margin-bottom: 15px;"></i>
-                <p style="font-family: 'Orbitron'; font-size: 0.7rem; letter-spacing: 1px;">SELECT MP4 VIDEO DATA</p>
+                <p style="font-family: 'Orbitron'; font-size: 0.7rem;">SELECT MP4 VIDEO DATA</p>
             </div>
 
             <video id="video-preview" controls></video>
@@ -115,7 +62,7 @@
                     <label>END TIME (SECONDS)</label>
                     <input type="number" id="end-time" value="" step="0.1">
                 </div>
-                <button class="convert-btn" id="convert-btn" onclick="extractAudio()">
+                <button class="convert-btn" id="convert-btn" onclick="processExtraction()">
                     EXTRACT & DOWNLOAD MP3
                 </button>
                 <div id="status-msg">SYSTEM READY</div>
@@ -123,107 +70,116 @@
         </div>
     </div>
 
-    <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
-
     <script>
-        const { createFFmpeg, fetchFile } = FFmpeg;
-        const ffmpeg = createFFmpeg({ log: true });
-
         const videoInput = document.getElementById('video-input');
         const videoPreview = document.getElementById('video-preview');
         const toolsUi = document.getElementById('tools-ui');
         const statusMsg = document.getElementById('status-msg');
         const dropZone = document.getElementById('drop-zone');
 
-        // වීඩියෝ එක තෝරාගත් පසු ක්‍රියාත්මක වන කොටස
-        videoInput.onchange = async function(e) {
+        videoInput.onchange = function(e) {
             const file = e.target.files[0];
             if (file) {
-                const url = URL.createObjectURL(file);
-                videoPreview.src = url;
-                videoPreview.style.display = 'block'; // වීඩියෝව පෙන්වන්න
-                dropZone.style.display = 'none'; // Upload box එක ඉවත් කරන්න
-                toolsUi.style.display = 'grid'; // Controls පෙන්වන්න
-                
+                videoPreview.src = URL.createObjectURL(file);
+                videoPreview.style.display = 'block';
+                dropZone.style.display = 'none';
+                toolsUi.style.display = 'grid';
                 videoPreview.onloadedmetadata = () => {
                     document.getElementById('end-time').value = videoPreview.duration.toFixed(1);
                 };
-                
-                statusMsg.innerText = "VIDEO LOADED. READY TO PROCESS.";
             }
         };
 
-        // MP3 Extract කිරීමේ ප්‍රධාන ශ්‍රිතය
-        async function extractAudio() {
-            const file = videoInput.files[0];
-            const start = document.getElementById('start-time').value;
-            const end = document.getElementById('end-time').value;
+        async function processExtraction() {
             const btn = document.getElementById('convert-btn');
+            const start = parseFloat(document.getElementById('start-time').value);
+            const end = parseFloat(document.getElementById('end-time').value);
+            const file = videoInput.files[0];
 
-            if (!file) {
-                alert("Please select a video file first.");
-                return;
-            }
-            
+            if (!file) return;
             btn.disabled = true;
-            statusMsg.innerText = "LOADING ENGINE (PLEASE WAIT)...";
+            statusMsg.innerText = "PROCESSING AUDIO... PLEASE WAIT";
 
             try {
-                // Engine එක load වී නැත්නම් load කරන්න
-                if (!ffmpeg.isLoaded()) {
-                    await ffmpeg.load();
-                }
-                
-                statusMsg.innerText = "PROCESSING AUDIO... THIS MAY TAKE A MOMENT.";
-                
-                // වීඩියෝව FFmpeg මතකයට ඇතුළත් කිරීම
-                ffmpeg.FS('writeFile', 'input.mp4', await fetchFile(file));
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const arrayBuffer = await file.arrayBuffer();
+                const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
 
-                // FFmpeg Command: trim කර mp3 එකක් සාදන්න
-                await ffmpeg.run(
-                    '-ss', start.toString(), 
-                    '-to', end.toString(), 
-                    '-i', 'input.mp4', 
-                    '-vn', 
-                    '-acodec', 'libmp3lame', 
-                    'output.mp3'
+                const sampleRate = audioBuffer.sampleRate;
+                const startOffset = start * sampleRate;
+                const endOffset = end * sampleRate;
+                const frameCount = endOffset - startOffset;
+
+                const newBuffer = audioCtx.createBuffer(
+                    audioBuffer.numberOfChannels,
+                    frameCount,
+                    sampleRate
                 );
 
-                // සාදන ලද mp3 එක කියවීම
-                const data = ffmpeg.FS('readFile', 'output.mp3');
-                
-                // පරිගණකයට Download කිරීම
-                const audioBlob = new Blob([data.buffer], { type: 'audio/mp3' });
-                const audioUrl = URL.createObjectURL(audioBlob);
-                
-                const link = document.createElement('a');
-                link.href = audioUrl;
-                link.download = `LUMINARA_${Date.now()}.mp3`;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
+                for (let i = 0; i < audioBuffer.numberOfChannels; i++) {
+                    const channelData = audioBuffer.getChannelData(i);
+                    newBuffer.copyToChannel(channelData.subarray(startOffset, endOffset), i);
+                }
 
-                statusMsg.innerText = "SUCCESS: MP3 DOWNLOADED.";
+                // Convert AudioBuffer to WAV (Fastest way in browser)
+                const wavBlob = bufferToWav(newBuffer);
+                const url = URL.createObjectURL(wavBlob);
+
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `LUMINARA_AUDIO_${Date.now()}.wav`; // WAV format is high quality
+                link.click();
+
+                statusMsg.innerText = "SUCCESS: DOWNLOADED TO DEVICE";
             } catch (err) {
                 console.error(err);
-                statusMsg.innerText = "ERROR: SYSTEM BUSY OR INCOMPATIBLE BROWSER.";
-                alert("වැදගත්: ඔබ මෙය Local file එකක් ලෙස Open කරන්නේ නම්, Chrome/Edge වල conversion එක වැඩ නොකිරීමට ඉඩ ඇත. මෙය Live Server එකක හෝ VS Code Live Server එකක පරීක්ෂා කරන්න.");
+                statusMsg.innerText = "ERROR DURING EXTRACTION";
             } finally {
                 btn.disabled = false;
             }
         }
 
-        // Auth Display
-        const userEmail = localStorage.getItem('loggedEmail') || "USER_UNKNOWN";
-        document.getElementById('user-display').innerText = `ID: ${userEmail}`;
+        // Helper function to create Audio File
+        function bufferToWav(abuffer) {
+            let numOfChan = abuffer.numberOfChannels,
+                length = abuffer.length * numOfChan * 2 + 44,
+                buffer = new ArrayBuffer(length),
+                view = new DataView(buffer),
+                channels = [], i, sample,
+                offset = 0,
+                pos = 0;
 
-        function logout() {
-            localStorage.removeItem('loggedEmail');
-            window.location.href = 'index.html';
+            function setUint16(data) { view.setUint16(pos, data, true); pos += 2; }
+            function setUint32(data) { view.setUint32(pos, data, true); pos += 4; }
+
+            setUint32(0x46464952); // "RIFF"
+            setUint32(length - 8);
+            setUint32(0x45564157); // "WAVE"
+            setUint32(0x20746d66); // "fmt "
+            setUint32(16); setUint16(1); setUint16(numOfChan);
+            setUint32(abuffer.sampleRate);
+            setUint32(abuffer.sampleRate * 2 * numOfChan);
+            setUint16(numOfChan * 2); setUint16(16);
+            setUint32(0x61746164); // "data"
+            setUint32(length - pos - 4);
+
+            for (i = 0; i < abuffer.numberOfChannels; i++) channels.push(abuffer.getChannelData(i));
+
+            while (pos < length) {
+                for (i = 0; i < numOfChan; i++) {
+                    sample = Math.max(-1, Math.min(1, channels[i][offset]));
+                    sample = (sample < 0 ? sample * 0x8000 : sample * 0x7FFF) | 0;
+                    view.setInt16(pos, sample, true);
+                    pos += 2;
+                }
+                offset++;
+            }
+            return new Blob([buffer], { type: "audio/wav" });
         }
 
-        // Disable right click for security
-        document.addEventListener('contextmenu', e => e.preventDefault());
+        const userEmail = localStorage.getItem('loggedEmail') || "USER_UNKNOWN";
+        document.getElementById('user-display').innerText = `ID: ${userEmail}`;
+        function logout() { localStorage.removeItem('loggedEmail'); window.location.href = 'index.html'; }
     </script>
 </body>
 </html>
