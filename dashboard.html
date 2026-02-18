@@ -35,7 +35,7 @@
         .mail-box { display: flex; gap: 10px; margin-bottom: 20px; }
         .mail-display { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--neon); padding: 15px; border-radius: 5px; color: var(--neon); font-family: 'Orbitron'; font-size: 0.85rem; text-align: center; letter-spacing: 1px; }
         .copy-btn { background: var(--neon); color: #000; border: none; padding: 0 20px; border-radius: 5px; cursor: pointer; font-family: 'Orbitron'; font-weight: bold; }
-        .inbox-container { margin-top: 20px; background: rgba(0,0,0,0.5); border-radius: 10px; padding: 15px; min-height: 200px; border: 1px solid rgba(0,242,255,0.1); }
+        .inbox-container { margin-top: 20px; background: rgba(0,0,0,0.5); border-radius: 10px; padding: 15px; min-height: 250px; border: 1px solid rgba(0,242,255,0.1); }
         .mail-item { border-bottom: 1px solid rgba(0,242,255,0.2); padding: 12px; cursor: pointer; transition: 0.3s; text-align: left; }
         .mail-item:hover { background: rgba(0,242,255,0.1); }
         .mail-subject { color: var(--neon); font-size: 0.85rem; font-weight: bold; margin-bottom: 4px; }
@@ -45,6 +45,13 @@
         #mail-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; padding: 50px; box-sizing: border-box; }
         .modal-content { background: var(--bg); border: 1px solid var(--neon); max-width: 700px; margin: auto; padding: 30px; border-radius: 15px; height: 80vh; overflow-y: auto; position: relative; }
         .close-modal { position: absolute; top: 20px; right: 20px; color: #ff4d4d; cursor: pointer; font-family: 'Orbitron'; }
+
+        /* Custom Refresh Button */
+        .refresh-btn { width: 100%; background: transparent; border: 1px solid var(--neon); color: var(--neon); padding: 10px; border-radius: 8px; font-family: 'Orbitron'; font-size: 0.8rem; cursor: pointer; margin-top: 10px; transition: 0.3s; }
+        .refresh-btn:hover { background: rgba(0, 242, 255, 0.1); }
+        .refresh-btn i { margin-right: 8px; }
+        .spinning { animation: spin 1s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
@@ -55,7 +62,7 @@
             <h2 id="view-subject" style="color:var(--neon); font-family:'Orbitron';"></h2>
             <p id="view-from" style="color:#888; font-size:0.8rem;"></p>
             <hr style="border:0.5px solid rgba(0,242,255,0.2);">
-            <div id="view-body" style="line-height: 1.6; margin-top: 20px;"></div>
+            <div id="view-body" style="line-height: 1.6; margin-top: 20px; color: #ccc; font-family: 'Inter', sans-serif;"></div>
         </div>
     </div>
 
@@ -126,14 +133,19 @@
             <div class="player-card">
                 <h3 style="font-family: 'Orbitron'; font-size: 0.8rem; color: #888; margin-bottom: 15px; text-align: center;">TEMPORARY ANONYMOUS MAILBOX</h3>
                 <div class="mail-box">
-                    <div id="current-mail" class="mail-display">GENERATING ADDRESS...</div>
+                    <div id="current-mail" class="mail-display">GENERATING...</div>
                     <button class="copy-btn" onclick="copyMail()"><i class="fas fa-copy"></i></button>
                 </div>
-                <button class="convert-btn" onclick="generateNewMail()">GENERATE NEW ADDRESS</button>
-                <div id="mail-status">AUTO-REFRESH: ACTIVE (5S)</div>
+                <div style="display: flex; gap: 10px;">
+                    <button class="convert-btn" style="flex: 1;" onclick="generateNewMail()">GENERATE NEW</button>
+                    <button id="manual-refresh" class="refresh-btn" style="flex: 1;" onclick="checkInbox(true)">
+                        <i id="refresh-icon" class="fas fa-sync-alt"></i> REFRESH INBOX
+                    </button>
+                </div>
+                <div id="mail-status">AUTO-REFRESH ACTIVE</div>
                 
                 <div class="inbox-container" id="inbox">
-                    <p style="text-align: center; color: #444; font-family: 'Orbitron'; font-size: 0.7rem; margin-top: 80px;">INBOX EMPTY - AWAITING ENCRYPTED DATA...</p>
+                    <p style="text-align: center; color: #444; font-family: 'Orbitron'; font-size: 0.7rem; margin-top: 80px;">INBOX EMPTY - AWAITING DATA...</p>
                 </div>
             </div>
         </div>
@@ -162,7 +174,6 @@
         let mailCheckInterval = null;
 
         function generateNewMail() {
-            // Generate English Letters (5) + Numbers (3)
             const letters = "abcdefghijklmnopqrstuvwxyz";
             const numbers = "0123456789";
             let user = "";
@@ -172,7 +183,6 @@
             const domains = ["suko.com", "sayiyo.com", "nishela.com", "amidu.com"];
             const randomDisplayDomain = domains[Math.floor(Math.random() * domains.length)];
             
-            // API setup (Using 1secmail for actual logic)
             currentEmail = `${user}@1secmail.com`;
             displayEmail = `${user}@${randomDisplayDomain}`;
             
@@ -180,11 +190,15 @@
             document.getElementById('inbox').innerHTML = '<p style="text-align:center; color:#444; font-family:Orbitron; font-size:0.7rem; margin-top:80px;">AWAITING DATA...</p>';
             
             if(mailCheckInterval) clearInterval(mailCheckInterval);
-            mailCheckInterval = setInterval(checkInbox, 5000);
+            mailCheckInterval = setInterval(() => checkInbox(false), 5000);
+            checkInbox(false);
         }
 
-        async function checkInbox() {
+        async function checkInbox(isManual = false) {
             if(!currentEmail) return;
+            const icon = document.getElementById('refresh-icon');
+            if(isManual) icon.classList.add('spinning');
+
             const [user, domain] = currentEmail.split('@');
             try {
                 const res = await fetch(`https://www.1secmail.com/api/v1/?action=getMessages&login=${user}&domain=${domain}`);
@@ -199,7 +213,8 @@
                         </div>
                     `).join('');
                 }
-            } catch (e) { }
+            } catch (e) { console.error("Inbox fetch failed."); }
+            finally { if(isManual) setTimeout(() => icon.classList.remove('spinning'), 500); }
         }
 
         async function readMail(id) {
@@ -215,19 +230,15 @@
             } catch (e) { alert("Error reading mail."); }
         }
 
-        function closeMail() {
-            document.getElementById('mail-modal').style.display = "none";
-        }
-
+        function closeMail() { document.getElementById('mail-modal').style.display = "none"; }
         function copyMail() {
             navigator.clipboard.writeText(displayEmail);
             const btn = document.querySelector('.copy-btn');
-            const original = btn.innerHTML;
-            btn.innerText = "OK";
-            setTimeout(() => btn.innerHTML = original, 1500);
+            btn.innerHTML = '<i class="fas fa-check"></i>';
+            setTimeout(() => btn.innerHTML = '<i class="fas fa-copy"></i>', 1500);
         }
 
-        // --- Existing Functions (Untouched) ---
+        // --- Social Download Logic ---
         function autoSocialDownload() {
             const url = document.getElementById('social-url').value;
             const status = document.getElementById('social-status-msg');
@@ -240,6 +251,7 @@
             }
         }
 
+        // --- Local Extractor Logic ---
         const videoInput = document.getElementById('video-input');
         const videoPreview = document.getElementById('video-preview');
         videoInput.onchange = function(e) {
@@ -265,18 +277,15 @@
                 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                 const arrayBuffer = await file.arrayBuffer();
                 const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
-                const sampleRate = audioBuffer.sampleRate;
-                const startOffset = start * sampleRate;
-                const endOffset = end * sampleRate;
-                const frameCount = endOffset - startOffset;
-                const newBuffer = audioCtx.createBuffer(audioBuffer.numberOfChannels, frameCount, sampleRate);
+                const frameCount = (end - start) * audioBuffer.sampleRate;
+                const newBuffer = audioCtx.createBuffer(audioBuffer.numberOfChannels, frameCount, audioBuffer.sampleRate);
                 for (let i = 0; i < audioBuffer.numberOfChannels; i++) {
-                    newBuffer.copyToChannel(audioBuffer.getChannelData(i).subarray(startOffset, endOffset), i);
+                    newBuffer.copyToChannel(audioBuffer.getChannelData(i).subarray(start * audioBuffer.sampleRate, end * audioBuffer.sampleRate), i);
                 }
                 const wavBlob = bufferToWav(newBuffer);
                 const link = document.createElement('a');
                 link.href = URL.createObjectURL(wavBlob);
-                link.download = `LUMINARA_AUDIO_${Date.now()}.mp3`;
+                link.download = `LUMINARA_${Date.now()}.mp3`;
                 link.click();
                 document.getElementById('status-msg').innerText = "SUCCESS!";
             } catch (err) { document.getElementById('status-msg').innerText = "ERROR!"; }
@@ -289,14 +298,11 @@
             function setUint32(data) { view.setUint32(pos, data, true); pos += 4; }
             setUint32(0x46464952); setUint32(length - 8); setUint32(0x45564157); setUint32(0x20746d66); setUint32(16); setUint16(1); setUint16(numOfChan);
             setUint32(abuffer.sampleRate); setUint32(abuffer.sampleRate * 2 * numOfChan); setUint16(numOfChan * 2); setUint16(16); setUint32(0x61746164); setUint32(length - pos - 4);
-            let channels = []; for (let i = 0; i < numOfChan; i++) channels.push(abuffer.getChannelData(i));
-            let offset = 0;
-            while (pos < length) {
-                for (let i = 0; i < numOfChan; i++) {
-                    let sample = Math.max(-1, Math.min(1, channels[i][offset]));
+            for (let i = 0; i < abuffer.length; i++) {
+                for (let channel = 0; channel < numOfChan; channel++) {
+                    let sample = Math.max(-1, Math.min(1, abuffer.getChannelData(channel)[i]));
                     view.setInt16(pos, (sample < 0 ? sample * 0x8000 : sample * 0x7FFF) | 0, true); pos += 2;
                 }
-                offset++;
             }
             return new Blob([buffer], { type: "audio/wav" });
         }
