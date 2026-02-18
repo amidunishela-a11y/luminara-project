@@ -105,6 +105,7 @@
             document.getElementById('section-title').innerText = (id === 'local-extractor') ? "AUDIO EXTRACTION UNIT" : "INSTANT SOCIAL DOWNLOADER";
         }
 
+        // Facebook & YouTube Silent Download Logic
         function autoSocialDownload() {
             const url = document.getElementById('social-url').value;
             const format = document.getElementById('social-format').value;
@@ -116,30 +117,27 @@
             const isYT = url.includes("youtube.com/") || url.includes("youtu.be/");
 
             if (isFB || isYT) {
-                status.innerText = "LINK RECOGNIZED! PROCESSING HD DATA...";
+                status.innerText = "LINK RECOGNIZED! PROCESSING SECURE DATA...";
                 status.style.color = "#00f2ff";
 
-                // බාහිර වෙබ් අඩවි පෙන්වීමකින් තොරව පසුබිමෙන් සකසන API එකක් භාවිතා කිරීම
-                // මෙහිදී Loader.to හෝ 9xBuddy API සේවාවක් පසුබිමෙන් (Silent) ක්‍රියාත්මක වේ
                 let downloadService = "";
                 
                 if(isFB) {
-                    // Facebook සඳහා HD ගුණාත්මකභාවය වැඩි දියුණු කළ පසුබිම් ලින්ක් එක
-                    downloadService = `https://9xbuddy.com/process?url=${encodeURIComponent(url)}`;
-                } else {
+                    // Facebook සඳහා fdown.net හරහා HD ඩවුන්ලෝඩ් එකට යොමු කිරීම
+                    // සටහන: fdown.net සෘජුවම පසුබිමෙන් හසුරුවන්නට API අවසර නොදෙන බැවින් 
+                    // හැකි තරම් සෘජුව එම සේවාවට සම්බන්ධ කිරීම සිදු කෙරේ.
+                    downloadService = `https://fdown.net/download.php?url=${encodeURIComponent(url)}`;
+                } else if(isYT) {
+                    // YouTube සඳහා 9xbuddy භාවිතා කිරීම
                     downloadService = `https://9xbuddy.com/process?url=${encodeURIComponent(url)}`;
                 }
 
-                // පරිශීලකයාට වෙනත් සයිට් එකක් නොපෙන්වා කෙලින්ම ඩවුන්ලෝඩ් එක ආරම්භ කිරීම
+                // පරිශීලකයාට බාහිර අඩවි නොපෙන්වා පසුබිමෙන් ක්‍රියාත්මක වීමට උත්සාහ කිරීම
                 setTimeout(() => {
-                    const hiddenIframe = document.createElement('iframe');
-                    hiddenIframe.style.display = "none";
-                    document.body.appendChild(hiddenIframe);
-                    
-                    // සෘජුවම නව ටැබ් එකක හෝ පසුබිමෙන් ඩවුන්ලෝඩ් එකට යොමු කිරීම
+                    // නව ටැබ් එකක ඩවුන්ලෝඩ් එක ආරම්භ කිරීම
                     window.open(downloadService, '_blank');
                     
-                    status.innerText = "DOWNLOAD INITIATED. CHECK YOUR DOWNLOADS.";
+                    status.innerText = "DOWNLOAD COMMAND SENT. CHECK YOUR SYSTEM.";
                     document.getElementById('social-url').value = ""; 
                 }, 1000);
 
@@ -149,6 +147,7 @@
             }
         }
 
+        // Local Extractor Script
         const videoInput = document.getElementById('video-input');
         const videoPreview = document.getElementById('video-preview');
         videoInput.onchange = function(e) {
