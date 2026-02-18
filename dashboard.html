@@ -29,7 +29,7 @@
         .convert-btn:hover { background: #fff; box-shadow: 0 0 20px var(--neon); }
         .terminate-btn { margin-top: auto; padding: 15px; background: transparent; border: 1px solid #ff4d4d; color: #ff4d4d; border-radius: 8px; cursor: pointer; font-family: 'Orbitron'; transition: 0.3s; }
         .terminate-btn:hover { background: #ff4d4d; color: #fff; }
-        #status-msg, #yt-status-msg { text-align: center; font-size: 0.8rem; color: var(--neon); margin-top: 10px; font-family: 'Orbitron'; }
+        #status-msg, #social-status-msg { text-align: center; font-size: 0.8rem; color: var(--neon); margin-top: 10px; font-family: 'Orbitron'; }
     </style>
 </head>
 <body>
@@ -39,8 +39,8 @@
         <div class="nav-item active" onclick="showSection('local-extractor', this)">
             <i class="fas fa-cut"></i> LOCAL EXTRACTOR
         </div>
-        <div class="nav-item" onclick="showSection('youtube-downloader', this)">
-            <i class="fab fa-youtube"></i> YT DOWNLOADER
+        <div class="nav-item" onclick="showSection('social-downloader', this)">
+            <i class="fas fa-cloud-download-alt"></i> SOCIAL DOWNLOADER
         </div>
         <button class="terminate-btn" onclick="logout()">TERMINATE</button>
     </div>
@@ -68,63 +68,76 @@
                         <label>END POINT (SEC)</label>
                         <input type="number" id="end-time" value="10" step="0.1">
                     </div>
-                    <button class="convert-btn" id="convert-btn" onclick="extractAudioDirect()">PROCESS & DOWNLOAD MP3</button>
+                    <button class="convert-btn" id="convert-btn" onclick="extractAudio()">PROCESS & DOWNLOAD MP3</button>
                     <div id="status-msg">READY FOR COMMAND...</div>
                 </div>
             </div>
         </div>
 
-        <div id="youtube-downloader" class="section">
+        <div id="social-downloader" class="section">
             <div class="player-card">
                 <div class="tools-grid">
                     <div class="input-box" style="grid-column: span 2;">
-                        <label><i class="fab fa-youtube"></i> YOUTUBE VIDEO LINK</label>
-                        <input type="text" id="yt-url" placeholder="Paste link here to download instantly..." oninput="autoDownloadCheck()">
+                        <label><i class="fas fa-link"></i> YT / FACEBOOK VIDEO LINK</label>
+                        <input type="text" id="social-url" placeholder="Paste YouTube or Facebook link here..." oninput="autoSocialDownload()">
                     </div>
                     <div class="input-box" style="grid-column: span 2;">
                         <label><i class="fas fa-file-download"></i> PREFERRED FORMAT</label>
-                        <select id="yt-format" onchange="autoDownloadCheck()">
+                        <select id="social-format" onchange="autoSocialDownload()">
                             <option value="mp3">MP3 (High Quality Audio)</option>
                             <option value="360">MP4 (360p Video)</option>
                             <option value="720">MP4 (720p Video)</option>
                             <option value="1080">MP4 (1080p Full HD)</option>
                         </select>
                     </div>
-                    <div id="yt-status-msg">WAITING FOR YOUTUBE LINK...</div>
+                    <div id="social-status-msg">WAITING FOR LINK...</div>
                 </div>
             </div>
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ffmpeg/0.11.6/ffmpeg.min.js"></script>
     <script>
         function showSection(id, element) {
             document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             element.classList.add('active');
-            document.getElementById('section-title').innerText = (id === 'local-extractor') ? "AUDIO EXTRACTION UNIT" : "INSTANT YT DOWNLOADER";
+            document.getElementById('section-title').innerText = (id === 'local-extractor') ? "AUDIO EXTRACTION UNIT" : "INSTANT SOCIAL DOWNLOADER";
         }
 
-        // YouTube Instant Download Logic
-        function autoDownloadCheck() {
-            const url = document.getElementById('yt-url').value;
-            const status = document.getElementById('yt-status-msg');
-            if (url.includes("youtube.com/") || url.includes("youtu.be/")) {
+        // YouTube & Facebook Instant Download Logic
+        function autoSocialDownload() {
+            const url = document.getElementById('social-url').value;
+            const status = document.getElementById('social-status-msg');
+
+            if (!url) return;
+
+            // පරීක්ෂා කිරීම: YouTube හෝ Facebook ද යන්න
+            const isYT = url.includes("youtube.com/") || url.includes("youtu.be/");
+            const isFB = url.includes("facebook.com/") || url.includes("fb.watch/");
+
+            if (isYT || isFB) {
                 status.innerText = "LINK DETECTED! REDIRECTING TO DOWNLOAD...";
                 status.style.color = "#00ff00";
+
+                // Direct Download API (y2mate/9xbuddy service logic)
                 const downloadLink = `https://9xbuddy.com/process?url=${encodeURIComponent(url)}`;
+                
                 setTimeout(() => {
                     window.open(downloadLink, '_blank');
-                    status.innerText = "DOWNLOAD STARTED. READY FOR NEXT LINK.";
-                    document.getElementById('yt-url').value = "";
+                    status.innerText = "DOWNLOAD CHANNEL OPENED. READY FOR NEXT LINK.";
+                    document.getElementById('social-url').value = ""; // Input එක clear කිරීම
                 }, 1500);
+            } else {
+                status.innerText = "INVALID LINK. PLEASE PROVIDE A YT OR FB URL.";
+                status.style.color = "#ff4d4d";
             }
         }
 
-        // --- Direct MP3 Extraction (No Engine Required) ---
+        // Local Extractor Script
         const videoInput = document.getElementById('video-input');
         const videoPreview = document.getElementById('video-preview');
-        
         videoInput.onchange = function(e) {
             const file = e.target.files[0];
             if (file) {
@@ -138,86 +151,29 @@
             }
         };
 
-        async function extractAudioDirect() {
+        async function extractAudio() {
+            const { createFFmpeg, fetchFile } = FFmpeg;
+            const ffmpeg = createFFmpeg({ log: false });
             const file = videoInput.files[0];
-            const startTime = parseFloat(document.getElementById('start-time').value);
-            const endTime = parseFloat(document.getElementById('end-time').value);
+            const start = document.getElementById('start-time').value;
+            const end = document.getElementById('end-time').value;
             const btn = document.getElementById('convert-btn');
-            const status = document.getElementById('status-msg');
-
             if (!file) return;
-
             btn.disabled = true;
-            status.innerText = "PROCESSING AUDIO... PLEASE WAIT";
-
+            document.getElementById('status-msg').innerText = "PROCESSING...";
             try {
-                // Browser එකේම ඇති Web Audio API එක භාවිතයෙන් Audio extract කිරීම
-                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                const arrayBuffer = await file.arrayBuffer();
-                const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
-
-                const sampleRate = audioBuffer.sampleRate;
-                const startOffset = startTime * sampleRate;
-                const endOffset = endTime * sampleRate;
-                const frameCount = endOffset - startOffset;
-
-                const newBuffer = audioCtx.createBuffer(
-                    audioBuffer.numberOfChannels,
-                    frameCount,
-                    sampleRate
-                );
-
-                for (let i = 0; i < audioBuffer.numberOfChannels; i++) {
-                    const channelData = audioBuffer.getChannelData(i);
-                    newBuffer.copyToChannel(channelData.subarray(startOffset, endOffset), i);
-                }
-
-                // WAV ගොනුවක් ලෙස සකසා MP3 ලෙස නම් කර බාගත කිරීම
-                const wavData = bufferToWav(newBuffer);
-                const blob = new Blob([wavData], { type: 'audio/mp3' });
-                const url = URL.createObjectURL(blob);
-
+                if (!ffmpeg.isLoaded()) await ffmpeg.load();
+                ffmpeg.FS('writeFile', 'input.mp4', await fetchFile(file));
+                await ffmpeg.run('-ss', start, '-to', end, '-i', 'input.mp4', '-q:a', '2', '-map', 'a', 'output.mp3');
+                const data = ffmpeg.FS('readFile', 'output.mp3');
                 const link = document.createElement('a');
-                link.href = url;
-                link.download = `LUMINARA_AUDIO_${Date.now()}.mp3`;
+                link.href = URL.createObjectURL(new Blob([data.buffer], { type: 'audio/mp3' }));
+                link.download = `LUMINARA_${Date.now()}.mp3`;
                 link.click();
-
-                status.innerText = "SUCCESSFULLY DOWNLOADED TO DEVICE.";
+                document.getElementById('status-msg').innerText = "SUCCESSFUL.";
             } catch (err) {
-                console.error(err);
-                status.innerText = "ERROR: EXTRACTION FAILED.";
-            } finally {
-                btn.disabled = false;
-            }
-        }
-
-        // Helper function: AudioBuffer එක WAV (MP3 compatible) format එකට හරවයි
-        function bufferToWav(abuffer) {
-            let numOfChan = abuffer.numberOfChannels,
-                length = abuffer.length * numOfChan * 2 + 44,
-                buffer = new ArrayBuffer(length),
-                view = new DataView(buffer),
-                channels = [], i, sample,
-                offset = 0, pos = 0;
-
-            function setUint16(data) { view.setUint16(pos, data, true); pos += 2; }
-            function setUint32(data) { view.setUint32(pos, data, true); pos += 4; }
-
-            setUint32(0x46464952); setUint32(length - 8); setUint32(0x45564157);
-            setUint32(0x20746d66); setUint32(16); setUint16(1); setUint16(numOfChan);
-            setUint32(abuffer.sampleRate); setUint32(abuffer.sampleRate * 2 * numOfChan);
-            setUint16(numOfChan * 2); setUint16(16); setUint32(0x61746164); setUint32(length - pos - 4);
-
-            for (i = 0; i < abuffer.numberOfChannels; i++) channels.push(abuffer.getChannelData(i));
-            while (pos < length) {
-                for (i = 0; i < numOfChan; i++) {
-                    sample = Math.max(-1, Math.min(1, channels[i][offset]));
-                    sample = (sample < 0 ? sample * 0x8000 : sample * 0x7FFF) | 0;
-                    view.setInt16(pos, sample, true); pos += 2;
-                }
-                offset++;
-            }
-            return buffer;
+                document.getElementById('status-msg').innerText = "FAILED.";
+            } finally { btn.disabled = false; }
         }
 
         document.getElementById('user-display').innerText = `ID: ${localStorage.getItem('loggedEmail') || "GUEST"}`;
