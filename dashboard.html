@@ -3,309 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LUMINARA | CENTRAL COMMAND</title>
+    <title>LUMINARA | MEDIA CONVERTER</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --neon: #00f2ff; --bg: #000a0f; --card-bg: rgba(0, 242, 255, 0.03); }
-         
+        :root { --neon: #00f2ff; --bg: #000a0f; --card-bg: rgba(0, 242, 255, 0.05); }
+        
         body {
             margin: 0; background-color: var(--bg); color: #fff;
-            font-family: 'Inter', sans-serif; overflow: hidden;
-            display: flex; height: 100vh;
+            font-family: 'Inter', sans-serif; display: flex; height: 100vh;
         }
 
-        /* Sidebar Design */
+        /* Sidebar */
         .sidebar {
             width: 260px; background: rgba(0, 0, 0, 0.8);
             border-right: 1px solid rgba(0, 242, 255, 0.2);
             display: flex; flex-direction: column; padding: 20px;
-            backdrop-filter: blur(10px); z-index: 10;
+            backdrop-filter: blur(10px);
         }
 
-        .logo { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; font-weight: bold; color: var(--neon); letter-spacing: 4px; margin-bottom: 50px; }
-
-        .nav-item {
-            padding: 15px; margin-bottom: 10px; border-radius: 8px;
-            cursor: pointer; color: #888; transition: 0.3s; font-size: 0.85rem;
-        }
-
-        .nav-item.active, .nav-item:hover { color: var(--neon); background: rgba(0, 242, 255, 0.1); }
+        .logo { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; color: var(--neon); letter-spacing: 4px; margin-bottom: 50px; }
 
         /* Main Content */
-        .content { flex: 1; padding: 30px; overflow-y: auto; position: relative; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 20px; }
-        .user-id { font-family: 'Orbitron'; font-size: 0.7rem; color: var(--neon); letter-spacing: 2px; }
-
-        /* Grid */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .card { background: var(--card-bg); border: 1px solid rgba(0, 242, 255, 0.1); padding: 25px; border-radius: 15px; transition: 0.3s; cursor: pointer; }
-        .card:hover { border-color: var(--neon); box-shadow: 0 0 20px rgba(0, 242, 255, 0.1); transform: translateY(-5px); }
-        .card h3 { font-family: 'Orbitron'; font-size: 0.7rem; color: #888; letter-spacing: 2px; }
-        .card .value { font-family: 'Orbitron'; font-size: 2.2rem; font-weight: bold; text-shadow: 0 0 10px var(--neon); }
-
-        /* Inventory Overlay */
-        #inventory-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 10, 15, 0.98); z-index: 100;
-            display: none; flex-direction: column; padding: 30px; box-sizing: border-box;
-            backdrop-filter: blur(25px);
+        .content { flex: 1; padding: 30px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; }
+        
+        .converter-container {
+            width: 100%; max-width: 800px; background: var(--card-bg);
+            border: 1px solid rgba(0, 242, 255, 0.2); padding: 30px;
+            border-radius: 20px; box-shadow: 0 0 30px rgba(0, 242, 255, 0.1);
         }
 
-        .overlay-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .brand-logo-ui { font-size: 2.2rem; margin-right: 15px; }
+        h2 { font-family: 'Orbitron'; color: var(--neon); text-align: center; margin-bottom: 30px; font-size: 1.2rem; }
 
-        /* Brand Navigation Tabs */
-        .tabs { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 10px; }
-        .tab-btn {
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(0, 242, 255, 0.2);
-            color: #ccc; padding: 12px 20px; border-radius: 5px; cursor: pointer;
-            font-family: 'Orbitron'; font-size: 0.65rem; transition: 0.3s; display: flex; align-items: center; gap: 8px;
-            white-space: nowrap;
+        .upload-area {
+            border: 2px dashed rgba(0, 242, 255, 0.3); padding: 40px;
+            text-align: center; border-radius: 15px; cursor: pointer; transition: 0.3s;
         }
-        .tab-btn.active { background: var(--neon); color: #000; font-weight: bold; border-color: #fff; }
+        .upload-area:hover { background: rgba(0, 242, 255, 0.05); border-color: var(--neon); }
 
-        .table-container { flex: 1; overflow-y: auto; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; }
-        table { width: 100%; border-collapse: collapse; }
-        th { background: rgba(0, 242, 255, 0.1); color: var(--neon); text-align: left; padding: 15px; position: sticky; top: 0; font-family: 'Orbitron'; font-size: 0.7rem; }
-        td { padding: 12px 15px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.85rem; color: #ddd; }
-        tr:hover { background: rgba(0, 242, 255, 0.05); }
+        video { width: 100%; margin-top: 20px; border-radius: 10px; display: none; border: 1px solid var(--neon); }
 
-        .close-btn { color: #ff4d4d; border: 1px solid #ff4d4d; padding: 8px 20px; border-radius: 5px; cursor: pointer; font-family: 'Orbitron'; }
-        .close-btn:hover { background: #ff4d4d; color: #fff; }
+        .controls { margin-top: 25px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; display: none; }
+        
+        .input-group { display: flex; flex-direction: column; gap: 8px; }
+        label { font-family: 'Orbitron'; font-size: 0.7rem; color: #888; }
+        input { 
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(0, 242, 255, 0.2); 
+            color: #fff; padding: 10px; border-radius: 5px; outline: none;
+        }
 
-        .status-bar { height: 4px; background: #222; border-radius: 2px; margin-top: 15px; overflow: hidden; }
-        .progress { height: 100%; background: var(--neon); box-shadow: 0 0 10px var(--neon); }
+        .action-btn {
+            grid-column: span 2; background: var(--neon); color: #000;
+            border: none; padding: 15px; border-radius: 8px; font-family: 'Orbitron';
+            font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 10px;
+        }
+        .action-btn:hover { background: #fff; transform: scale(1.02); }
+        .action-btn:disabled { background: #444; color: #888; cursor: not-allowed; }
 
-        .terminate-btn { margin-top: auto; padding: 15px; background: transparent; border: 1px solid #ff4d4d; color: #ff4d4d; border-radius: 8px; cursor: pointer; font-family: 'Orbitron'; transition: 0.3s; }
+        #status { margin-top: 15px; font-size: 0.8rem; color: var(--neon); text-align: center; }
+
+        .terminate-btn { margin-top: auto; padding: 15px; background: transparent; border: 1px solid #ff4d4d; color: #ff4d4d; border-radius: 8px; cursor: pointer; font-family: 'Orbitron'; }
         .terminate-btn:hover { background: #ff4d4d; color: #fff; }
-
-        @media (max-width: 768px) {
-            body { flex-direction: column; overflow-y: auto; }
-            .sidebar { width: 100%; height: auto; border-right: none; }
-            #inventory-overlay { padding: 15px; }
-        }
     </style>
 </head>
 <body>
 
     <div class="sidebar">
         <div class="logo">LUMINARA</div>
-        <div class="nav-item active">OVERVIEW</div>
-        <div class="nav-item">SECURITY LOGS</div>
-        <div class="nav-item">DATABASE</div>
+        <div style="color: var(--neon); font-size: 0.7rem; font-family: 'Orbitron';">AUDIO EXTRACTOR v1.0</div>
         <button class="terminate-btn" onclick="logout()">TERMINATE</button>
     </div>
 
     <div class="content">
-        <div class="header">
-            <h2 style="font-family: 'Orbitron'; font-size: 1.1rem;">CENTRAL COMMAND</h2>
-            <div class="user-id" id="user-display">SYNCING...</div>
-        </div>
-
-        <div class="grid">
-            <div class="card" onclick="openInventory()">
-                <h3>MOBILE CLUSTER</h3>
-                <div class="value">GLOBAL BRANDS</div>
-                <div class="status-bar"><div class="progress" style="width: 95%;"></div></div>
-                <p style="font-size: 0.6rem; color: var(--neon); margin-top: 10px;">ACCESS MASTER DATABASE</p>
-            </div>
+        <div class="converter-container">
+            <h2><i class="fas fa-file-audio"></i> VIDEO TO MP3 CONVERTER</h2>
             
-            <div class="card">
-                <h3>VEHICLES</h3>
-                <div class="value">04 UNITS</div>
-                <div class="status-bar"><div class="progress" style="width: 45%;"></div></div>
+            <div class="upload-area" id="drop-zone" onclick="document.getElementById('video-input').click()">
+                <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; color: var(--neon); margin-bottom: 15px;"></i>
+                <p>Click or Drag MP4 Video to Start</p>
+                <input type="file" id="video-input" accept="video/mp4" hidden>
             </div>
 
-            <div class="card">
-                <h3>ELECTRONICS</h3>
-                <div class="value">112 UNITS</div>
-                <div class="status-bar"><div class="progress" style="width: 70%;"></div></div>
+            <video id="video-preview" controls></video>
+
+            <div class="controls" id="controls-ui">
+                <div class="input-group">
+                    <label>START TIME (Seconds)</label>
+                    <input type="number" id="start-time" value="0" min="0">
+                </div>
+                <div class="input-group">
+                    <label>END TIME (Seconds)</label>
+                    <input type="number" id="end-time" value="10">
+                </div>
+                <button class="action-btn" id="convert-btn" onclick="processVideo()">
+                    GENERATE & DOWNLOAD MP3
+                </button>
             </div>
+
+            <div id="status"></div>
         </div>
     </div>
 
-    <div id="inventory-overlay">
-        <div class="overlay-header">
-            <div style="display: flex; align-items: center;">
-                <div id="brand-logo-container" class="brand-logo-ui"></div>
-                <h2 id="brand-title" style="font-family: 'Orbitron'; color: var(--neon); letter-spacing: 3px; font-size: 1rem;"></h2>
-            </div>
-            <div class="close-btn" onclick="closeInventory()">CLOSE [X]</div>
-        </div>
-
-        <div class="tabs">
-            <button class="tab-btn active" onclick="showBrand('apple', this)"><i class="fab fa-apple"></i> APPLE</button>
-            <button class="tab-btn" onclick="showBrand('samsung', this)"><i class="fas fa-mobile-alt"></i> SAMSUNG</button>
-            <button class="tab-btn" onclick="showBrand('google', this)"><i class="fab fa-google"></i> PIXEL</button>
-            <button class="tab-btn" onclick="showBrand('vivo', this)"><i class="fas fa-bolt"></i> VIVO</button>
-            <button class="tab-btn" onclick="showBrand('huawei', this)"><i class="fas fa-shield-alt"></i> HUAWEI</button>
-            <button class="tab-btn" onclick="showBrand('honor', this)"><i class="fas fa-medal"></i> HONOR</button>
-        </div>
-
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>MODEL NAME</th>
-                        <th>DISPLAY / TECHNOLOGY</th>
-                        <th>PROCESSOR / RAM</th>
-                        <th>BATTERY UNIT</th>
-                    </tr>
-                </thead>
-                <tbody id="table-body"></tbody>
-            </table>
-        </div>
-    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ffmpeg/0.11.6/ffmpeg.min.js"></script>
 
     <script>
-        const deviceData = {
-            apple: {
-                title: "APPLE IPHONE COMPREHENSIVE LIST",
-                logo: '<i class="fab fa-apple"></i>',
-                items: [
-                    {m: "iPhone 17 Pro Max (Predicted)", s: "6.9\" ProMotion OLED (2000 nits)", c: "A19 Pro (2nm) / 12GB", b: "4850 mAh"},
-                    {m: "iPhone 16 Pro Max", s: "6.9\" LTPO Super Retina", c: "A18 Pro (3nm) / 8GB", b: "4676 mAh"},
-                    {m: "iPhone 15 Pro Max", s: "6.7\" Titanium Build", c: "A17 Pro / 8GB", b: "4441 mAh"},
-                    {m: "iPhone 14 Pro Max", s: "6.7\" Always-On Display", c: "A16 Bionic / 6GB", b: "4323 mAh"},
-                    {m: "iPhone 13 Pro Max", s: "6.7\" 120Hz ProMotion", c: "A15 Bionic / 6GB", b: "4352 mAh"},
-                    {m: "iPhone 12 Pro Max", s: "6.7\" Ceramic Shield", c: "A14 Bionic / 6GB", b: "3687 mAh"},
-                    {m: "iPhone 11 Pro Max", s: "6.5\" Super Retina XDR", c: "A13 Bionic / 4GB", b: "3969 mAh"},
-                    {m: "iPhone XS Max", s: "6.5\" OLED", c: "A12 Bionic / 4GB", b: "3174 mAh"},
-                    {m: "iPhone X", s: "5.8\" First OLED iPhone", c: "A11 Bionic / 3GB", b: "2716 mAh"},
-                    {m: "iPhone 8 Plus", s: "5.5\" Retina HD", c: "A11 Bionic / 3GB", b: "2691 mAh"},
-                    {m: "iPhone 7 Plus", s: "5.5\" Water Resistant", c: "A10 Fusion / 3GB", b: "2900 mAh"},
-                    {m: "iPhone 6S Plus", s: "5.5\" 3D Touch", c: "A9 Chip / 2GB", b: "2750 mAh"},
-                    {m: "iPhone 6 Plus", s: "5.5\" Retina", c: "A8 Chip / 1GB", b: "2915 mAh"}
-                ]
-            },
-            samsung: {
-                title: "SAMSUNG GALAXY S-SERIES EVOLUTION",
-                logo: '<i class="fas fa-mobile-alt" style="color:#034ea2;"></i>',
-                items: [
-                    {m: "Galaxy S24 Ultra", s: "6.8\" Dynamic AMOLED 2X", c: "Snapdragon 8 Gen 3 / 12GB", b: "5000 mAh"},
-                    {m: "Galaxy S23 Ultra", s: "6.8\" 200MP Camera Tech", c: "SD 8 Gen 2 / 12GB", b: "5000 mAh"},
-                    {m: "Galaxy S22 Ultra", s: "6.8\" Integrated S-Pen", c: "SD 8 Gen 1 / 12GB", b: "5000 mAh"},
-                    {m: "Galaxy S21 Ultra", s: "6.8\" Dual Telephoto", c: "Exynos 2100 / 12GB", b: "5000 mAh"},
-                    {m: "Galaxy S20 Ultra", s: "6.9\" 100x Space Zoom", c: "Exynos 990 / 12GB", b: "5000 mAh"},
-                    {m: "Galaxy S10+", s: "6.4\" Dynamic AMOLED", c: "Exynos 9820 / 8GB", b: "4100 mAh"},
-                    {m: "Galaxy S9+", s: "6.2\" Infinity Display", c: "Exynos 9810 / 6GB", b: "3500 mAh"},
-                    {m: "Galaxy S8+", s: "6.2\" First Bezel-less", c: "Exynos 8895 / 4GB", b: "3500 mAh"},
-                    {m: "Galaxy S7 Edge", s: "5.5\" Curved Screen", c: "Exynos 8890 / 4GB", b: "3600 mAh"},
-                    {m: "Galaxy S6 Edge", s: "5.1\" Dual Curve", c: "Exynos 7420 / 3GB", b: "2600 mAh"},
-                    {m: "Galaxy S5", s: "5.1\" Fingerprint/Water Res", c: "SD 801 / 2GB", b: "2800 mAh"},
-                    {m: "Galaxy S4", s: "5.0\" Full HD", c: "Exynos 5 / 2GB", b: "2600 mAh"},
-                    {m: "Galaxy S3", s: "4.8\" HD Super AMOLED", c: "Exynos 4 / 1GB", b: "2100 mAh"},
-                    {m: "Galaxy S2", s: "4.3\" Slim Design", c: "Dual-core / 1GB", b: "1650 mAh"},
-                    {m: "Galaxy S1 (2010)", s: "4.0\" Super AMOLED", c: "Hummingbird / 512MB", b: "1500 mAh"}
-                ]
-            },
-            google: {
-                title: "GOOGLE PIXEL ECOSYSTEM",
-                logo: '<i class="fab fa-google" style="color:#4285F4;"></i>',
-                items: [
-                    {m: "Pixel 9 Pro XL", s: "6.8\" LTPO OLED Super Actua", c: "Tensor G4 / 16GB", b: "5060 mAh"},
-                    {m: "Pixel 8 Pro", s: "6.7\" Actua Display", c: "Tensor G3 / 12GB", b: "5050 mAh"},
-                    {m: "Pixel 7 Pro", s: "6.7\" LTPO OLED", c: "Tensor G2 / 12GB", b: "5000 mAh"},
-                    {m: "Pixel 6 Pro", s: "6.7\" First Tensor Chip", c: "Google Tensor / 12GB", b: "5003 mAh"},
-                    {m: "Pixel 5", s: "6.0\" OLED 90Hz", c: "SD 765G / 8GB", b: "4080 mAh"},
-                    {m: "Pixel 4 XL", s: "6.3\" Face Unlock Tech", c: "SD 855 / 6GB", b: "3700 mAh"},
-                    {m: "Pixel 3 XL", s: "6.3\" P-OLED", c: "SD 845 / 4GB", b: "3430 mAh"},
-                    {m: "Pixel 2 XL", s: "6.0\" P-OLED", c: "SD 835 / 4GB", b: "3520 mAh"},
-                    {m: "Pixel 1 XL (2016)", s: "5.5\" AMOLED", c: "SD 821 / 4GB", b: "3450 mAh"}
-                ]
-            },
-            vivo: {
-                title: "VIVO X & V SERIES EVOLUTION",
-                logo: '<i class="fas fa-bolt" style="color:#415fff;"></i>',
-                items: [
-                    {m: "Vivo X200 Pro (Upcoming)", s: "6.78\" Satellite Comm", c: "Dimensity 9400 / 16GB", b: "6000 mAh"},
-                    {m: "Vivo X100 Ultra", s: "6.78\" Samsung E7 AMOLED", c: "SD 8 Gen 3 / 16GB", b: "5500 mAh"},
-                    {m: "Vivo X90 Pro+", s: "6.78\" 1-inch Sensor", c: "SD 8 Gen 2 / 12GB", b: "4700 mAh"},
-                    {m: "Vivo X80 Pro", s: "6.78\" LTPO3 AMOLED", c: "SD 8 Gen 1 / 12GB", b: "4700 mAh"},
-                    {m: "Vivo X70 Pro+", s: "6.78\" Zeiss Optics", c: "SD 888+ / 12GB", b: "4500 mAh"},
-                    {m: "Vivo X60 Pro+", s: "6.56\" Gimbal Stab", c: "SD 888 / 12GB", b: "4200 mAh"},
-                    {m: "Vivo V30 Pro", s: "6.78\" 3D Curved", c: "Dimensity 8200 / 12GB", b: "5000 mAh"},
-                    {m: "Vivo V20", s: "6.44\" AMOLED", c: "SD 720G / 8GB", b: "4000 mAh"},
-                    {m: "Vivo V15 Pro", s: "6.39\" Pop-up Camera", c: "SD 675 / 6GB", b: "3700 mAh"},
-                    {m: "Vivo NEX 3", s: "6.89\" Waterfall Display", c: "SD 855+ / 8GB", b: "4500 mAh"},
-                    {m: "Vivo Xplay 3S (2013)", s: "6.0\" First 2K Display", c: "SD 800 / 3GB", b: "3200 mAh"},
-                    {m: "Vivo X1 (2012)", s: "4.7\" World's Slimmest", c: "Dual-core / 1GB", b: "2000 mAh"}
-                ]
-            },
-            huawei: {
-                title: "HUAWEI MATE & PURA LEGACY",
-                logo: '<i class="fas fa-shield-alt" style="color:#cf0a2c;"></i>',
-                items: [
-                    {m: "Huawei Mate 70 Pro (Upcoming)", s: "6.8\" HarmonyOS Next", c: "Kirin 9100 / 16GB", b: "5500 mAh"},
-                    {m: "Huawei Pura 70 Ultra", s: "6.8\" Retractable Cam", c: "Kirin 9010 / 16GB", b: "5200 mAh"},
-                    {m: "Huawei Mate 60 Pro", s: "6.82\" Sat Calling", c: "Kirin 9000S / 12GB", b: "5000 mAh"},
-                    {m: "Huawei Mate 50 Pro", s: "6.74\" XMAGE Camera", c: "SD 8+ Gen 1 / 8GB", b: "4700 mAh"},
-                    {m: "Huawei Mate 40 Pro", s: "6.76\" 88° Curved", c: "Kirin 9000 / 8GB", b: "4400 mAh"},
-                    {m: "Huawei P30 Pro", s: "6.47\" 50x Zoom", c: "Kirin 980 / 8GB", b: "4200 mAh"},
-                    {m: "Huawei Mate 20 Pro", s: "6.39\" Matrix Camera", c: "Kirin 980 / 6GB", b: "4200 mAh"},
-                    {m: "Huawei P20 Pro", s: "6.1\" First Triple Cam", c: "Kirin 970 / 6GB", b: "4000 mAh"},
-                    {m: "Huawei Mate 10 Pro", s: "6.0\" NPU Focus", c: "Kirin 970 / 6GB", b: "4000 mAh"},
-                    {m: "Huawei P10", s: "5.1\" Leica Dual Cam", c: "Kirin 960 / 4GB", b: "3200 mAh"},
-                    {m: "Huawei Mate 7 (2014)", s: "6.0\" Fingerprint Scan", c: "Kirin 925 / 2GB", b: "4100 mAh"},
-                    {m: "Huawei Ascend P1 (2012)", s: "4.3\" Super AMOLED", c: "TI OMAP 4460 / 1GB", b: "1670 mAh"}
-                ]
-            },
-            honor: {
-                title: "HONOR FLAGSHIP CHRONICLES",
-                logo: '<i class="fas fa-medal" style="color:#c69c6d;"></i>',
-                items: [
-                    {m: "Honor Magic 7 Pro (Upcoming)", s: "6.82\" AI Defocus", c: "SD 8 Elite / 16GB", b: "5850 mAh"},
-                    {m: "Honor Magic 6 Pro", s: "6.8\" 5000 nits Peak", c: "SD 8 Gen 3 / 12GB", b: "5600 mAh"},
-                    {m: "Honor Magic 5 Pro", s: "6.81\" LTPO OLED", c: "SD 8 Gen 2 / 12GB", b: "5100 mAh"},
-                    {m: "Honor Magic 4 Pro", s: "6.81\" 100W Wireless", c: "SD 8 Gen 1 / 8GB", b: "4600 mAh"},
-                    {m: "Honor Magic 3 Pro", s: "6.76\" IMAX Enhanced", c: "SD 888+ / 8GB", b: "4600 mAh"},
-                    {m: "Honor 90", s: "6.7\" No-Flicker", c: "SD 7 Gen 1 / 12GB", b: "5000 mAh"},
-                    {m: "Honor 50", s: "6.57\" Curved Display", c: "SD 778G / 8GB", b: "4300 mAh"},
-                    {m: "Honor 30 Pro+", s: "6.57\" OLED 90Hz", c: "Kirin 990 5G / 8GB", b: "4000 mAh"},
-                    {m: "Honor 20 Pro", s: "6.26\" Punch-hole", c: "Kirin 980 / 8GB", b: "4000 mAh"},
-                    {m: "Honor 10", s: "5.84\" Aurora Design", c: "Kirin 970 / 4GB", b: "3400 mAh"},
-                    {m: "Honor 8 (2016)", s: "5.2\" Dual Glass", c: "Kirin 950 / 4GB", b: "3000 mAh"},
-                    {m: "Honor 6 (2014)", s: "5.0\" Cat6 LTE", c: "Kirin 920 / 3GB", b: "3100 mAh"}
-                ]
+        const videoInput = document.getElementById('video-input');
+        const videoPreview = document.getElementById('video-preview');
+        const controlsUi = document.getElementById('controls-ui');
+        const status = document.getElementById('status');
+        const startTimeInput = document.getElementById('start-time');
+        const endTimeInput = document.getElementById('end-time');
+
+        videoInput.onchange = function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const url = URL.createObjectURL(file);
+                videoPreview.src = url;
+                videoPreview.style.display = 'block';
+                controlsUi.style.display = 'grid';
+                
+                videoPreview.onloadedmetadata = function() {
+                    endTimeInput.value = Math.floor(videoPreview.duration);
+                };
             }
         };
 
-        function showBrand(brand, btn) {
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+        async function processVideo() {
+            const { createFFmpeg, fetchFile } = FFmpeg;
+            const ffmpeg = createFFmpeg({ log: true });
+            
+            const file = videoInput.files[0];
+            if (!file) return;
 
-            const data = deviceData[brand];
-            document.getElementById('brand-title').innerText = data.title;
-            document.getElementById('brand-logo-container').innerHTML = data.logo;
+            const start = startTimeInput.value;
+            const duration = endTimeInput.value - start;
 
-            const body = document.getElementById('table-body');
-            body.innerHTML = data.items.map(i => `
-                <tr>
-                    <td><b>${i.m}</b></td>
-                    <td>${i.s}</td>
-                    <td>${i.c}</td>
-                    <td>${i.b}</td>
-                </tr>
-            `).join('');
+            if (duration <= 0) {
+                alert("End time must be greater than Start time");
+                return;
+            }
+
+            status.innerText = "Initializing Engine...";
+            const convertBtn = document.getElementById('convert-btn');
+            convertBtn.disabled = true;
+
+            try {
+                if (!ffmpeg.isLoaded()) await ffmpeg.load();
+                
+                status.innerText = "Processing Audio... Please wait.";
+                ffmpeg.FS('writeFile', 'input.mp4', await fetchFile(file));
+
+                // FFmpeg command to trim and convert to mp3
+                await ffmpeg.run('-ss', start.toString(), '-to', endTimeInput.value.toString(), '-i', 'input.mp4', '-q:a', '0', '-map', 'a', 'output.mp3');
+
+                const data = ffmpeg.FS('readFile', 'output.mp3');
+                const audioUrl = URL.createObjectURL(new Blob([data.buffer], { type: 'audio/mp3' }));
+                
+                // Trigger Download
+                const link = document.createElement('a');
+                link.href = audioUrl;
+                link.download = `luminara_audio_${Date.now()}.mp3`;
+                link.click();
+
+                status.innerText = "✅ Conversion Complete! Downloaded.";
+            } catch (err) {
+                console.error(err);
+                status.innerText = "❌ Error during conversion.";
+            } finally {
+                convertBtn.disabled = false;
+            }
         }
 
-        function openInventory() {
-            document.getElementById('inventory-overlay').style.display = 'flex';
-            showBrand('apple', document.querySelector('.tab-btn'));
+        function logout() {
+            localStorage.removeItem('loggedEmail');
+            window.location.href = 'index.html';
         }
-
-        function closeInventory() { document.getElementById('inventory-overlay').style.display = 'none'; }
-
-        const userEmail = localStorage.getItem('loggedEmail') || "Unauthorized";
-        document.getElementById('user-display').innerText = `ID: ${userEmail}`;
-
-        function logout() { localStorage.removeItem('loggedEmail'); window.location.href = 'index.html'; }
-
-        document.addEventListener('contextmenu', e => e.preventDefault());
-        document.onkeydown = function(e) {
-            if(event.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0))) return false;
-        };
     </script>
 </body>
 </html>
