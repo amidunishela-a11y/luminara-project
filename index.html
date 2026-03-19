@@ -7,37 +7,70 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;700&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
+        :root {
+            --primary-orange: #FF7043;
+            --primary-blue: #003366;
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.15);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            scroll-behavior: smooth;
         }
 
         body {
             font-family: 'Noto Sans Sinhala', 'Poppins', sans-serif;
-            /* iOS 26 style background gradient */
-            background: linear-gradient(135deg, #001529 0%, #003366 100%);
+            background: #000b18;
             color: white;
-            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* --- Glassmorphism Header --- */
+        /* Animated Background Orbs */
+        .bg-blobs {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+            background: radial-gradient(circle at 50% 50%, #001a33 0%, #000b18 100%);
+        }
+
+        .blob {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255, 112, 67, 0.08), transparent 70%);
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: move 20s infinite alternate;
+        }
+
+        @keyframes move {
+            from { transform: translate(-10%, -10%); }
+            to { transform: translate(20%, 20%); }
+        }
+
+        /* --- Modern Glass Header --- */
         header {
             position: fixed;
-            top: 15px;
+            top: 20px;
             left: 50%;
             transform: translateX(-50%);
             width: 90%;
             max-width: 1200px;
-            /* Glass Effect */
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 20px;
-            padding: 12px 30px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 12px 40px;
             z-index: 1000;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
         }
 
         nav {
@@ -46,32 +79,43 @@
             align-items: center;
         }
 
+        /* --- Modern W Logo CSS --- */
         .logo {
             display: flex;
             align-items: center;
             text-decoration: none;
         }
 
-        .w-icon-container {
+        .w-icon-box {
             background: linear-gradient(135deg, #FF7043, #FF5722);
             color: white;
-            width: 38px;
-            height: 38px;
+            width: 40px;
+            height: 40px;
             display: flex;
             justify-content: center;
             align-items: center;
-            border-radius: 10px 10px 10px 2px;
-            margin-right: 8px;
+            border-radius: 12px 12px 12px 3px;
+            margin-right: 10px;
             font-weight: 800;
-            font-size: 20px;
-            box-shadow: 0 4px 15px rgba(255, 112, 67, 0.4);
+            font-size: 22px;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(255, 112, 67, 0.4);
+        }
+
+        .w-icon-box::before {
+            content: "“";
+            position: absolute;
+            top: 2px;
+            left: 6px;
+            font-size: 18px;
+            opacity: 0.7;
         }
 
         .brand-text {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 700;
-            color: #ffffff;
-            letter-spacing: -0.5px;
+            color: #fff;
+            letter-spacing: -1px;
         }
 
         nav ul {
@@ -79,124 +123,167 @@
             list-style: none;
         }
 
-        nav ul li {
-            margin-left: 20px;
-        }
+        nav ul li { margin-left: 30px; }
 
         nav ul li a {
             text-decoration: none;
-            color: rgba(255, 255, 255, 0.85);
+            color: rgba(255, 255, 255, 0.7);
             font-weight: 500;
-            font-size: 15px;
             transition: 0.3s;
         }
 
-        nav ul li a:hover {
-            color: #FF7043;
-            text-shadow: 0 0 10px rgba(255, 112, 67, 0.5);
-        }
+        nav ul li a:hover { color: var(--primary-orange); }
 
         /* --- Hero Section --- */
-        .hero {
-            height: 100vh;
+        section {
+            padding: 120px 5%;
+            min-height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            text-align: center;
-            padding: 0 20px;
-            position: relative;
-        }
-
-        /* Background Soft Orbs (iOS style) */
-        .hero::before {
-            content: "";
-            position: absolute;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(255, 112, 67, 0.15), transparent);
-            top: 20%;
-            left: 10%;
-            z-index: -1;
-            filter: blur(50px);
         }
 
         .hero-card {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 40px;
-            padding: 60px 40px;
-            max-width: 850px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            border-radius: 50px;
+            padding: 80px 40px;
+            text-align: center;
+            max-width: 900px;
         }
 
-        .hero-text h1 {
-            font-size: 3.5rem;
+        h1 {
+            font-size: 4rem;
             margin-bottom: 20px;
-            background: linear-gradient(to bottom, #ffffff, #b0c4de);
+            background: linear-gradient(to bottom, #fff, #888);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .hero-text p {
-            font-size: 1.2rem;
-            margin-bottom: 40px;
-            color: rgba(255, 255, 255, 0.7);
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
         .btn {
-            background: linear-gradient(135deg, #FF7043, #FF5722);
+            background: var(--primary-orange);
             color: white;
-            padding: 16px 45px;
+            padding: 18px 50px;
             border: none;
-            border-radius: 30px;
+            border-radius: 40px;
             font-size: 1.1rem;
-            cursor: pointer;
             font-weight: 600;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            transition: 0.4s;
             box-shadow: 0 10px 30px rgba(255, 112, 67, 0.3);
+            margin-top: 30px;
         }
 
         .btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 15px 40px rgba(255, 112, 67, 0.5);
+            transform: scale(1.05) translateY(-5px);
+            box-shadow: 0 20px 40px rgba(255, 112, 67, 0.5);
+        }
+
+        /* --- Services Section --- */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 50px;
+        }
+
+        .s-card {
+            background: var(--glass-bg);
+            padding: 40px;
+            border-radius: 30px;
+            border: 1px solid var(--glass-border);
+            transition: 0.4s;
+        }
+
+        .s-card:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-10px);
+        }
+
+        .s-card h3 {
+            color: var(--primary-orange);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        /* --- Footer --- */
+        footer {
+            padding: 60px 5%;
+            background: rgba(0, 0, 0, 0.5);
+            text-align: center;
+            border-top: 1px solid var(--glass-border);
         }
 
         @media (max-width: 768px) {
-            .hero-text h1 { font-size: 2.5rem; }
-            header { width: 95%; padding: 10px 20px; }
+            h1 { font-size: 2.5rem; }
             nav ul { display: none; }
         }
     </style>
 </head>
 <body>
 
+    <div class="bg-blobs">
+        <div class="blob" style="top: 10%; left: 10%;"></div>
+        <div class="blob" style="bottom: 10%; right: 10%; animation-delay: -5s;"></div>
+    </div>
+
     <header>
         <nav>
             <a href="#" class="logo">
-                <div class="w-icon-container">W</div>
+                <div class="w-icon-box">W</div>
                 <div class="brand-text">ADANA.LK</div>
             </a>
             <ul>
-                <li><a href="#">මුල් පිටුව</a></li>
-                <li><a href="#">සේවා</a></li>
-                <li><a href="#">සම්බන්ධ වන්න</a></li>
+                <li><a href="#home">මුල් පිටුව</a></li>
+                <li><a href="#services">සේවා</a></li>
+                <li><a href="#about">අප ගැන</a></li>
             </ul>
         </nav>
     </header>
 
-    <section class="hero">
+    <section id="home">
         <div class="hero-card">
-            <div class="hero-text">
-                <h1>අපි ලස්සන වෙබ් අඩවි නිර්මාණය කරමු</h1>
-                <p>නවීන තාක්ෂණය සහ නිර්මාණශීලීත්වය එකම තැනක මුසු කරමින් ඔබේ සිහිනය සැබෑ කරමු.</p>
-                <button class="btn">වැඩිදුර විස්තර</button>
+            <h1>අපි ලස්සන වෙබ් අඩවි නිර්මාණය කරමු</h1>
+            <p>නවීන තාක්ෂණය සහ නිර්මාණශීලීත්වය එකම තැනක මුසු කරමින් ඔබේ සිහිනය සැබෑ කරමු.</p>
+            <button class="btn">වැඩිදුර විස්තර</button>
+        </div>
+    </section>
+
+    <section id="services">
+        <h2 style="font-size: 2.5rem; margin-bottom: 40px;">අපගේ සේවාවන්</h2>
+        <div class="services-grid">
+            <div class="s-card">
+                <h3>Web Design</h3>
+                <p>පරිශීලකයාට හිතකාමී සහ ඉතා ආකර්ෂණීය වෙබ් අඩවි නිර්මාණය.</p>
+            </div>
+            <div class="s-card">
+                <h3>UI/UX</h3>
+                <p>iOS සහ නවීන මෘදුකාංග විලාසිතාවන්ට අනුකූල අතුරුමුහුණත් සැකසීම.</p>
+            </div>
+            <div class="s-card">
+                <h3>Branding</h3>
+                <p>ඔබේ ව්‍යාපාරයට ගැලපෙන සුවිශේෂී ලාංඡන (Logos) සහ අනන්‍යතාවය ගොඩනැගීම.</p>
             </div>
         </div>
     </section>
+
+    <section id="about">
+        <div class="hero-card" style="padding: 60px;">
+            <h2 style="color: var(--primary-orange); margin-bottom: 20px;">අප ගැන</h2>
+            <p>WADANA.LK යනු ශ්‍රී ලාංකීය නිර්මාණශීලී තරුණ පරපුරේ අදහස් ලොවට ගෙන යන නවීන තාක්ෂණික මධ්‍යස්ථානයකි. අපි උසස්ම ප්‍රමිතියෙන් යුත් ඩිජිටල් විසඳුම් ලබා දෙන්නෙමු.</p>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 WADANA.LK - All Rights Reserved.</p>
+        <div style="margin-top: 15px; font-size: 14px; opacity: 0.6;">
+            Made with ❤️ in Sri Lanka
+        </div>
+    </footer>
 
 </body>
 </html>
