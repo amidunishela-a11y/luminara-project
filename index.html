@@ -4,16 +4,194 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WADANA.LK | වදන.LK</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;700&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* මූලික සැකසුම් */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans Sinhala', 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Navigation Bar සැකසුම */
+        header {
+            background-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            padding: 10px 5%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        /* --- Modern Logo Design (CSS වලින්ම) --- */
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .w-icon-container {
+            background-color: #FF7043; /* ඔබේ තැඹිලි වර්ණය */
+            color: white;
+            width: 42px;
+            height: 42px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 12px 12px 12px 2px; /* කථන බුබුලක හැඩය */
+            margin-right: 8px;
+            position: relative;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            font-size: 24px;
+            box-shadow: 0 4px 6px rgba(255, 112, 67, 0.3);
+        }
+
+        /* උද්ධෘත ලකුණු (") Icon එක තුළට */
+        .w-icon-container::before {
+            content: "“";
+            position: absolute;
+            top: -2px;
+            left: 8px;
+            font-size: 20px;
+            opacity: 0.6;
+        }
+
+        .brand-text {
+            font-family: 'Poppins', sans-serif;
+            font-size: 26px;
+            font-weight: 700;
+            color: #003366; /* තද නිල් වර්ණය */
+            letter-spacing: -0.5px;
+        }
+
+        .brand-text span {
+            color: #FF7043;
+        }
+        /* ------------------------------------- */
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 30px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #444;
+            font-weight: 500;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #FF7043;
+        }
+
+        /* Hero Section (ප්‍රධාන පෙනුම) */
+        .hero {
+            height: 85vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            /* පසුබිමට ලස්සන Gradient එකක් */
+            background: linear-gradient(135deg, #003366 0%, #00509d 100%);
+            color: white;
+            padding: 0 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* පසුබිමට අමතර සැකසුමක් */
+        .hero::after {
+            content: "";
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            top: -50px;
+            right: -50px;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .hero-text p {
+            font-size: 1.3rem;
+            margin-bottom: 35px;
+            opacity: 0.85;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn {
+            background-color: #FF7043;
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            font-weight: 600;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(255, 112, 67, 0.2);
+        }
+
+        .btn:hover {
+            background-color: #e65100;
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px rgba(255, 112, 67, 0.3);
+        }
+
+        /* මොබයිල් ෆෝන් සඳහා සැකසුම් */
+        @media (max-width: 768px) {
+            nav ul {
+                display: none; /* මොබයිල් වලදී මෙනුව සැඟවීමට */
+            }
+            .hero-text h1 {
+                font-size: 2.2rem;
+            }
+            .hero-text p {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
 </head>
 <body>
 
     <header>
         <nav>
-            <div class="logo">
-                <span class="w-icon">W</span><span class="brand-text">ADANA.LK</span>
-            </div>
+            <a href="#" class="logo">
+                <div class="w-icon-container">W</div>
+                <div class="brand-text">ADANA<span>.LK</span></div>
+            </a>
             <ul>
                 <li><a href="#">මුල් පිටුව</a></li>
                 <li><a href="#">සේවා</a></li>
@@ -25,7 +203,7 @@
     <section class="hero">
         <div class="hero-text">
             <h1>අපි ලස්සන වෙබ් අඩවි නිර්මාණය කරමු</h1>
-            <p>නවීන තාක්ෂණය සහ නිර්මාණශීලීත්වය එකම තැනක.</p>
+            <p>නවීන තාක්ෂණය සහ නිර්මාණශීලීත්වය එකම තැනක මුසු කරමින් ඔබේ සිහිනය සැබෑ කරමු.</p>
             <button class="btn">වැඩිදුර විස්තර</button>
         </div>
     </section>
