@@ -9,7 +9,7 @@
     <style>
         :root {
             --primary-orange: #FF7043;
-            --deep-blue: #1A305E; /* රූපයේ ඇති තද නිල් පැහැය */
+            --deep-blue: #1A305E; 
             --glass-bg: rgba(255, 255, 255, 0.08);
             --glass-border: rgba(255, 255, 255, 0.15);
         }
@@ -28,7 +28,7 @@
             overflow-x: hidden;
         }
 
-        /* --- ✨ UPDATED CUSTOM W LOGO STYLE ✨ --- */
+        /* --- ✨ UPDATED LOGO WITH ANIMATION ✨ --- */
         .logo {
             display: flex;
             align-items: center;
@@ -43,24 +43,29 @@
             justify-content: center;
             align-items: center;
             margin-right: 15px;
+            /* අකුර කැරකැවීමේ වේගය සහ ආකාරය මෙතැනින් වෙනස් කළ හැක */
+            animation: spin 4s linear infinite; 
         }
 
-        /* රූපයේ ඇති W අකුරේ හැඩය නිර්මාණය කිරීම */
+        /* කැරකෙන ආකාරය (Animation Keyframes) */
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
         .w-custom {
             font-family: 'Poppins', sans-serif;
             font-size: 58px;
             font-weight: 900;
             position: relative;
             line-height: 1;
-            /* Gradient එක භාවිතා කර වර්ණ දෙක ලබා ගැනීම */
             background: linear-gradient(135deg, var(--deep-blue) 50%, var(--primary-orange) 50%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
-            transform: skewX(-5deg); /* තරමක් ඇලවූ ස්වභාවය */
+            transform: skewX(-5deg);
         }
 
-        /* රූපයේ ඇති කුඩා උද්ධෘත ලකුණු (Quotes) වැනි කොටස */
         .w-icon-wrapper::after {
             content: '”';
             position: absolute;
@@ -78,7 +83,6 @@
             letter-spacing: 1px;
         }
 
-        /* --- අතුරුමුහුණතේ ඉතිරි කොටස් --- */
         header {
             position: fixed;
             top: 20px;
