@@ -74,12 +74,10 @@
 
         .nav-right { display: flex; align-items: center; gap: 20px; }
 
-        /* Google Custom Search Design Fixes */
         .search-container {
-            width: 250px; /* Search box එකට අවශ්‍ය පළල */
+            width: 250px;
         }
         
-        /* Google search box එකේ පසුබිම ඉවත් කර අලංකාර කිරීමට */
         .gcse-search {
             background: transparent !important;
         }
@@ -146,6 +144,37 @@
             text-align: center;
         }
 
+        /* ----- නව අයිතම දර්ශනය සඳහා අමතර CSS (New Styles) ----- */
+        #item-display-area {
+            display: none; /* ආරම්භයේදී සඟවා ඇත */
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 1000px;
+            margin-top: 30px;
+        }
+
+        .item-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: left;
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+        }
+
+        .item-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .item-card h4 { color: var(--primary-orange); margin-bottom: 10px; font-size: 1.2rem; }
+        .item-card .price { font-weight: bold; font-size: 1.1rem; color: #4CAF50; margin: 10px 0; }
+        .item-card .desc { font-size: 0.9rem; opacity: 0.8; }
+        /* ----------------------------------------------- */
+
         h1 { font-size: 3.5rem; margin-bottom: 20px; line-height: 1.2; }
         p { font-size: 1.2rem; opacity: 0.8; max-width: 650px; line-height: 1.6; }
 
@@ -181,7 +210,7 @@
 
     <header>
         <nav>
-            <a href="#" class="logo">
+            <a href="#" class="logo" onclick="window.location.reload()">
                 <span class="w-logo-3d">W</span>
                 <div class="brand-text">ADANA.LK</div>
             </a>
@@ -192,7 +221,7 @@
                 </div>
 
                 <ul>
-                    <li><a href="#">මුල් පිටුව</a></li>
+                    <li><a href="#" onclick="window.location.reload()">මුල් පිටුව</a></li>
                     <li><a href="#">සේවා</a></li>
                     <li><a href="#">අප ගැන</a></li>
                 </ul>
@@ -203,7 +232,7 @@
     <aside class="sidebar">
         <h3>ප්‍රධාන අංශ</h3>
         <ul>
-            <li><a href="#">📦 All Items</a></li>
+            <li><a href="javascript:void(0)" onclick="showItems()">📦 All Items</a></li>
             <li><a href="#">💰 Selling</a></li>
             <li><a href="#">🛒 Buying</a></li>
             <li><a href="#">💎 Premium</a></li>
@@ -216,12 +245,16 @@
         </ul>
     </aside>
 
-    <section class="hero-content">
-        <h1>අනාගතයේ වෙබ් අඩවි<br>අදම නිර්මාණය කරමු</h1>
-        <p>අපි ඔබේ ව්‍යාපාරයට නවීනතම 3D තාක්ෂණය සහ කලාත්මක නිර්මාණශීලීත්වය මුසු කරමු.</p>
-        <button class="btn">අප හා සම්බන්ධ වන්න</button>
+    <section class="hero-content" id="main-hero">
+        <div id="hero-text">
+            <h1>අනාගතයේ වෙබ් අඩවි<br>අදම නිර්මාණය කරමු</h1>
+            <p>අපි ඔබේ ව්‍යාපාරයට නවීනතම 3D තාක්ෂණය සහ කලාත්මක නිර්මාණශීලීත්වය මුසු කරමු.</p>
+            <button class="btn">අප හා සම්බන්ධ වන්න</button>
+        </div>
+
+        <div id="item-display-area"></div>
         
-        <div style="margin-top: 40vh; padding-bottom: 100px;">
+        <div id="scroll-hint" style="margin-top: 20vh; padding-bottom: 100px;">
             <h2 style="font-size: 2rem; color: var(--primary-orange);">අපගේ සේවාවන්</h2>
             <p>පහළට Scroll කර වැඩි විස්තර දැනගන්න.</p>
         </div>
@@ -229,6 +262,45 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
+        // --- අයිතම දත්ත (ඔබට අවශ්‍ය පරිදි මෙහි දත්ත වෙනස් කරන්න) ---
+        const myItems = [
+            { name: "3D Web Design Pack", price: "Rs. 25,000", desc: "සම්පූර්ණ 3D අත්දැකීමක් සහිත වෙබ් අඩවි නිර්මාණය." },
+            { name: "Logo Animation", price: "Rs. 5,000", desc: "ඔබේ සන්නාමය සඳහා උසස් තත්වයේ 3D ඇනිමේෂන්." },
+            { name: "UI/UX Consultation", price: "Rs. 10,000", desc: "පරිශීලකයාට පහසු නවීන මෘදුකාංග සැලසුම්කරණය." },
+            { name: "Custom 3D Models", price: "Rs. 15,000", desc: "වෙබ් අඩවි සහ ක්‍රීඩා සඳහා අවශ්‍ය 3D මාදිලි." }
+        ];
+
+        // All Items ක්ලික් කළ විට ක්‍රියාත්මක වන Function එක
+        function showItems() {
+            const heroText = document.getElementById('hero-text');
+            const scrollHint = document.getElementById('scroll-hint');
+            const displayArea = document.getElementById('item-display-area');
+
+            // Hero text එක සඟවන්න
+            heroText.style.display = 'none';
+            scrollHint.style.display = 'none';
+            
+            // Display Area එක පෙන්වන්න
+            displayArea.style.display = 'grid';
+            displayArea.innerHTML = ""; // කලින් තිබූ දේවල් මකන්න
+
+            // ලැයිස්තුව නිර්මාණය කිරීම
+            myItems.forEach(item => {
+                const card = `
+                    <div class="item-card">
+                        <h4>${item.name}</h4>
+                        <p class="price">${item.price}</p>
+                        <p class="desc">${item.desc}</p>
+                    </div>
+                `;
+                displayArea.innerHTML += card;
+            });
+            
+            // Scroll එක උඩටම ගන්න
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // --- THREE.JS කේතය (වෙනසක් නැත) ---
         let scene, camera, renderer, particles, orb;
 
         function init() {
