@@ -9,19 +9,20 @@
     <style>
         :root {
             --primary-orange: #FF7043;
-            --deep-blue: #1A305E;
-            --glass-bg: rgba(255, 255, 255, 0.08);
-            --glass-border: rgba(255, 255, 255, 0.15);
+            --deep-blue: #000b18;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --sidebar-glass: rgba(255, 255, 255, 0.03);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Noto Sans Sinhala', 'Poppins', sans-serif;
-            background: #000b18;
+            background: var(--deep-blue);
             color: white;
-            overflow-x: hidden; /* Scroll කිරීමට ඉඩ ලබා දී ඇත */
-            min-height: 200vh; /* Scroll එක පරීක්ෂා කිරීමට අමතර ඉඩක් */
+            overflow-x: hidden;
+            min-height: 150vh;
         }
 
         /* Canvas Background */
@@ -34,19 +35,21 @@
             z-index: -1;
         }
 
+        /* Fixed Header */
         header {
             position: fixed;
-            top: 20px;
+            top: 15px;
             left: 50%;
             transform: translateX(-50%);
             width: 95%;
             max-width: 1300px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             border: 1px solid var(--glass-border);
-            border-radius: 25px;
-            padding: 10px 30px;
-            z-index: 1000;
+            border-radius: 20px;
+            padding: 12px 25px;
+            z-index: 2000; /* ඉහළින්ම තැබීමට */
         }
 
         nav { display: flex; justify-content: space-between; align-items: center; }
@@ -55,9 +58,9 @@
 
         .w-logo-3d {
             font-family: 'Poppins', sans-serif;
-            font-size: 40px;
+            font-size: 35px;
             font-weight: 900;
-            margin-right: 10px;
+            margin-right: 8px;
             background: linear-gradient(135deg, #fff, var(--primary-orange));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -66,19 +69,18 @@
 
         @keyframes pulse {
             from { filter: drop-shadow(0 0 2px var(--primary-orange)); }
-            to { filter: drop-shadow(0 0 10px var(--primary-orange)); }
+            to { filter: drop-shadow(0 0 8px var(--primary-orange)); }
         }
 
-        .brand-text { font-size: 22px; font-weight: 700; color: #fff; letter-spacing: 1px; }
+        .brand-text { font-size: 20px; font-weight: 700; color: #fff; letter-spacing: 1px; }
 
         .nav-right { display: flex; align-items: center; gap: 20px; }
 
-        /* Search Bar */
         .search-box {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.08);
             border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 5px 15px;
+            border-radius: 15px;
+            padding: 5px 12px;
             display: flex;
             align-items: center;
         }
@@ -87,45 +89,62 @@
             background: transparent;
             border: none;
             color: white;
-            padding: 5px;
+            padding: 4px;
             outline: none;
-            font-size: 14px;
+            font-size: 13px;
+            width: 150px;
         }
 
         nav ul { display: flex; list-style: none; }
-        nav ul li { margin-left: 20px; }
-        nav ul li a { text-decoration: none; color: #ccc; font-size: 14px; transition: 0.3s; }
+        nav ul li { margin-left: 15px; }
+        nav ul li a { text-decoration: none; color: #bbb; font-size: 14px; transition: 0.3s; }
         nav ul li a:hover { color: var(--primary-orange); }
 
-        /* Sidebar */
+        /* Enhanced Glass Sidebar */
         .sidebar {
             position: fixed;
             left: 20px;
-            top: 120px;
-            width: 220px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
+            top: 110px;
+            width: 240px;
+            background: var(--sidebar-glass);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
             border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 20px;
-            z-index: 900;
+            border-radius: 24px;
+            padding: 25px;
+            z-index: 1500;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
 
-        .sidebar h3 { font-size: 18px; margin-bottom: 15px; color: var(--primary-orange); border-bottom: 1px solid var(--glass-border); padding-bottom: 5px; }
+        .sidebar h3 { 
+            font-size: 16px; 
+            margin-bottom: 15px; 
+            color: var(--primary-orange); 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.9;
+        }
         
-        .sidebar ul { list-style: none; }
+        .sidebar ul { list-style: none; margin-bottom: 25px; }
         .sidebar ul li { margin-bottom: 12px; }
         .sidebar ul li a { 
             text-decoration: none; 
-            color: #ddd; 
+            color: rgba(255, 255, 255, 0.7); 
             font-size: 15px; 
             display: block;
-            transition: 0.3s;
+            transition: all 0.3s ease;
+            padding: 5px 0;
         }
-        .sidebar ul li a:hover { transform: translateX(5px); color: var(--primary-orange); }
+        .sidebar ul li a:hover { 
+            color: white;
+            padding-left: 8px;
+            text-shadow: 0 0 10px var(--primary-orange);
+        }
 
+        /* Hero Content Fixes */
         .hero-content {
-            padding-left: 240px; /* Sidebar එකට ඉඩ තැබීම */
+            padding-left: 280px; /* Sidebar එකට ඉඩ */
+            padding-top: 120px; /* Header එකට යට නොවීමට */
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -134,27 +153,32 @@
             text-align: center;
         }
 
-        h1 { font-size: 3rem; margin-bottom: 20px; text-shadow: 0 0 20px rgba(0,0,0,0.5); }
-        p { font-size: 1.1rem; opacity: 0.8; max-width: 600px; line-height: 1.6; }
+        h1 { font-size: 3.5rem; margin-bottom: 20px; line-height: 1.2; }
+        p { font-size: 1.2rem; opacity: 0.8; max-width: 650px; line-height: 1.6; }
 
         .btn {
             background: var(--primary-orange);
             color: white;
-            padding: 15px 40px;
-            border-radius: 30px;
+            padding: 16px 45px;
+            border-radius: 50px;
             border: none;
-            font-weight: bold;
+            font-weight: 700;
+            font-size: 1rem;
             cursor: pointer;
-            margin-top: 30px;
-            transition: 0.3s;
+            margin-top: 35px;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 20px rgba(255, 112, 67, 0.3);
         }
-        .btn:hover { transform: scale(1.1); box-shadow: 0 0 20px var(--primary-orange); }
+        .btn:hover { 
+            transform: translateY(-5px) scale(1.05); 
+            box-shadow: 0 15px 30px rgba(255, 112, 67, 0.5); 
+        }
 
         /* Responsive */
-        @media (max-width: 768px) {
+        @media (max-width: 1024px) {
             .sidebar { display: none; }
-            .hero-content { padding-left: 0; }
-            h1 { font-size: 2rem; }
+            .hero-content { padding-left: 0; padding-top: 150px; }
+            h1 { font-size: 2.5rem; }
         }
     </style>
 </head>
@@ -189,7 +213,7 @@
             <li><a href="#">🛒 Buying</a></li>
             <li><a href="#">💎 Premium</a></li>
         </ul>
-        <h3 style="margin-top: 20px;">Categories</h3>
+        <h3>Categories</h3>
         <ul>
             <li><a href="#">Technology</a></li>
             <li><a href="#">3D Design</a></li>
@@ -198,19 +222,19 @@
     </aside>
 
     <section class="hero-content">
-        <h1>අනාගතයේ වෙබ් අඩවි අදම නිර්මාණය කරමු</h1>
+        <h1>අනාගතයේ වෙබ් අඩවි<br>අදම නිර්මාණය කරමු</h1>
         <p>අපි ඔබේ ව්‍යාපාරයට නවීනතම 3D තාක්ෂණය සහ කලාත්මක නිර්මාණශීලීත්වය මුසු කරමු.</p>
         <button class="btn">අප හා සම්බන්ධ වන්න</button>
         
-        <div style="margin-top: 400px; padding-bottom: 100px;">
-            <h2>අපගේ සේවාවන් පිළිබඳ වැඩිදුර තොරතුරු</h2>
+        <div style="margin-top: 40vh; padding-bottom: 100px;">
+            <h2 style="font-size: 2rem; color: var(--primary-orange);">අපගේ සේවාවන්</h2>
             <p>පහළට Scroll කර වැඩි විස්තර දැනගන්න.</p>
         </div>
     </section>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
     <script>
+        // ... (Your existing Three.js code works perfectly here)
         let scene, camera, renderer, particles, orb;
 
         function init() {
@@ -224,10 +248,7 @@
 
             const orbGeometry = new THREE.IcosahedronGeometry(1.5, 2);
             const orbMaterial = new THREE.MeshBasicMaterial({ 
-                color: 0xFF7043, 
-                wireframe: true, 
-                transparent: true, 
-                opacity: 0.2 
+                color: 0xFF7043, wireframe: true, transparent: true, opacity: 0.15 
             });
             orb = new THREE.Mesh(orbGeometry, orbMaterial);
             scene.add(orb);
@@ -235,39 +256,20 @@
             const partGeometry = new THREE.BufferGeometry();
             const partCount = 1500;
             const posArray = new Float32Array(partCount * 3);
-
-            for(let i = 0; i < partCount * 3; i++) {
-                posArray[i] = (Math.random() - 0.5) * 10;
-            }
-
+            for(let i = 0; i < partCount * 3; i++) { posArray[i] = (Math.random() - 0.5) * 10; }
             partGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
             const partMaterial = new THREE.PointsMaterial({
-                size: 0.02,
-                color: 0xFF7043,
-                transparent: true,
-                blending: THREE.AdditiveBlending
+                size: 0.02, color: 0xFF7043, transparent: true, blending: THREE.AdditiveBlending
             });
-
             particles = new THREE.Points(partGeometry, partMaterial);
             scene.add(particles);
-
             animate();
         }
 
         function animate() {
             requestAnimationFrame(animate);
-
-            orb.rotation.y += 0.005;
-            orb.rotation.x += 0.002;
-
+            orb.rotation.y += 0.003;
             particles.rotation.y += 0.001;
-            
-            const positions = particles.geometry.attributes.position.array;
-            for(let i = 0; i < positions.length; i += 3) {
-                positions[i+1] += Math.sin(Date.now() * 0.001 + positions[i]) * 0.002;
-            }
-            particles.geometry.attributes.position.needsUpdate = true;
-
             renderer.render(scene, camera);
         }
 
