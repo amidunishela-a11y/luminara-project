@@ -25,7 +25,6 @@
             min-height: 150vh;
         }
 
-        /* Canvas Background */
         #canvas-container {
             position: fixed;
             top: 0;
@@ -35,7 +34,6 @@
             z-index: -1;
         }
 
-        /* Fixed Header */
         header {
             position: fixed;
             top: 15px;
@@ -49,7 +47,7 @@
             border: 1px solid var(--glass-border);
             border-radius: 20px;
             padding: 12px 25px;
-            z-index: 2000; /* ඉහළින්ම තැබීමට */
+            z-index: 2000;
         }
 
         nav { display: flex; justify-content: space-between; align-items: center; }
@@ -76,23 +74,20 @@
 
         .nav-right { display: flex; align-items: center; gap: 20px; }
 
-        .search-box {
-            background: rgba(255,255,255,0.08);
-            border: 1px solid var(--glass-border);
-            border-radius: 15px;
-            padding: 5px 12px;
-            display: flex;
-            align-items: center;
+        /* Google Custom Search Design Fixes */
+        .search-container {
+            width: 250px; /* Search box එකට අවශ්‍ය පළල */
         }
-
-        .search-box input {
-            background: transparent;
-            border: none;
-            color: white;
-            padding: 4px;
-            outline: none;
-            font-size: 13px;
-            width: 150px;
+        
+        /* Google search box එකේ පසුබිම ඉවත් කර අලංකාර කිරීමට */
+        .gcse-search {
+            background: transparent !important;
+        }
+        
+        .gsc-control-cse {
+            background-color: transparent !important;
+            border: none !important;
+            padding: 0 !important;
         }
 
         nav ul { display: flex; list-style: none; }
@@ -100,7 +95,6 @@
         nav ul li a { text-decoration: none; color: #bbb; font-size: 14px; transition: 0.3s; }
         nav ul li a:hover { color: var(--primary-orange); }
 
-        /* Enhanced Glass Sidebar */
         .sidebar {
             position: fixed;
             left: 20px;
@@ -141,10 +135,9 @@
             text-shadow: 0 0 10px var(--primary-orange);
         }
 
-        /* Hero Content Fixes */
         .hero-content {
-            padding-left: 280px; /* Sidebar එකට ඉඩ */
-            padding-top: 120px; /* Header එකට යට නොවීමට */
+            padding-left: 280px;
+            padding-top: 120px;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -174,11 +167,11 @@
             box-shadow: 0 15px 30px rgba(255, 112, 67, 0.5); 
         }
 
-        /* Responsive */
         @media (max-width: 1024px) {
             .sidebar { display: none; }
             .hero-content { padding-left: 0; padding-top: 150px; }
             h1 { font-size: 2.5rem; }
+            .search-container { width: 180px; }
         }
     </style>
 </head>
@@ -193,9 +186,11 @@
                 <div class="brand-text">ADANA.LK</div>
             </a>
             <div class="nav-right">
-                <div class="search-box">
-                    <input type="text" placeholder="සොයන්න...">
+                <div class="search-container">
+                    <script async src="https://cse.google.com/cse.js?cx=e6c2d3e5508794c57"></script>
+                    <div class="gcse-search"></div>
                 </div>
+
                 <ul>
                     <li><a href="#">මුල් පිටුව</a></li>
                     <li><a href="#">සේවා</a></li>
@@ -234,7 +229,6 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
-        // ... (Your existing Three.js code works perfectly here)
         let scene, camera, renderer, particles, orb;
 
         function init() {
