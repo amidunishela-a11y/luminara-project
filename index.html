@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WADANA.LK | වදන.LK</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;700&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;700&family=Poppins:wght@900&display=swap" rel="stylesheet">
     
     <style>
         :root {
             --primary-orange: #FF7043;
-            --logo-gradient: linear-gradient(145deg, #FF8A65, #E64A19);
+            --deep-blue: #1A305E; /* රූපයේ ඇති තද නිල් පැහැය */
             --glass-bg: rgba(255, 255, 255, 0.08);
             --glass-border: rgba(255, 255, 255, 0.15);
         }
@@ -28,34 +28,57 @@
             overflow-x: hidden;
         }
 
-        /* Background Orbs */
-        .bg-blobs {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            overflow: hidden;
-            background: radial-gradient(circle at 50% 50%, #001a33 0%, #000b18 100%);
+        /* --- ✨ UPDATED CUSTOM W LOGO STYLE ✨ --- */
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
         }
 
-        .blob {
+        .w-icon-wrapper {
+            position: relative;
+            width: 55px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+        }
+
+        /* රූපයේ ඇති W අකුරේ හැඩය නිර්මාණය කිරීම */
+        .w-custom {
+            font-family: 'Poppins', sans-serif;
+            font-size: 58px;
+            font-weight: 900;
+            position: relative;
+            line-height: 1;
+            /* Gradient එක භාවිතා කර වර්ණ දෙක ලබා ගැනීම */
+            background: linear-gradient(135deg, var(--deep-blue) 50%, var(--primary-orange) 50%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
+            transform: skewX(-5deg); /* තරමක් ඇලවූ ස්වභාවය */
+        }
+
+        /* රූපයේ ඇති කුඩා උද්ධෘත ලකුණු (Quotes) වැනි කොටස */
+        .w-icon-wrapper::after {
+            content: '”';
             position: absolute;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(255, 112, 67, 0.08), transparent 70%);
-            border-radius: 50%;
-            filter: blur(80px);
-            animation: move 20s infinite alternate;
+            top: 2px;
+            right: -2px;
+            color: var(--primary-orange);
+            font-size: 25px;
+            font-weight: 900;
         }
 
-        @keyframes move {
-            from { transform: translate(-10%, -10%); }
-            to { transform: translate(20%, 20%); }
+        .brand-text {
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 1px;
         }
 
-        /* --- Modern Glass Header --- */
+        /* --- අතුරුමුහුණතේ ඉතිරි කොටස් --- */
         header {
             position: fixed;
             top: 20px;
@@ -65,71 +88,23 @@
             max-width: 1300px;
             background: var(--glass-bg);
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
             border-radius: 25px;
             padding: 10px 30px;
             z-index: 1000;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
         }
 
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 20px;
         }
 
-        /* --- ✨ THE MODERN W LOGO ✨ --- */
-        .logo {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-            min-width: max-content;
-        }
-
-        .w-icon-box {
-            background: var(--logo-gradient);
-            color: white;
-            width: 42px;
-            height: 42px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 12px; /* iOS Squircle look */
-            margin-right: 12px;
-            font-weight: 900;
-            font-size: 24px;
-            position: relative;
-            box-shadow: 
-                0 4px 10px rgba(230, 74, 25, 0.3),
-                inset 0 -2px 5px rgba(0,0,0,0.2),
-                inset 0 2px 5px rgba(255,255,255,0.4);
-            transform: perspective(100px) rotateX(5deg);
-        }
-
-        /* Logo අකුරට ලස්සන Glow එකක් */
-        .w-icon-box span {
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(180deg, #FFFFFF 30%, #FFCCBC 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .brand-text {
-            font-size: 24px;
-            font-weight: 700;
-            color: #fff;
-            letter-spacing: -1px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-
-        /* --- Search Bar & Menu --- */
         .search-container {
             flex-grow: 1;
             max-width: 400px;
             position: relative;
+            margin: 0 20px;
         }
 
         .search-container input {
@@ -139,186 +114,65 @@
             padding: 10px 20px 10px 45px;
             border-radius: 15px;
             color: white;
-            font-size: 14px;
             outline: none;
-            transition: 0.3s;
-        }
-
-        .search-container input:focus {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: var(--primary-orange);
-            box-shadow: 0 0 15px rgba(255, 112, 67, 0.2);
-        }
-
-        .search-container svg {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            fill: rgba(255, 255, 255, 0.5);
-            width: 18px;
-            height: 18px;
         }
 
         nav ul {
             display: flex;
             list-style: none;
-            min-width: max-content;
         }
 
-        nav ul li { margin-left: 25px; }
-
-        nav ul li a {
-            text-decoration: none;
-            color: rgba(255, 255, 255, 0.7);
-            font-weight: 500;
-            font-size: 15px;
-            transition: 0.3s;
-        }
-
-        nav ul li a:hover { color: var(--primary-orange); }
-
-        /* --- Hero Section --- */
-        section {
-            padding: 140px 5% 60px;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
+        nav ul li { margin-left: 20px; }
+        nav ul li a { text-decoration: none; color: #ccc; font-size: 15px; }
 
         .hero-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 50px;
-            padding: 80px 40px;
+            margin-top: 150px;
             text-align: center;
-            max-width: 900px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            padding: 100px 20px;
+            background: radial-gradient(circle at center, rgba(255,112,67,0.05), transparent);
         }
 
-        h1 {
-            font-size: 3.8rem;
-            line-height: 1.2;
-            margin-bottom: 20px;
-            background: linear-gradient(to bottom, #fff, #aaa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
+        h1 { font-size: 3.5rem; margin-bottom: 20px; }
         .btn {
             background: var(--primary-orange);
             color: white;
-            padding: 16px 45px;
-            border: none;
-            border-radius: 40px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.4s;
-            margin-top: 30px;
-        }
-
-        .btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 15px 30px rgba(255, 112, 67, 0.4);
-        }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            width: 100%;
-            max-width: 1200px;
-            margin-top: 50px;
-        }
-
-        .s-card {
-            background: var(--glass-bg);
-            padding: 40px;
+            padding: 15px 40px;
             border-radius: 30px;
-            border: 1px solid var(--glass-border);
-            transition: 0.4s;
-        }
-
-        footer {
-            padding: 60px 5%;
-            background: rgba(0, 0, 0, 0.5);
-            text-align: center;
-            border-top: 1px solid var(--glass-border);
-        }
-
-        @media (max-width: 992px) {
-            .search-container { display: none; }
-        }
-
-        @media (max-width: 768px) {
-            h1 { font-size: 2.5rem; }
-            nav ul { display: none; }
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-blobs">
-        <div class="blob" style="top: 10%; left: 10%;"></div>
-        <div class="blob" style="bottom: 10%; right: 10%; animation-delay: -5s;"></div>
-    </div>
-
     <header>
         <nav>
             <a href="#" class="logo">
-                <div class="w-icon-box"><span>W</span></div>
+                <div class="w-icon-wrapper">
+                    <span class="w-custom">W</span>
+                </div>
                 <div class="brand-text">ADANA.LK</div>
             </a>
 
             <div class="search-container">
-                <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-                <input type="text" placeholder="ඔබට අවශ්‍ය දේ සොයන්න...">
+                <input type="text" placeholder="සොයන්න...">
             </div>
 
             <ul>
-                <li><a href="#home">මුල් පිටුව</a></li>
-                <li><a href="#services">සේවා</a></li>
-                <li><a href="#about">අප ගැන</a></li>
+                <li><a href="#">මුල් පිටුව</a></li>
+                <li><a href="#">සේවා</a></li>
+                <li><a href="#">අප ගැන</a></li>
             </ul>
         </nav>
     </header>
 
-    <section id="home">
-        <div class="hero-card">
-            <h1>අපි ලස්සන වෙබ් අඩවි නිර්මාණය කරමු</h1>
-            <p>නවීන තාක්ෂණය සහ නිර්මාණශීලීත්වය එකම තැනක මුසු කරමින් ඔබේ සිහිනය සැබෑ කරමු.</p>
-            <button class="btn">වැඩිදුර විස්තර</button>
-        </div>
+    <section class="hero-card">
+        <h1>අපි ලස්සන වෙබ් අඩවි නිර්මාණය කරමු</h1>
+        <p>ඔබේ සිහිනය සැබෑ කරන නවීන වෙබ් නිර්මාණ කලාව.</p>
+        <button class="btn">අප හා සම්බන්ධ වන්න</button>
     </section>
-
-    <section id="services">
-        <h2 style="font-size: 2.5rem; margin-bottom: 40px;">අපගේ සේවාවන්</h2>
-        <div class="services-grid">
-            <div class="s-card">
-                <h3 style="color: var(--primary-orange); margin-bottom: 15px;">Web Design</h3>
-                <p>පරිශීලකයාට හිතකාමී සහ ඉතා ආකර්ෂණීය වෙබ් අඩවි නිර්මාණය.</p>
-            </div>
-            <div class="s-card">
-                <h3 style="color: var(--primary-orange); margin-bottom: 15px;">UI/UX</h3>
-                <p>iOS සහ නවීන මෘදුකාංග විලාසිතාවන්ට අනුකූල අතුරුමුහුණත් සැකසීම.</p>
-            </div>
-            <div class="s-card">
-                <h3 style="color: var(--primary-orange); margin-bottom: 15px;">Branding</h3>
-                <p>ඔබේ ව්‍යාපාරයට ගැලපෙන සුවිශේෂී ලාංඡන (Logos) සහ අනන්‍යතාවය ගොඩනැගීම.</p>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <p>&copy; 2026 WADANA.LK - All Rights Reserved.</p>
-        <div style="margin-top: 15px; font-size: 14px; opacity: 0.6;">
-            Made with NishX❤️ in Sri Lanka
-        </div>
-    </footer>
 
 </body>
 </html>
