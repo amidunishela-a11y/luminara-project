@@ -3,87 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WADANA.LK | වදන.LK</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;700&family=Poppins:wght@900&display=swap" rel="stylesheet">
+    <title>WADANA.LK | 3D වදන</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;700&family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
     
     <style>
         :root {
             --primary-orange: #FF7043;
-            --deep-blue: #1A305E; 
+            --deep-blue: #1A305E;
             --glass-bg: rgba(255, 255, 255, 0.08);
             --glass-border: rgba(255, 255, 255, 0.15);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            scroll-behavior: smooth;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Noto Sans Sinhala', 'Poppins', sans-serif;
             background: #000b18;
             color: white;
-            /* Scroll කළ හැකි වන පරිදි overflow-x පමණක් පාලනය කළා */
-            overflow-x: hidden;
-            min-height: 200vh; /* පිටුව පහළට ඇති බව පෙන්වීමට */
+            overflow-x: hidden; /* Scroll කිරීමට ඉඩ ලබා දී ඇත */
+            min-height: 200vh; /* Scroll එක පරීක්ෂා කිරීමට අමතර ඉඩක් */
         }
 
-        /* --- ✨ LOGO STYLE ✨ --- */
-        .logo {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
+        /* Canvas Background */
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
         }
 
-        .w-icon-wrapper {
-            position: relative;
-            width: 55px;
-            height: 50px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-right: 15px;
-            animation: spin 4s linear infinite; 
-        }
-
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .w-custom {
-            font-family: 'Poppins', sans-serif;
-            font-size: 58px;
-            font-weight: 900;
-            position: relative;
-            line-height: 1;
-            background: linear-gradient(135deg, var(--deep-blue) 50%, var(--primary-orange) 50%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
-            transform: skewX(-5deg);
-        }
-
-        .w-icon-wrapper::after {
-            content: '”';
-            position: absolute;
-            top: 2px;
-            right: -2px;
-            color: var(--primary-orange);
-            font-size: 25px;
-            font-weight: 900;
-        }
-
-        .brand-text {
-            font-size: 28px;
-            font-weight: 700;
-            color: #fff;
-            letter-spacing: 1px;
-        }
-
-        /* --- HEADER & SEARCH --- */
         header {
             position: fixed;
             top: 20px;
@@ -99,114 +49,93 @@
             z-index: 1000;
         }
 
-        nav {
+        nav { display: flex; justify-content: space-between; align-items: center; }
+
+        .logo { display: flex; align-items: center; text-decoration: none; }
+
+        .w-logo-3d {
+            font-family: 'Poppins', sans-serif;
+            font-size: 40px;
+            font-weight: 900;
+            margin-right: 10px;
+            background: linear-gradient(135deg, #fff, var(--primary-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: pulse 2s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { filter: drop-shadow(0 0 2px var(--primary-orange)); }
+            to { filter: drop-shadow(0 0 10px var(--primary-orange)); }
+        }
+
+        .brand-text { font-size: 22px; font-weight: 700; color: #fff; letter-spacing: 1px; }
+
+        .nav-right { display: flex; align-items: center; gap: 20px; }
+
+        /* Search Bar */
+        .search-box {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 5px 15px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
         }
 
-        .search-container {
-            flex-grow: 1;
-            max-width: 400px;
-            position: relative;
-            margin: 0 20px;
-        }
-
-        .search-container input {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 12px 20px;
-            border-radius: 15px;
+        .search-box input {
+            background: transparent;
+            border: none;
             color: white;
+            padding: 5px;
             outline: none;
-            transition: 0.3s;
+            font-size: 14px;
         }
 
-        .search-container input:focus {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: var(--primary-orange);
-            box-shadow: 0 0 15px rgba(255, 112, 67, 0.3);
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-
+        nav ul { display: flex; list-style: none; }
         nav ul li { margin-left: 20px; }
-        nav ul li a { text-decoration: none; color: #ccc; font-size: 15px; transition: 0.3s;}
+        nav ul li a { text-decoration: none; color: #ccc; font-size: 14px; transition: 0.3s; }
         nav ul li a:hover { color: var(--primary-orange); }
 
-        /* --- 💎 LEFT GLASS SIDEBAR --- */
+        /* Sidebar */
         .sidebar {
             position: fixed;
             left: 20px;
             top: 120px;
             width: 220px;
             background: var(--glass-bg);
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
             border-radius: 20px;
             padding: 20px;
             z-index: 900;
         }
 
-        .sidebar h3 {
-            font-size: 18px;
-            margin-bottom: 20px;
-            color: var(--primary-orange);
-            border-bottom: 1px solid var(--glass-border);
-            padding-bottom: 10px;
-        }
-
-        .sidebar ul {
-            list-style: none;
-        }
-
-        .sidebar ul li {
-            margin-bottom: 15px;
-        }
-
-        .sidebar ul li a {
-            text-decoration: none;
-            color: #ddd;
-            font-size: 16px;
+        .sidebar h3 { font-size: 18px; margin-bottom: 15px; color: var(--primary-orange); border-bottom: 1px solid var(--glass-border); padding-bottom: 5px; }
+        
+        .sidebar ul { list-style: none; }
+        .sidebar ul li { margin-bottom: 12px; }
+        .sidebar ul li a { 
+            text-decoration: none; 
+            color: #ddd; 
+            font-size: 15px; 
             display: block;
-            padding: 8px 12px;
-            border-radius: 10px;
             transition: 0.3s;
         }
+        .sidebar ul li a:hover { transform: translateX(5px); color: var(--primary-orange); }
 
-        .sidebar ul li a:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            padding-left: 18px;
-        }
-
-        /* --- CONTENT AREA --- */
-        .main-content {
-            margin-left: 260px; /* Sidebar එකට ඉඩ තැබීමට */
-            padding-top: 150px;
-        }
-
-        .hero-card {
-            text-align: center;
-            padding: 100px 20px;
-            background: radial-gradient(circle at center, rgba(255,112,67,0.05), transparent);
-            margin-bottom: 50px;
-        }
-
-        h1 { font-size: 3.5rem; margin-bottom: 20px; }
-        
-        .section-extra {
-            padding: 50px;
-            background: var(--glass-bg);
-            margin: 20px;
-            border-radius: 30px;
-            border: 1px solid var(--glass-border);
+        .hero-content {
+            padding-left: 240px; /* Sidebar එකට ඉඩ තැබීම */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
         }
+
+        h1 { font-size: 3rem; margin-bottom: 20px; text-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        p { font-size: 1.1rem; opacity: 0.8; max-width: 600px; line-height: 1.6; }
 
         .btn {
             background: var(--primary-orange);
@@ -216,74 +145,139 @@
             border: none;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 20px;
+            margin-top: 30px;
             transition: 0.3s;
         }
-        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(255, 112, 67, 0.4); }
+        .btn:hover { transform: scale(1.1); box-shadow: 0 0 20px var(--primary-orange); }
 
-        /* Mobile Adjustments */
-        @media (max-width: 900px) {
+        /* Responsive */
+        @media (max-width: 768px) {
             .sidebar { display: none; }
-            .main-content { margin-left: 0; }
+            .hero-content { padding-left: 0; }
+            h1 { font-size: 2rem; }
         }
     </style>
 </head>
 <body>
 
+    <div id="canvas-container"></div>
+
     <header>
         <nav>
             <a href="#" class="logo">
-                <div class="w-icon-wrapper">
-                    <span class="w-custom">W</span>
-                </div>
+                <span class="w-logo-3d">W</span>
                 <div class="brand-text">ADANA.LK</div>
             </a>
-
-            <div class="search-container">
-                <input type="text" placeholder="ඔබට අවශ්‍ය ඕනෑම දෙයක් මෙහි සොයන්න...">
+            <div class="nav-right">
+                <div class="search-box">
+                    <input type="text" placeholder="සොයන්න...">
+                </div>
+                <ul>
+                    <li><a href="#">මුල් පිටුව</a></li>
+                    <li><a href="#">සේවා</a></li>
+                    <li><a href="#">අප ගැන</a></li>
+                </ul>
             </div>
-
-            <ul>
-                <li><a href="#">මුල් පිටුව</a></li>
-                <li><a href="#">සේවා</a></li>
-                <li><a href="#">අප ගැන</a></li>
-            </ul>
         </nav>
     </header>
 
     <aside class="sidebar">
-        <h3>ප්‍රවර්ග (Categories)</h3>
+        <h3>ප්‍රධාන අංශ</h3>
         <ul>
             <li><a href="#">📦 All Items</a></li>
             <li><a href="#">💰 Selling</a></li>
             <li><a href="#">🛒 Buying</a></li>
-            <li><a href="#">🚀 Trending</a></li>
             <li><a href="#">💎 Premium</a></li>
-            <li><a href="#">📞 Contact</a></li>
+        </ul>
+        <h3 style="margin-top: 20px;">Categories</h3>
+        <ul>
+            <li><a href="#">Technology</a></li>
+            <li><a href="#">3D Design</a></li>
+            <li><a href="#">Services</a></li>
         </ul>
     </aside>
 
-    <div class="main-content">
-        <section class="hero-card">
-            <h1>අපි ලස්සන වෙබ් අඩවි නිර්මාණය කරමු</h1>
-            <p>ඔබේ සිහිනය සැබෑ කරන නවීන වෙබ් නිර්මාණ කලාව.</p>
-            <button class="btn">අප හා සම්බන්ධ වන්න</button>
-        </section>
-
-        <section class="section-extra">
-            <h2>අපගේ සේවාවන්</h2>
-            <p style="margin-top: 20px; opacity: 0.7;">අපි UI/UX නිර්මාණයේ සිට වෙබ් සංවර්ධනය දක්වා සියලු දේ සිදු කරමු.</p>
-        </section>
-
-        <section class="section-extra">
-            <h2>පාරිභෝගික අදහස්</h2>
-            <p style="margin-top: 20px; opacity: 0.7;">ලංකාවේ අංක 1 වෙබ් නිර්මාණකරුවන් සමඟ එක්වන්න.</p>
-        </section>
+    <section class="hero-content">
+        <h1>අනාගතයේ වෙබ් අඩවි අදම නිර්මාණය කරමු</h1>
+        <p>අපි ඔබේ ව්‍යාපාරයට නවීනතම 3D තාක්ෂණය සහ කලාත්මක නිර්මාණශීලීත්වය මුසු කරමු.</p>
+        <button class="btn">අප හා සම්බන්ධ වන්න</button>
         
-        <footer style="text-align: center; padding: 40px; opacity: 0.5;">
-            &copy; 2026 WADANA.LK - All Rights Reserved.
-        </footer>
-    </div>
+        <div style="margin-top: 400px; padding-bottom: 100px;">
+            <h2>අපගේ සේවාවන් පිළිබඳ වැඩිදුර තොරතුරු</h2>
+            <p>පහළට Scroll කර වැඩි විස්තර දැනගන්න.</p>
+        </div>
+    </section>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <script>
+        let scene, camera, renderer, particles, orb;
+
+        function init() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 5;
+
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+            const orbGeometry = new THREE.IcosahedronGeometry(1.5, 2);
+            const orbMaterial = new THREE.MeshBasicMaterial({ 
+                color: 0xFF7043, 
+                wireframe: true, 
+                transparent: true, 
+                opacity: 0.2 
+            });
+            orb = new THREE.Mesh(orbGeometry, orbMaterial);
+            scene.add(orb);
+
+            const partGeometry = new THREE.BufferGeometry();
+            const partCount = 1500;
+            const posArray = new Float32Array(partCount * 3);
+
+            for(let i = 0; i < partCount * 3; i++) {
+                posArray[i] = (Math.random() - 0.5) * 10;
+            }
+
+            partGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            const partMaterial = new THREE.PointsMaterial({
+                size: 0.02,
+                color: 0xFF7043,
+                transparent: true,
+                blending: THREE.AdditiveBlending
+            });
+
+            particles = new THREE.Points(partGeometry, partMaterial);
+            scene.add(particles);
+
+            animate();
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            orb.rotation.y += 0.005;
+            orb.rotation.x += 0.002;
+
+            particles.rotation.y += 0.001;
+            
+            const positions = particles.geometry.attributes.position.array;
+            for(let i = 0; i < positions.length; i += 3) {
+                positions[i+1] += Math.sin(Date.now() * 0.001 + positions[i]) * 0.002;
+            }
+            particles.geometry.attributes.position.needsUpdate = true;
+
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        init();
+    </script>
 </body>
 </html>
