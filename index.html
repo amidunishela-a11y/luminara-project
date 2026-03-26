@@ -12,6 +12,7 @@
             --glass: rgba(255, 255, 255, 0.1);
             --glass-border: rgba(255, 255, 255, 0.2);
             --glow-color: #6e8efb;
+            --neo-blue: #00f2ff; /* Neo line color */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -44,10 +45,9 @@
         .logo-container { 
             display: flex; 
             flex-direction: column; 
-            position: relative; /* Added for star positioning */
+            position: relative; 
         }
 
-        /* --- Logo Glow & Letter Animation --- */
         .logo-main { 
             font-weight: 800; 
             font-size: 28px; 
@@ -58,20 +58,19 @@
             position: relative;
         }
 
-        /* Styling individual letters for explosion effect */
         .logo-main span {
             display: inline-block;
             animation: scatter-glow 6s infinite ease-in-out;
         }
 
-        /* Delaying each letter for a natural feel */
-        .logo-main span:nth-child(1) { animation-delay: 0s; }
-        .logo-main span:nth-child(2) { animation-delay: 0.1s; }
-        .logo-main span:nth-child(3) { animation-delay: 0.2s; }
-        .logo-main span:nth-child(4) { animation-delay: 0.3s; }
-        .logo-main span:nth-child(5) { animation-delay: 0.4s; }
-        .logo-main span:nth-child(6) { animation-delay: 0.5s; }
-        .logo-main span:nth-child(7) { animation-delay: 0.6s; }
+        /* Explosion Delays */
+        .logo-main span:nth-child(1) { animation-delay: 0s; --x: -15; --y: -10; }
+        .logo-main span:nth-child(2) { animation-delay: 0.1s; --x: -5; --y: -20; }
+        .logo-main span:nth-child(3) { animation-delay: 0.2s; --x: 10; --y: -15; }
+        .logo-main span:nth-child(4) { animation-delay: 0.3s; --x: 15; --y: 10; }
+        .logo-main span:nth-child(5) { animation-delay: 0.4s; --x: -10; --y: 15; }
+        .logo-main span:nth-child(6) { animation-delay: 0.5s; --x: 5; --y: 20; }
+        .logo-main span:nth-child(7) { animation-delay: 0.6s; --x: 20; --y: 0; }
 
         @keyframes scatter-glow {
             0%, 70%, 100% { 
@@ -80,13 +79,11 @@
                 opacity: 1;
             }
             80% { 
-                /* Explosion moment */
                 transform: translate(calc(var(--x, 0) * 1px), calc(var(--y, 0) * 1px)) rotate(20deg);
                 opacity: 0.5;
                 filter: blur(2px);
             }
             85% {
-                /* Snap back with huge glow */
                 transform: translate(0, 0) scale(1.1);
                 text-shadow: 0 0 20px #fff, 0 0 40px #a777e3, 0 0 60px #a777e3;
                 opacity: 1;
@@ -94,40 +91,42 @@
             }
         }
 
-        /* Assigning random-ish directions for explosion */
-        .logo-main span:nth-child(1) { --x: -15; --y: -10; }
-        .logo-main span:nth-child(2) { --x: -5; --y: -20; }
-        .logo-main span:nth-child(3) { --x: 10; --y: -15; }
-        .logo-main span:nth-child(4) { --x: 15; --y: 10; }
-        .logo-main span:nth-child(5) { --x: -10; --y: 15; }
-        .logo-main span:nth-child(6) { --x: 5; --y: 20; }
-        .logo-main span:nth-child(7) { --x: 20; --y: 0; }
-
-        /* --- Orbiting Star --- */
+        /* --- Updated Orbiting Stars with Neo Line --- */
         .star-orbit {
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 120%;
-            height: 120%;
+            width: 150px;
+            height: 150px;
             transform: translate(-50%, -50%);
             pointer-events: none;
             z-index: 10;
+            border-radius: 50%;
+            /* This creates the faint 'Neo Line' path */
+            border: 1px solid rgba(0, 242, 255, 0.15);
+            box-shadow: inset 0 0 10px rgba(0, 242, 255, 0.1);
         }
 
         .star {
             position: absolute;
-            width: 8px;
-            height: 8px;
+            top: 50%;
+            left: 50%;
+            width: 6px;
+            height: 6px;
             background: #fff;
-            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-            box-shadow: 0 0 15px #fff, 0 0 25px #ffbc00;
-            animation: orbit 4s linear infinite;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #fff, 0 0 20px var(--neo-blue);
+            animation: orbit 3s linear infinite;
         }
 
+        /* Multiple stars to create a trail */
+        .star:nth-child(2) { animation-delay: -0.2s; opacity: 0.7; width: 4px; height: 4px; }
+        .star:nth-child(3) { animation-delay: -0.4s; opacity: 0.4; width: 3px; height: 3px; }
+        .star:nth-child(4) { animation-delay: -0.6s; opacity: 0.2; width: 2px; height: 2px; }
+
         @keyframes orbit {
-            from { transform: rotate(0deg) translateX(70px) rotate(0deg); }
-            to { transform: rotate(360deg) translateX(70px) rotate(-360deg); }
+            from { transform: rotate(0deg) translateX(75px) rotate(0deg); }
+            to { transform: rotate(360deg) translateX(75px) rotate(-360deg); }
         }
 
         .logo-sub { font-size: 14px; color: var(--accent-orange); font-weight: 600; letter-spacing: 1px; }
@@ -278,7 +277,12 @@
 
     <header>
         <div class="logo-container">
-            <div class="star-orbit"><div class="star"></div></div>
+            <div class="star-orbit">
+                <div class="star"></div>
+                <div class="star"></div>
+                <div class="star"></div>
+                <div class="star"></div>
+            </div>
             
             <div class="logo-main">
                 <span>N</span><span>i</span><span>r</span><span>m</span><span>a</span><span>n</span><span>a</span>
