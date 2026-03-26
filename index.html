@@ -11,7 +11,6 @@
             --accent-orange: #ff9a8b;
             --glass: rgba(255, 255, 255, 0.1);
             --glass-border: rgba(255, 255, 255, 0.2);
-            /* Glow colors */
             --glow-color: #6e8efb;
         }
 
@@ -42,33 +41,93 @@
             position: relative;
         }
 
-        .logo-container { display: flex; flex-direction: column; }
+        .logo-container { 
+            display: flex; 
+            flex-direction: column; 
+            position: relative; /* Added for star positioning */
+        }
 
-        /* --- Updated Nirmana Glow Style --- */
+        /* --- Logo Glow & Letter Animation --- */
         .logo-main { 
             font-weight: 800; 
             font-size: 28px; 
             letter-spacing: 2px; 
             color: #fff;
             text-transform: uppercase;
-            text-shadow: 
-                0 0 7px #fff,
-                0 0 10px #fff,
-                0 0 21px var(--glow-color),
-                0 0 42px var(--glow-color),
-                0 0 82px var(--glow-color),
-                0 0 92px var(--glow-color),
-                0 0 102px var(--glow-color);
-            animation: pulse-glow 2s infinite alternate;
+            display: flex;
+            position: relative;
         }
 
-        @keyframes pulse-glow {
-            from {
-                text-shadow: 0 0 10px #fff, 0 0 20px var(--glow-color), 0 0 30px var(--glow-color);
+        /* Styling individual letters for explosion effect */
+        .logo-main span {
+            display: inline-block;
+            animation: scatter-glow 6s infinite ease-in-out;
+        }
+
+        /* Delaying each letter for a natural feel */
+        .logo-main span:nth-child(1) { animation-delay: 0s; }
+        .logo-main span:nth-child(2) { animation-delay: 0.1s; }
+        .logo-main span:nth-child(3) { animation-delay: 0.2s; }
+        .logo-main span:nth-child(4) { animation-delay: 0.3s; }
+        .logo-main span:nth-child(5) { animation-delay: 0.4s; }
+        .logo-main span:nth-child(6) { animation-delay: 0.5s; }
+        .logo-main span:nth-child(7) { animation-delay: 0.6s; }
+
+        @keyframes scatter-glow {
+            0%, 70%, 100% { 
+                transform: translate(0, 0) scale(1);
+                text-shadow: 0 0 10px #fff, 0 0 20px var(--glow-color);
+                opacity: 1;
             }
-            to {
-                text-shadow: 0 0 15px #fff, 0 0 30px #a777e3, 0 0 50px #a777e3, 0 0 70px #a777e3;
+            80% { 
+                /* Explosion moment */
+                transform: translate(calc(var(--x, 0) * 1px), calc(var(--y, 0) * 1px)) rotate(20deg);
+                opacity: 0.5;
+                filter: blur(2px);
             }
+            85% {
+                /* Snap back with huge glow */
+                transform: translate(0, 0) scale(1.1);
+                text-shadow: 0 0 20px #fff, 0 0 40px #a777e3, 0 0 60px #a777e3;
+                opacity: 1;
+                filter: blur(0);
+            }
+        }
+
+        /* Assigning random-ish directions for explosion */
+        .logo-main span:nth-child(1) { --x: -15; --y: -10; }
+        .logo-main span:nth-child(2) { --x: -5; --y: -20; }
+        .logo-main span:nth-child(3) { --x: 10; --y: -15; }
+        .logo-main span:nth-child(4) { --x: 15; --y: 10; }
+        .logo-main span:nth-child(5) { --x: -10; --y: 15; }
+        .logo-main span:nth-child(6) { --x: 5; --y: 20; }
+        .logo-main span:nth-child(7) { --x: 20; --y: 0; }
+
+        /* --- Orbiting Star --- */
+        .star-orbit {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 120%;
+            height: 120%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .star {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #fff;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            box-shadow: 0 0 15px #fff, 0 0 25px #ffbc00;
+            animation: orbit 4s linear infinite;
+        }
+
+        @keyframes orbit {
+            from { transform: rotate(0deg) translateX(70px) rotate(0deg); }
+            to { transform: rotate(360deg) translateX(70px) rotate(-360deg); }
         }
 
         .logo-sub { font-size: 14px; color: var(--accent-orange); font-weight: 600; letter-spacing: 1px; }
@@ -219,7 +278,11 @@
 
     <header>
         <div class="logo-container">
-            <span class="logo-main">Nirmana</span>
+            <div class="star-orbit"><div class="star"></div></div>
+            
+            <div class="logo-main">
+                <span>N</span><span>i</span><span>r</span><span>m</span><span>a</span><span>n</span><span>a</span>
+            </div>
             <span class="logo-sub">Innovations</span>
         </div>
         <nav>
@@ -247,23 +310,23 @@
         </div>
 
         <div class="hero-image">
-            <img class="card floating-island" src="Gemini_Generated_Image_7oic907oic907oic.png"/720x360/4444dd/ffffff?text=Robot" alt="Island">
+            <img class="card floating-island" src="Gemini_Generated_Image_7oic907oic907oic.png" alt="Island">
         </div>
     </main>
 
     <div class="project-cards">
         <div class="card">
-            <img src="Gemini_Generated_Image_qmlm9aqmlm9aqmlm.png"/150/4444dd/ffffff?text=Robot" alt="Project">
+            <img src="Gemini_Generated_Image_qmlm9aqmlm9aqmlm.png" alt="Project">
             <p>Project</p>
             <h4>ROBOT GUARDIAN</h4>
         </div>
         <div class="card">
-            <img src="Gemini_Generated_Image_h31jg6h31jg6h31j.png"/150/dd4444/ffffff?text=Dragon" alt="Project">
+            <img src="Gemini_Generated_Image_h31jg6h31jg6h31j.png" alt="Project">
             <p>Project</p>
             <h4>MYTHIC LANDS</h4>
         </div>
         <div class="card">
-            <img src="Gemini_Generated_Image_mnmsd1mnmsd1mnms.png"/150/44dd44/ffffff?text=City" alt="Project">
+            <img src="Gemini_Generated_Image_mnmsd1mnmsd1mnms.png" alt="Project">
             <p>Project</p>
             <h4>SKYLINE 2042</h4>
         </div>
