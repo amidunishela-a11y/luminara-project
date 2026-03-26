@@ -1,207 +1,175 @@
 <!DOCTYPE html>
-<html lang="si">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WADANA.LK | 3D වදන</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;700&family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
-    
+    <title>Nirmana Innovations | 3D Animation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-orange: #FF7043;
-            --deep-blue: #000b18;
-            --glass-bg: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.12);
-            --sidebar-glass: rgba(255, 255, 255, 0.03);
+            --primary-gradient: linear-gradient(135deg, #6e8efb, #a777e3);
+            --accent-orange: #ff9a8b;
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Noto Sans Sinhala', 'Poppins', sans-serif;
-            background: var(--deep-blue);
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle at top right, #1a2a6c, #b21f1f, #fdbb2d);
+            background-attachment: fixed;
             color: white;
             overflow-x: hidden;
-            min-height: 150vh;
+            height: 100vh;
         }
 
+        /* --- Background Animation --- */
         #canvas-container {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1;
+            background: url('https://images.unsplash.com/photo-1614850523296-e8c041de439f?auto=format&fit=crop&w=1920&q=80') center/cover; /* පින්තූරයේ ඇති වලාකුළු සහිත පසුබිම වැනි එකක් */
         }
 
+        /* --- Header / Navbar --- */
         header {
-            position: fixed;
-            top: 15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 95%;
-            max-width: 1300px;
-            background: rgba(255, 255, 255, 0.07);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 12px 25px;
-            z-index: 2000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            z-index: 1000;
         }
 
-        nav { display: flex; justify-content: space-between; align-items: center; }
-
-        .logo { display: flex; align-items: center; text-decoration: none; }
-
-        .w-logo-3d {
-            font-family: 'Poppins', sans-serif;
-            font-size: 35px;
-            font-weight: 900;
-            margin-right: 8px;
-            background: linear-gradient(135deg, #fff, var(--primary-orange));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: pulse 2s infinite alternate;
-        }
-
-        @keyframes pulse {
-            from { filter: drop-shadow(0 0 2px var(--primary-orange)); }
-            to { filter: drop-shadow(0 0 8px var(--primary-orange)); }
-        }
-
-        .brand-text { font-size: 20px; font-weight: 700; color: #fff; letter-spacing: 1px; }
-
-        .nav-right { display: flex; align-items: center; gap: 20px; }
-
-        .search-container {
-            width: 250px;
-        }
-        
-        .gcse-search {
-            background: transparent !important;
-        }
-        
-        .gsc-control-cse {
-            background-color: transparent !important;
-            border: none !important;
-            padding: 0 !important;
-        }
-
-        nav ul { display: flex; list-style: none; }
-        nav ul li { margin-left: 15px; }
-        nav ul li a { text-decoration: none; color: #bbb; font-size: 14px; transition: 0.3s; }
-        nav ul li a:hover { color: var(--primary-orange); }
-
-        .sidebar {
-            position: fixed;
-            left: 20px;
-            top: 110px;
-            width: 240px;
-            background: var(--sidebar-glass);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 25px;
-            z-index: 1500;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        }
-
-        .sidebar h3 { 
-            font-size: 16px; 
-            margin-bottom: 15px; 
-            color: var(--primary-orange); 
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            opacity: 0.9;
-        }
-        
-        .sidebar ul { list-style: none; margin-bottom: 25px; }
-        .sidebar ul li { margin-bottom: 12px; }
-        .sidebar ul li a { 
-            text-decoration: none; 
-            color: rgba(255, 255, 255, 0.7); 
-            font-size: 15px; 
-            display: block;
-            transition: all 0.3s ease;
-            padding: 5px 0;
-        }
-        .sidebar ul li a:hover { 
-            color: white;
-            padding-left: 8px;
-            text-shadow: 0 0 10px var(--primary-orange);
-        }
-
-        .hero-content {
-            padding-left: 280px;
-            padding-top: 120px;
-            min-height: 100vh;
+        .logo-container {
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
         }
 
-        /* ----- නව අයිතම දර්ශනය සඳහා අමතර CSS (New Styles) ----- */
-        #item-display-area {
-            display: none; /* ආරම්භයේදී සඟවා ඇත */
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        .logo-main { font-weight: 800; font-size: 24px; letter-spacing: 1px; }
+        .logo-sub { font-size: 14px; color: var(--accent-orange); font-weight: 600; }
+
+        nav {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 40px;
+            padding: 5px 30px;
+        }
+
+        nav ul { display: flex; list-style: none; align-items: center; }
+        nav ul li { margin: 0 15px; }
+        nav ul li a { 
+            text-decoration: none; 
+            color: white; 
+            font-size: 14px; 
+            opacity: 0.8; 
+            transition: 0.3s;
+            text-transform: capitalize;
+        }
+        nav ul li a.active { 
+            background: var(--primary-gradient);
+            padding: 8px 20px;
+            border-radius: 20px;
+            opacity: 1;
+        }
+
+        /* --- Left Side Icons --- */
+        .side-icons {
+            position: fixed;
+            left: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
             gap: 20px;
-            padding: 40px;
-            width: 100%;
-            max-width: 1000px;
-            margin-top: 30px;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            padding: 20px 10px;
+            border-radius: 50px;
+            border: 1px solid var(--glass-border);
         }
 
-        .item-card {
-            background: rgba(255, 255, 255, 0.05);
+        .icon-dot { width: 35px; height: 35px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .icon-dot:hover { background: var(--primary-gradient); }
+
+        /* --- Main Content --- */
+        .container {
+            display: flex;
+            padding: 0 8%;
+            height: calc(100vh - 100px);
+            align-items: center;
+        }
+
+        .hero-text { flex: 1; }
+        .hero-text h1 { 
+            font-size: 55px; 
+            font-weight: 800; 
+            line-height: 1.1;
+            background: linear-gradient(to right, #fff, #c3dafe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+        .hero-text span { color: #ffbc00; -webkit-text-fill-color: #ffbc00; } /* Animation text color */
+        
+        .hero-text p { font-size: 18px; opacity: 0.9; margin-bottom: 40px; max-width: 450px; }
+
+        /* --- Floating Island Image --- */
+        .hero-image {
+            flex: 1;
+            position: relative;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .floating-island {
+            width: 100%;
+            max-width: 600px;
+            filter: drop-shadow(0 20px 50px rgba(0,0,0,0.5));
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* --- Project Cards --- */
+        .project-cards {
+            position: absolute;
+            bottom: 40px;
+            left: 8%;
+            display: flex;
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
             border: 1px solid var(--glass-border);
             border-radius: 20px;
-            padding: 20px;
-            text-align: left;
-            backdrop-filter: blur(10px);
+            padding: 10px;
+            width: 180px;
             transition: 0.3s;
         }
 
-        .item-card:hover {
-            transform: translateY(-10px);
-            background: rgba(255, 255, 255, 0.1);
-        }
+        .card img { width: 100%; border-radius: 15px; margin-bottom: 8px; }
+        .card p { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7; }
+        .card h4 { font-size: 12px; }
 
-        .item-card h4 { color: var(--primary-orange); margin-bottom: 10px; font-size: 1.2rem; }
-        .item-card .price { font-weight: bold; font-size: 1.1rem; color: #4CAF50; margin: 10px 0; }
-        .item-card .desc { font-size: 0.9rem; opacity: 0.8; }
-        /* ----------------------------------------------- */
-
-        h1 { font-size: 3.5rem; margin-bottom: 20px; line-height: 1.2; }
-        p { font-size: 1.2rem; opacity: 0.8; max-width: 650px; line-height: 1.6; }
-
-        .btn {
-            background: var(--primary-orange);
-            color: white;
-            padding: 16px 45px;
-            border-radius: 50px;
+        .btn-portfolio {
+            background: var(--primary-gradient);
             border: none;
-            font-weight: 700;
-            font-size: 1rem;
+            padding: 12px 30px;
+            border-radius: 30px;
+            color: white;
+            font-weight: 600;
             cursor: pointer;
-            margin-top: 35px;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 10px 20px rgba(255, 112, 67, 0.3);
-        }
-        .btn:hover { 
-            transform: translateY(-5px) scale(1.05); 
-            box-shadow: 0 15px 30px rgba(255, 112, 67, 0.5); 
+            margin-top: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
 
-        @media (max-width: 1024px) {
-            .sidebar { display: none; }
-            .hero-content { padding-left: 0; padding-top: 150px; }
-            h1 { font-size: 2.5rem; }
-            .search-container { width: 180px; }
-        }
     </style>
 </head>
 <body>
@@ -209,143 +177,58 @@
     <div id="canvas-container"></div>
 
     <header>
+        <div class="logo-container">
+            <span class="logo-main">Nirmana</span>
+            <span class="logo-sub">Innovations</span>
+        </div>
         <nav>
-            <a href="#" class="logo" onclick="window.location.reload()">
-                <span class="w-logo-3d">W</span>
-                <div class="brand-text">ADANA.LK</div>
-            </a>
-            <div class="nav-right">
-                <div class="search-container">
-                    <script async src="https://cse.google.com/cse.js?cx=e6c2d3e5508794c57"></script>
-                    <div class="gcse-search"></div>
-                </div>
-
-                <ul>
-                    <li><a href="#" onclick="window.location.reload()">මුල් පිටුව</a></li>
-                    <li><a href="#">සේවා</a></li>
-                    <li><a href="#">අප ගැන</a></li>
-                </ul>
-            </div>
+            <ul>
+                <li><a href="#" class="active">Home</a></li>
+                <li><a href="#">Portfolio</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">Story</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
         </nav>
     </header>
 
-    <aside class="sidebar">
-        <h3>ප්‍රධාන අංශ</h3>
-        <ul>
-            <li><a href="javascript:void(0)" onclick="showItems()">📦 All Items</a></li>
-            <li><a href="#">💰 Selling</a></li>
-            <li><a href="#">🛒 Buying</a></li>
-            <li><a href="#">💎 Premium</a></li>
-        </ul>
-        <h3>Categories</h3>
-        <ul>
-            <li><a href="#">Technology</a></li>
-            <li><a href="#">3D Design</a></li>
-            <li><a href="#">Services</a></li>
-        </ul>
-    </aside>
+    <div class="side-icons">
+        <div class="icon-dot">🏠</div>
+        <div class="icon-dot">📁</div>
+        <div class="icon-dot">❤️</div>
+        <div class="icon-dot">⚙️</div>
+        <div class="icon-dot">👤</div>
+    </div>
 
-    <section class="hero-content" id="main-hero">
-        <div id="hero-text">
-            <h1>අනාගතයේ වෙබ් අඩවි<br>අදම නිර්මාණය කරමු</h1>
-            <p>අපි ඔබේ ව්‍යාපාරයට නවීනතම 3D තාක්ෂණය සහ කලාත්මක නිර්මාණශීලීත්වය මුසු කරමු.</p>
-            <button class="btn">අප හා සම්බන්ධ වන්න</button>
+    <main class="container">
+        <div class="hero-text">
+            <h1>CREATE THE FUTURE<br>WITH <span>3D ANIMATION</span></h1>
+            <p>Unleash Your Imagination through Stunning 3D Worlds & Characters.</p>
+            <button class="btn-portfolio">EXPLORE OUR PORTFOLIO</button>
         </div>
 
-        <div id="item-display-area"></div>
-        
-        <div id="scroll-hint" style="margin-top: 20vh; padding-bottom: 100px;">
-            <h2 style="font-size: 2rem; color: var(--primary-orange);">අපගේ සේවාවන්</h2>
-            <p>පහළට Scroll කර වැඩි විස්තර දැනගන්න.</p>
+        <div class="hero-image">
+            <img src="https://i.ibb.co/V9m8zWv/island-mockup.png" alt="3D World" class="floating-island" onerror="this.src='https://cdn.pixabay.com/photo/2021/08/30/21/30/fantasy-6587180_1280.png'">
         </div>
-    </section>
+    </main>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script>
-        // --- අයිතම දත්ත (ඔබට අවශ්‍ය පරිදි මෙහි දත්ත වෙනස් කරන්න) ---
-        const myItems = [
-            { name: "3D Web Design Pack", price: "Rs. 25,000", desc: "සම්පූර්ණ 3D අත්දැකීමක් සහිත වෙබ් අඩවි නිර්මාණය." },
-            { name: "Logo Animation", price: "Rs. 5,000", desc: "ඔබේ සන්නාමය සඳහා උසස් තත්වයේ 3D ඇනිමේෂන්." },
-            { name: "UI/UX Consultation", price: "Rs. 10,000", desc: "පරිශීලකයාට පහසු නවීන මෘදුකාංග සැලසුම්කරණය." },
-            { name: "Custom 3D Models", price: "Rs. 15,000", desc: "වෙබ් අඩවි සහ ක්‍රීඩා සඳහා අවශ්‍ය 3D මාදිලි." }
-        ];
+    <div class="project-cards">
+        <div class="card">
+            <img src="https://via.placeholder.com/150/4444dd/ffffff?text=Robot" alt="Project">
+            <p>Project</p>
+            <h4>ROBOT GUARDIAN</h4>
+        </div>
+        <div class="card">
+            <img src="https://via.placeholder.com/150/dd4444/ffffff?text=Dragon" alt="Project">
+            <p>Project</p>
+            <h4>MYTHIC LANDS</h4>
+        </div>
+        <div class="card">
+            <img src="https://via.placeholder.com/150/44dd44/ffffff?text=City" alt="Project">
+            <p>Project</p>
+            <h4>SKYLINE 2042</h4>
+        </div>
+    </div>
 
-        // All Items ක්ලික් කළ විට ක්‍රියාත්මක වන Function එක
-        function showItems() {
-            const heroText = document.getElementById('hero-text');
-            const scrollHint = document.getElementById('scroll-hint');
-            const displayArea = document.getElementById('item-display-area');
-
-            // Hero text එක සඟවන්න
-            heroText.style.display = 'none';
-            scrollHint.style.display = 'none';
-            
-            // Display Area එක පෙන්වන්න
-            displayArea.style.display = 'grid';
-            displayArea.innerHTML = ""; // කලින් තිබූ දේවල් මකන්න
-
-            // ලැයිස්තුව නිර්මාණය කිරීම
-            myItems.forEach(item => {
-                const card = `
-                    <div class="item-card">
-                        <h4>${item.name}</h4>
-                        <p class="price">${item.price}</p>
-                        <p class="desc">${item.desc}</p>
-                    </div>
-                `;
-                displayArea.innerHTML += card;
-            });
-            
-            // Scroll එක උඩටම ගන්න
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // --- THREE.JS කේතය (වෙනසක් නැත) ---
-        let scene, camera, renderer, particles, orb;
-
-        function init() {
-            scene = new THREE.Scene();
-            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.z = 5;
-
-            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            document.getElementById('canvas-container').appendChild(renderer.domElement);
-
-            const orbGeometry = new THREE.IcosahedronGeometry(1.5, 2);
-            const orbMaterial = new THREE.MeshBasicMaterial({ 
-                color: 0xFF7043, wireframe: true, transparent: true, opacity: 0.15 
-            });
-            orb = new THREE.Mesh(orbGeometry, orbMaterial);
-            scene.add(orb);
-
-            const partGeometry = new THREE.BufferGeometry();
-            const partCount = 1500;
-            const posArray = new Float32Array(partCount * 3);
-            for(let i = 0; i < partCount * 3; i++) { posArray[i] = (Math.random() - 0.5) * 10; }
-            partGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-            const partMaterial = new THREE.PointsMaterial({
-                size: 0.02, color: 0xFF7043, transparent: true, blending: THREE.AdditiveBlending
-            });
-            particles = new THREE.Points(partGeometry, partMaterial);
-            scene.add(particles);
-            animate();
-        }
-
-        function animate() {
-            requestAnimationFrame(animate);
-            orb.rotation.y += 0.003;
-            particles.rotation.y += 0.001;
-            renderer.render(scene, camera);
-        }
-
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-
-        init();
-    </script>
 </body>
 </html>
