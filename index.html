@@ -11,6 +11,8 @@
             --accent-orange: #ff9a8b;
             --glass: rgba(255, 255, 255, 0.1);
             --glass-border: rgba(255, 255, 255, 0.2);
+            /* Glow colors */
+            --glow-color: #6e8efb;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -41,8 +43,35 @@
         }
 
         .logo-container { display: flex; flex-direction: column; }
-        .logo-main { font-weight: 800; font-size: 24px; letter-spacing: 1px; }
-        .logo-sub { font-size: 14px; color: var(--accent-orange); font-weight: 600; }
+
+        /* --- Updated Nirmana Glow Style --- */
+        .logo-main { 
+            font-weight: 800; 
+            font-size: 28px; 
+            letter-spacing: 2px; 
+            color: #fff;
+            text-transform: uppercase;
+            text-shadow: 
+                0 0 7px #fff,
+                0 0 10px #fff,
+                0 0 21px var(--glow-color),
+                0 0 42px var(--glow-color),
+                0 0 82px var(--glow-color),
+                0 0 92px var(--glow-color),
+                0 0 102px var(--glow-color);
+            animation: pulse-glow 2s infinite alternate;
+        }
+
+        @keyframes pulse-glow {
+            from {
+                text-shadow: 0 0 10px #fff, 0 0 20px var(--glow-color), 0 0 30px var(--glow-color);
+            }
+            to {
+                text-shadow: 0 0 15px #fff, 0 0 30px #a777e3, 0 0 50px #a777e3, 0 0 70px #a777e3;
+            }
+        }
+
+        .logo-sub { font-size: 14px; color: var(--accent-orange); font-weight: 600; letter-spacing: 1px; }
 
         nav {
             background: var(--glass);
@@ -93,12 +122,12 @@
             padding: 0 8%;
             min-height: calc(100vh - 100px);
             align-items: center;
-            flex-wrap: wrap; /* ඉඩ මදි වුණොත් පහළට එන්න */
+            flex-wrap: wrap; 
         }
 
         .hero-text { flex: 1; min-width: 300px; padding-top: 50px; }
         .hero-text h1 { 
-            font-size: clamp(32px, 5vw, 55px); /* ෆෝන් එකට අනුව font size එක වෙනස් වේ */
+            font-size: clamp(32px, 5vw, 55px); 
             font-weight: 800; 
             line-height: 1.1;
             background: linear-gradient(to right, #fff, #c3dafe);
@@ -170,19 +199,16 @@
             nav { padding: 5px 10px; }
             nav ul li { margin: 0 5px; }
             nav ul li a { font-size: 11px; }
-            
-            .side-icons { display: none; } /* ෆෝන් එකේදී පැත්තේ icon ඉවත් කිරීම වඩාත් ලස්සනයි */
-            
+            .side-icons { display: none; } 
             .container { flex-direction: column; text-align: center; padding-top: 20px; }
             .hero-text { padding-top: 0; order: 1; }
             .hero-image { order: 2; margin-top: 30px; }
-            
             .project-cards { position: static; margin-top: 20px; }
-            .card { width: 45%; } /* පෝන් එකේදී කාඩ් දෙක බැගින් */
+            .card { width: 45%; } 
         }
 
         @media (max-width: 480px) {
-            .card { width: 100%; } /* ඉතා කුඩා පෝන් වල කාඩ් එක බැගින් */
+            .card { width: 100%; } 
         }
 
     </style>
@@ -221,23 +247,23 @@
         </div>
 
         <div class="hero-image">
-            <img class="card floating-island" src="kdkdk.png" width="720" height="360"/150/4444dd/ffffff?text=Robot" alt="Island" width="1080" height="1080">
+            <img class="card floating-island" src="https://via.placeholder.com/720x360/4444dd/ffffff?text=Robot" alt="Island">
         </div>
     </main>
 
     <div class="project-cards">
         <div class="card">
-            <img src="Gemini_Generated_Image_qmlm9aqmlm9aqmlm.png"/150/4444dd/ffffff?text=Robot" alt="Project">
+            <img src="https://via.placeholder.com/150/4444dd/ffffff?text=Robot" alt="Project">
             <p>Project</p>
             <h4>ROBOT GUARDIAN</h4>
         </div>
         <div class="card">
-            <img src="Gemini_Generated_Image_h31jg6h31jg6h31j.png"/150/dd4444/ffffff?text=Dragon" alt="Project">
+            <img src="https://via.placeholder.com/150/dd4444/ffffff?text=Dragon" alt="Project">
             <p>Project</p>
             <h4>MYTHIC LANDS</h4>
         </div>
         <div class="card">
-            <img src="Gemini_Generated_Image_mnmsd1mnmsd1mnms.png"/150/44dd44/ffffff?text=City" alt="Project">
+            <img src="https://via.placeholder.com/150/44dd44/ffffff?text=City" alt="Project">
             <p>Project</p>
             <h4>SKYLINE 2042</h4>
         </div>
