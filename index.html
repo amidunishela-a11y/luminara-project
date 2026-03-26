@@ -23,6 +23,26 @@
             overflow-x: hidden;
             height: 100vh;
         }
+        /* --- NIRMANA Animation & Glow --- */
+.logo-main {
+    animation: glowText 3s ease-in-out infinite alternate;
+    cursor: pointer;
+}
+
+@keyframes glowText {
+    0% {
+        text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #6e8efb, 0 0 20px #6e8efb;
+        color: #ffffff;
+    }
+    50% {
+        text-shadow: 0 0 10px #fff, 0 0 20px #a777e3, 0 0 30px #a777e3, 0 0 40px #a777e3;
+        color: #f0f0f0;
+    }
+    100% {
+        text-shadow: 0 0 5px #fff, 0 0 10px #00d2ff, 0 0 15px #00d2ff, 0 0 20px #00d2ff;
+        color: #ffffff;
+    }
+}
 
         /* --- Background Animation --- */
         #canvas-container {
