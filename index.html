@@ -25,11 +25,18 @@
             min-height: 100vh;
         }
 
+        /* --- Background Animation එක මෙතැනින් බලන්න --- */
         #canvas-container {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: -5%; left: -5%; width: 110%; height: 110%; /* පින්තූරය හෙලවෙන විට කෙළවරවල් නොපෙනීමට 5% ක් විශාල කර ඇත */
             z-index: -1;
             background: url('—Pngtree—floating islands in a dreamy_15844341.png') center/cover;
+            animation: backgroundFloat 12s ease-in-out infinite; /* පසුබිම හෙලවෙන animation එක */
+        }
+
+        @keyframes backgroundFloat {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(20px) scale(1.02); } /* මෘදු ලෙස ඉහළට සහ පහළට පාවෙන ස්වභාවය */
         }
 
         header {
@@ -239,7 +246,6 @@
             margin-bottom: 30px;
         }
 
-        /* --- Updated Modal for Mobile Responsiveness --- */
         .project-modal {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -249,7 +255,7 @@
             display: none; 
             align-items: center;
             justify-content: center;
-            overflow-y: auto; /* Enable scrolling if content is too long on phones */
+            overflow-y: auto;
         }
 
         .modal-content {
@@ -294,34 +300,33 @@
             z-index: 2100;
         }
 
-        /* --- Extra Mobile Specific Styles --- */
         @media (max-width: 768px) {
             header { flex-direction: column; gap: 15px; padding: 15px 5%; }
             nav { padding: 8px 15px; }
             nav ul li { margin: 0 5px; }
             nav ul li a { font-size: 11px; }
 
-            .side-icons { display: none; } /* Hide side dots on small screens */
+            .side-icons { display: none; }
 
             .container { flex-direction: column; text-align: center; padding-top: 40px; }
             .hero-text { order: 1; padding-top: 0; }
             .hero-image { order: 2; margin-top: 40px; }
             
             .modal-content { 
-                flex-direction: column-reverse; /* Image on top, text below on mobile */
+                flex-direction: column-reverse;
                 text-align: center; 
-                margin-top: 50px; /* Space for close button */
+                margin-top: 50px;
             }
             .modal-right img { max-width: 200px; }
             .modal-left h2 { margin-top: 10px; }
 
             .project-cards { padding: 40px 5%; }
-            .card { width: 46%; } /* Two cards per row on mobile */
+            .card { width: 46%; }
         }
 
         @media (max-width: 480px) {
             .logo-main { font-size: 22px; }
-            .card { width: 100%; } /* One card per row on very small phones */
+            .card { width: 100%; }
             .hero-text h1 { font-size: 28px; }
         }
 
