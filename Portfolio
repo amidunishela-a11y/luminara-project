@@ -1,65 +1,110 @@
-<div class="project-cards" id="portfolio-section">
-    <div class="card" onclick="openProject('ROBOT GUARDIAN', 'The Robot Guardian is a next-generation 3D concept designed for futuristic defense systems. Created with high-poly mechanical details and cinematic lighting.', 'Gemini_Generated_Image_qmlm9aqmlm9aqmlm.png')">
-        <img src="Gemini_Generated_Image_qmlm9aqmlm9aqmlm.png" alt="Project">
-        <p>Project</p>
-        <h4>ROBOT GUARDIAN</h4>
-    </div>
-
-    <div class="card" onclick="openProject('MYTHIC LANDS', 'Explore an ancient world filled with magic and mystery. Mythic Lands features sprawling environments and mythical creatures brought to life with 3D animation.', 'Gemini_Generated_Image_h31jg6h31jg6h31j.png')">
-        <img src="Gemini_Generated_Image_h31jg6h31jg6h31j.png" alt="Project">
-        <p>Project</p>
-        <h4>MYTHIC LANDS</h4>
-    </div>
-
-    <div class="card" onclick="openProject('SKYLINE 2042', 'A glimpse into the future of urban architecture. Skyline 2042 showcases high-tech neon cities and flying vehicles in a stunning cyberpunk aesthetic.', 'Gemini_Generated_Image_mnmsd1mnmsd1mnms.png')">
-        <img src="Gemini_Generated_Image_mnmsd1mnmsd1mnms.png" alt="Project">
-        <p>Project</p>
-        <h4>SKYLINE 2042</h4>
-    </div>
-</div>
-<script>
-    let typingTimer; // Animation එක පාලනය කිරීමට
-
-    function openProject(titleName, descriptionText, imageSrc) {
-        const modal = document.getElementById('projectModal');
-        const title = document.getElementById('modalTitle');
-        const desc = document.getElementById('modalDesc');
-        const img = modal.querySelector('.modal-right img'); // Modal එකේ ඇති රූපය
-        
-        clearTimeout(typingTimer); // කලින් තිබූ typing නවත්වන්න
-        
-        modal.style.display = 'flex';
-        img.src = imageSrc; // ක්ලික් කළ card එකේ රූපය පෙන්වන්න
-        
-        title.innerHTML = "";
-        desc.innerHTML = "";
-
-        let i = 0;
-        let j = 0;
-
-        function typeTitle() {
-            if (i < titleName.length) {
-                title.innerHTML += titleName.charAt(i);
-                i++;
-                typingTimer = setTimeout(typeTitle, 50);
-            } else {
-                typeDesc();
-            }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glassmorphism Poll</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: url('https://images.unsplash.com/photo-1557683316-973673baf926') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
         }
 
-        function typeDesc() {
-            if (j < descriptionText.length) {
-                desc.innerHTML += descriptionText.charAt(j);
-                j++;
-                typingTimer = setTimeout(typeDesc, 20);
-            }
+        /* Portfolio Button */
+        .btn-portfolio {
+            padding: 15px 30px;
+            font-size: 18px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            color: white;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            transition: 0.3s;
         }
 
-        typeTitle();
-    }
+        /* Overlay Background (Full Screen Blur) */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px); /* Meeka thama background eka blur karanne */
+            display: none; 
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
 
-    function closeProject() {
-        document.getElementById('projectModal').style.display = 'none';
-        clearTimeout(typingTimer);
-    }
-</script>
+        /* Glass Poll Card */
+        .poll-card {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            width: 320px;
+            color: white;
+            text-align: center;
+        }
+
+        .poll-option {
+            background: rgba(255, 255, 255, 0.1);
+            margin: 10px 0;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .poll-option:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .close-btn {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #ddd;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <button class="btn-portfolio" onclick="togglePoll(true)">Open Portfolio Poll</button>
+
+    <div class="overlay" id="pollOverlay">
+        <div class="poll-card">
+            <h3>Do you like my work?</h3>
+            <div class="poll-option" onclick="vote('Yes')">🔥 Yes, Awesome!</div>
+            <div class="poll-option" onclick="vote('Good')">✨ It's Good</div>
+            <div class="poll-option" onclick="vote('Improve')">🛠️ Needs Work</div>
+            
+            <div class="close-btn" onclick="togglePoll(false)">Close</div>
+        </div>
+    </div>
+
+    <script>
+        function togglePoll(show) {
+            const overlay = document.getElementById('pollOverlay');
+            overlay.style.display = show ? 'flex' : 'none';
+        }
+
+        function vote(option) {
+            alert("Thanks for voting: " + option);
+            togglePoll(false);
+        }
+    </script>
+
+</body>
+</html>
