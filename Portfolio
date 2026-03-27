@@ -1,0 +1,65 @@
+<div class="project-cards" id="portfolio-section">
+    <div class="card" onclick="openProject('ROBOT GUARDIAN', 'The Robot Guardian is a next-generation 3D concept designed for futuristic defense systems. Created with high-poly mechanical details and cinematic lighting.', 'Gemini_Generated_Image_qmlm9aqmlm9aqmlm.png')">
+        <img src="Gemini_Generated_Image_qmlm9aqmlm9aqmlm.png" alt="Project">
+        <p>Project</p>
+        <h4>ROBOT GUARDIAN</h4>
+    </div>
+
+    <div class="card" onclick="openProject('MYTHIC LANDS', 'Explore an ancient world filled with magic and mystery. Mythic Lands features sprawling environments and mythical creatures brought to life with 3D animation.', 'Gemini_Generated_Image_h31jg6h31jg6h31j.png')">
+        <img src="Gemini_Generated_Image_h31jg6h31jg6h31j.png" alt="Project">
+        <p>Project</p>
+        <h4>MYTHIC LANDS</h4>
+    </div>
+
+    <div class="card" onclick="openProject('SKYLINE 2042', 'A glimpse into the future of urban architecture. Skyline 2042 showcases high-tech neon cities and flying vehicles in a stunning cyberpunk aesthetic.', 'Gemini_Generated_Image_mnmsd1mnmsd1mnms.png')">
+        <img src="Gemini_Generated_Image_mnmsd1mnmsd1mnms.png" alt="Project">
+        <p>Project</p>
+        <h4>SKYLINE 2042</h4>
+    </div>
+</div>
+<script>
+    let typingTimer; // Animation එක පාලනය කිරීමට
+
+    function openProject(titleName, descriptionText, imageSrc) {
+        const modal = document.getElementById('projectModal');
+        const title = document.getElementById('modalTitle');
+        const desc = document.getElementById('modalDesc');
+        const img = modal.querySelector('.modal-right img'); // Modal එකේ ඇති රූපය
+        
+        clearTimeout(typingTimer); // කලින් තිබූ typing නවත්වන්න
+        
+        modal.style.display = 'flex';
+        img.src = imageSrc; // ක්ලික් කළ card එකේ රූපය පෙන්වන්න
+        
+        title.innerHTML = "";
+        desc.innerHTML = "";
+
+        let i = 0;
+        let j = 0;
+
+        function typeTitle() {
+            if (i < titleName.length) {
+                title.innerHTML += titleName.charAt(i);
+                i++;
+                typingTimer = setTimeout(typeTitle, 50);
+            } else {
+                typeDesc();
+            }
+        }
+
+        function typeDesc() {
+            if (j < descriptionText.length) {
+                desc.innerHTML += descriptionText.charAt(j);
+                j++;
+                typingTimer = setTimeout(typeDesc, 20);
+            }
+        }
+
+        typeTitle();
+    }
+
+    function closeProject() {
+        document.getElementById('projectModal').style.display = 'none';
+        clearTimeout(typingTimer);
+    }
+</script>
