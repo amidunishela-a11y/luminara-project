@@ -6,11 +6,6 @@
     <title>Nirmana Innovations | 3D Animation</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        /* Smooth scrolling ක්‍රියාත්මක කිරීම */
-        html {
-            scroll-behavior: smooth;
-        }
-
         :root {
             --primary-gradient: linear-gradient(135deg, #6e8efb, #a777e3);
             --accent-orange: #ff9a8b;
@@ -30,11 +25,18 @@
             min-height: 100vh;
         }
 
+        /* --- Background Animation එක මෙතැනින් බලන්න --- */
         #canvas-container {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: -5%; left: -5%; width: 110%; height: 110%; /* පින්තූරය හෙලවෙන විට කෙළවරවල් නොපෙනීමට 5% ක් විශාල කර ඇත */
             z-index: -1;
             background: url('—Pngtree—floating islands in a dreamy_15844341.png') center/cover;
+            animation: backgroundFloat 12s ease-in-out infinite; /* පසුබිම හෙලවෙන animation එක */
+        }
+
+        @keyframes backgroundFloat {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(20px) scale(1.02); } /* මෘදු ලෙස ඉහළට සහ පහළට පාවෙන ස්වභාවය */
         }
 
         header {
@@ -213,7 +215,7 @@
             justify-content: center;
             flex-wrap: wrap;
             gap: 20px;
-            padding: 100px 8% 40px 8%; /* Top padding වැඩි කළා scroll කළ පසු ලස්සනට පෙනීමට */
+            padding: 40px 8%;
         }
 
         .card {
@@ -233,8 +235,6 @@
         .card h4 { font-size: 12px; }
 
         .btn-portfolio {
-            display: inline-block;
-            text-decoration: none;
             background: var(--primary-gradient);
             border: none;
             padding: 12px 30px;
@@ -347,7 +347,7 @@
         <nav>
             <ul>
                 <li><a href="#" class="active">Home</a></li>
-                <li><a href="#portfolio-section">Portfolio</a></li>
+                <li><a href="#">Portfolio</a></li>
                 <li><a href="#">Services</a></li>
                 <li><a href="#">Contact</a></li>
             </ul>
@@ -355,8 +355,8 @@
     </header>
 
     <div class="side-icons">
-        <div class="icon-dot" onclick="location.href='#'">🏠</div>
-        <div class="icon-dot" onclick="location.href='#portfolio-section'">📁</div>
+        <div class="icon-dot">🏠</div>
+        <div class="icon-dot">📁</div>
         <div class="icon-dot">❤️</div>
         <div class="icon-dot">⚙️</div>
     </div>
@@ -365,7 +365,7 @@
         <div class="hero-text">
             <h1>CREATE THE FUTURE<br>WITH <span>3D ANIMATION</span></h1>
             <p>Unleash Your Imagination through Stunning 3D Worlds & Characters.</p>
-            <a href="#portfolio-section" class="btn-portfolio">EXPLORE OUR PORTFOLIO</a>
+            <button class="btn-portfolio">EXPLORE OUR PORTFOLIO</button>
         </div>
 
         <div class="hero-image">
@@ -373,7 +373,7 @@
         </div>
     </main>
 
-    <div class="project-cards" id="portfolio-section">
+    <div class="project-cards">
         <div class="card" onclick="openProject()">
             <img src="Gemini_Generated_Image_qmlm9aqmlm9aqmlm.png" alt="Project">
             <p>Project</p>
