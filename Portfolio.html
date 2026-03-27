@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nirmana Innovations | Modern Connect</title>
+    <title>Nirmana Innovations | Social Connect</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-gradient: linear-gradient(135deg, #6e8efb, #a777e3);
-            --accent-orange: #ff9a8b;
-            --glass: rgba(255, 255, 255, 0.08);
-            --glass-border: rgba(255, 255, 255, 0.15);
-            --glow-color: rgba(110, 142, 251, 0.5);
+            --accent-orange: #ff5f00; /* Deep Neon Orange */
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --glow-color: #ff5f00;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
@@ -25,19 +25,17 @@
             min-height: 100vh;
         }
 
-        /* Background floating islands (retained for atmosphere) */
         #canvas-container {
             position: fixed;
             top: -5%; left: -5%; width: 110%; height: 110%;
             z-index: -1;
             background: url('—Pngtree—floating islands in a dreamy_15844341.png') center/cover;
-            opacity: 0.3; /* Toned down to focus on new elements */
-            animation: backgroundFloat 15s ease-in-out infinite;
+            animation: backgroundFloat 12s ease-in-out infinite;
         }
 
         @keyframes backgroundFloat {
             0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(15px) scale(1.01); }
+            50% { transform: translateY(20px) scale(1.02); }
         }
 
         header {
@@ -49,240 +47,163 @@
             position: relative;
         }
 
-        .logo-container { display: flex; flex-direction: column; }
-        .logo-main { font-weight: 800; font-size: 26px; letter-spacing: 2px; color: #fff; text-transform: uppercase; }
-        .logo-sub { font-size: 12px; color: var(--accent-orange); letter-spacing: 1px; }
+        /* --- NEON NANO LOGO SECTION --- */
+        .logo-container { display: flex; flex-direction: column; position: relative; }
+        
+        .logo-main { 
+            font-weight: 800; 
+            font-size: 28px; 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+            display: flex; 
+            position: relative; 
+            cursor: pointer;
+        }
 
-        nav { background: var(--glass); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); border-radius: 40px; padding: 5px 15px; }
-        nav ul { display: flex; list-style: none; }
-        nav ul li { margin: 0 8px; }
-        nav ul li a { text-decoration: none; color: white; font-size: 12px; opacity: 0.8; transition: 0.3s; text-transform: uppercase; }
-        nav ul li a:hover, nav ul li a.active { opacity: 1; color: #ffbc00; }
+        .logo-main span { 
+            display: inline-block; 
+            color: var(--accent-orange);
+            /* Nano Glow Effect */
+            text-shadow: 0 0 5px #ff5f00, 0 0 10px #ff5f00, 0 0 20px #ff8c00;
+            transition: 0.5s;
+            animation: nano-vibrate 3s infinite ease-in-out;
+        }
 
-        /* --- Hero Section --- */
-        .hero-container {
+        /* Nano particles vibration effect */
+        @keyframes nano-vibrate {
+            0%, 100% { transform: translate(0,0); filter: blur(0px); opacity: 1; }
+            25% { transform: translate(1px, -1px); filter: blur(0.5px); }
+            50% { transform: translate(-1px, 1px); opacity: 0.8; }
+            75% { transform: translate(1px, 1px); }
+        }
+
+        /* Scattering effect on hover like nano particles */
+        .logo-main:hover span {
+            animation: none;
+            transform: translate(calc(var(--x) * 1px), calc(var(--y) * 1px)) scale(0.8);
+            opacity: 0.6;
+            filter: blur(3px);
+            text-shadow: 0 0 30px #ff5f00;
+        }
+
+        .logo-main span:nth-child(1) { --x: -20; --y: -15; }
+        .logo-main span:nth-child(2) { --x: -10; --y: -25; }
+        .logo-main span:nth-child(3) { --x: 10; --y: -20; }
+        .logo-main span:nth-child(4) { --x: 25; --y: -10; }
+        .logo-main span:nth-child(5) { --x: -15; --y: 20; }
+        .logo-main span:nth-child(6) { --x: 5; --y: 25; }
+        .logo-main span:nth-child(7) { --x: 20; --y: 15; }
+
+        .logo-sub {
+            font-size: 10px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #fff;
+            opacity: 0.7;
+            margin-top: -5px;
+        }
+
+        /* --- NAVIGATION --- */
+        nav { background: var(--glass); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); border-radius: 40px; padding: 5px 20px; }
+        nav ul { display: flex; list-style: none; align-items: center; }
+        nav ul li { margin: 0 10px; }
+        nav ul li a { text-decoration: none; color: white; font-size: 13px; opacity: 0.8; transition: 0.3s; }
+        nav ul li a.active { background: var(--primary-gradient); padding: 6px 15px; border-radius: 20px; opacity: 1; }
+
+        .container {
             display: flex;
             padding: 0 8%;
-            min-height: 85vh;
+            min-height: 80vh;
             align-items: center;
-            justify-content: space-between;
             flex-wrap: wrap; 
-            position: relative;
         }
 
-        /* Typewriter text part */
-        .hero-text-block {
-            flex: 1;
-            min-width: 300px;
-            max-width: 500px;
-            z-index: 10;
-        }
+        .hero-text { flex: 1; min-width: 300px; }
+        .hero-text h1 { font-size: clamp(32px, 5vw, 55px); font-weight: 800; line-height: 1.1; margin-bottom: 20px; }
+        .hero-text span { color: #ffbc00; }
         
-        .hero-text-block h1 {
-            font-size: clamp(28px, 4vw, 48px);
-            font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 15px;
-            color: #fff;
-        }
-        
-        .hero-text-block span {
-            color: #ffbc00;
-            position: relative;
-        }
-
-        .typing-text {
-            font-size: 16px;
-            line-height: 1.8;
-            opacity: 0.9;
-            min-height: 100px; /* Prevents layout shift */
-            margin-bottom: 30px;
-            font-weight: 300;
-        }
-
-        /* Cursor blinking */
-        .typing-text::after {
-            content: '|';
-            animation: blink 0.7s infinite;
-        }
-        @keyframes blink { 50% { opacity: 0; } }
-
-        .btn-action {
+        .btn-connect {
             background: var(--primary-gradient);
             border: none;
-            padding: 12px 30px;
+            padding: 15px 35px;
             border-radius: 30px;
             color: white;
             font-weight: 600;
             cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
             text-decoration: none;
             display: inline-block;
             transition: 0.3s;
-            font-size: 14px;
-            letter-spacing: 1px;
         }
-        .btn-action:hover { transform: translateY(-3px); box-shadow: 0 10px 20px var(--glow-color); }
+        .btn-connect:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(110, 142, 251, 0.4); }
 
-        /* --- Nano Sphere & Carvings (Right Side) --- */
-        .hero-visual-block {
-            flex: 1;
-            min-width: 350px;
-            height: 450px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-
-        /* The glass panel with carvings */
-        .carving-panel {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(10px);
-            border-radius: 30px;
-            opacity: 0.6;
-            overflow: hidden;
-        }
-
-        /* Simple geometric carvings (CSS pseudo-elements) */
-        .carving-panel::before, .carving-panel::after {
-            content: '';
-            position: absolute;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        /* Triangle carving */
-        .carving-panel::before {
-            width: 200px; height: 200px;
-            top: -50px; right: -50px;
-            transform: rotate(15deg);
-        }
-        /* Hexagon-like carving */
-        .carving-panel::after {
-            width: 300px; height: 300px;
-            bottom: -100px; left: -80px;
-            border-radius: 50px;
-            transform: rotate(-10deg);
-        }
-
-        /* The main spinning sphere */
-        .nano-sphere {
-            width: 180px;
-            height: 180px;
-            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.2), rgba(110, 142, 251, 0.1) 60%, rgba(0, 0, 0, 0.3));
-            border-radius: 50%;
-            box-shadow: 0 0 50px rgba(110, 142, 251, 0.3), inset 0 0 30px rgba(255, 255, 255, 0.1);
-            position: relative;
-            z-index: 5;
-            animation: spherePulse 4s ease-in-out infinite;
-            backdrop-filter: blur(2px);
-        }
-
-        @keyframes spherePulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 50px rgba(110, 142, 251, 0.3); }
-            50% { transform: scale(1.05); box-shadow: 0 0 70px rgba(110, 142, 251, 0.5); }
-        }
-
-        /* Orbiting particles container */
-        .orbit-container {
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            transform-style: preserve-3d;
-            animation: orbitRotate 10s linear infinite;
-            z-index: 4;
-        }
-
-        @keyframes orbitRotate {
-            from { transform: rotateX(70deg) rotateY(0deg) rotateZ(0deg); }
-            to { transform: rotateX(70deg) rotateY(360deg) rotateZ(360deg); }
-        }
-
-        /* Individual particles */
-        .particle {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            background: #fff;
-            border-radius: 50%;
-            box-shadow: 0 0 10px #fff, 0 0 20px #a777e3;
-        }
-
-        /* Positioning particles in 3D space */
-        .particle:nth-child(1) { top: 50%; left: -3px; transform: translateZ(20px); }
-        .particle:nth-child(2) { top: 10%; left: 80%; transform: translateZ(-15px); opacity: 0.7; }
-        .particle:nth-child(3) { bottom: 20%; right: 10%; transform: translateZ(30px); }
-        .particle:nth-child(4) { top: 80%; left: 20%; transform: translateZ(-10px); }
-
-        /* --- Social Media Section (Minimal Icons) --- */
+        /* --- Social Media Section --- */
         .social-section {
-            padding: 80px 8%;
+            padding: 100px 8%;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
         }
 
-        .social-title { font-size: 24px; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px; color: rgba(255,255,255,0.7); }
+        .social-title {
+            font-size: 30px;
+            margin-bottom: 40px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
 
         .social-card {
-            width: 100%; max-width: 550px;
+            width: 100%;
+            max-width: 600px;
             background: var(--glass);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
             border: 1px solid var(--glass-border);
-            padding: 15px 30px;
-            border-radius: 15px;
+            padding: 20px 40px;
+            border-radius: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             text-decoration: none;
             color: white;
-            transition: 0.4s;
-            opacity: 0; transform: translateY(30px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0;
+            transform: translateY(50px);
         }
 
-        .social-card.show { opacity: 1; transform: translateY(0); }
-        .social-card:hover { background: rgba(255, 255, 255, 0.15); transform: translateX(5px); border-color: #ffbc00; }
+        .social-card.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .social-card:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05) translateX(10px);
+            border-color: var(--accent-orange);
+            box-shadow: 0 0 20px rgba(255, 95, 0, 0.3);
+        }
 
         .social-info { display: flex; align-items: center; gap: 20px; }
+        .social-icon { font-size: 30px; }
+        .social-name h4 { font-size: 20px; letter-spacing: 1px; }
+        .social-name p { font-size: 12px; opacity: 0.6; }
+        .arrow { font-size: 24px; opacity: 0.5; }
 
-        /* Custom CSS Minimal Icons */
-        .icon-box {
-            width: 40px; height: 40px;
-            display: flex; justify-content: center; align-items: center;
-            position: relative;
-        }
-        
-        /* Generic Line Art Icon style */
-        .icon-box::before, .icon-box::after { content: ''; position: absolute; border: 2px solid #ffbc00; }
-
-        /* Youtube Icon */
-        .icon-youtube::before { width: 24px; height: 16px; border-radius: 4px; }
-        .icon-youtube::after { border-left-width: 6px; border-top-width: 4px; border-bottom-width: 4px; border-right-width: 0; border-color: transparent; border-left-color: #ffbc00; left: 18px; }
-
-        /* Instagram Icon */
-        .icon-instagram::before { width: 20px; height: 20px; border-radius: 5px; }
-        .icon-instagram::after { width: 8px; height: 8px; border-radius: 50%; }
-
-        /* Facebook Icon (Simple 'f') */
-        .icon-facebook::before { content: 'f'; border: none; font-size: 26px; font-weight: 800; color: #ffbc00; }
-
-        /* Twitter/X Icon (Minimal X) */
-        .icon-twitter::before { width: 20px; height: 2px; transform: rotate(45deg); background: #ffbc00; border: none; }
-        .icon-twitter::after { width: 20px; height: 2px; transform: rotate(-45deg); background: #ffbc00; border: none; }
-
-        .social-name h4 { font-size: 18px; letter-spacing: 1px; font-weight: 600; }
-        .social-name p { font-size: 11px; opacity: 0.6; }
-        .arrow { font-size: 18px; opacity: 0.4; color: #ffbc00; }
-
+        /* --- Mobile Responsive Fixes --- */
         @media (max-width: 768px) {
-            header { flex-direction: column; gap: 10px; padding: 15px; }
-            .hero-container { text-align: center; justify-content: center; padding-top: 30px; }
-            .hero-visual-block { order: -1; min-height: 300px; margin-bottom: 20px;}
-            .carving-panel { width: 300px; height: 300px; left: 50%; transform: translateX(-50%); }
-            .social-card { padding: 12px 20px; }
+            header { flex-direction: column; gap: 20px; padding: 30px 5%; }
+            nav { width: 100%; overflow-x: auto; }
+            nav ul { justify-content: center; }
+            nav ul li { margin: 0 5px; }
+            nav ul li a { font-size: 11px; white-space: nowrap; }
+            
+            .container { text-align: center; padding-top: 50px; }
+            .hero-text { margin-bottom: 40px; }
+            .hero-image img { width: 100% !important; }
+            
+            .social-card { padding: 15px 20px; }
+            .social-name h4 { font-size: 16px; }
         }
     </style>
 </head>
@@ -292,67 +213,43 @@
 
     <header>
         <div class="logo-container">
-            <div class="logo-main">NIRMANA</div>
+            <div class="logo-main">
+                <span>N</span><span>i</span><span>r</span><span>m</span><span>a</span><span>n</span><span>a</span>
+            </div>
             <span class="logo-sub">Innovations</span>
         </div>
         <nav>
             <ul>
                 <li><a href="#" class="active">Home</a></li>
-                <li><a href="#connect">Connect</a></li>
+                <li><a href="#social-connect">Socials</a></li>
                 <li><a href="#">Services</a></li>
+                <li><a href="#">Contact</a></li>
             </ul>
         </nav>
     </header>
 
-    <main class="hero-container">
-        <div class="hero-text-block">
-            <h1>WE ARE<br><span>NIRMANA</span></h1>
-            <p class="typing-text" id="typewriter"></p>
-            <a href="#connect" class="btn-action">EXPLORE SPHERE</a>
+    <main class="container">
+        <div class="hero-text">
+            <h1>CRAFTING DIGITAL<br><span>EXPERIENCES</span></h1>
+            <p>Connect with us across all platforms to see our latest 3D creations.</p>
+            <br>
+            <a href="#social-connect" class="btn-connect">FOLLOW OUR JOURNEY</a>
         </div>
 
-        <div class="hero-visual-block">
-            <div class="carving-panel"></div>
-            
-            <div class="nano-sphere"></div>
-            
-            <div class="orbit-container">
-                <div class="particle"></div>
-                <div class="particle"></div>
-                <div class="particle"></div>
-                <div class="particle"></div>
-            </div>
+        <div class="hero-image" style="flex:1; display:flex; justify-content:center;">
+            <img style="width:80%; max-width:400px; animation: backgroundFloat 6s infinite ease-in-out;" src="Gemini_Generated_Image_7oic907oic907oic.png" alt="Island">
         </div>
     </main>
 
-    <section class="social-section" id="connect">
-        <h2 class="social-title">Digital Footprints</h2>
+    <section class="social-section" id="social-connect">
+        <h2 class="social-title">Connect With Us</h2>
 
         <a href="#" class="social-card">
             <div class="social-info">
-                <div class="icon-box icon-youtube"></div> <div class="social-name">
-                    <h4>YOUTUBE</h4>
-                    <p>Watch our creation process</p>
-                </div>
-            </div>
-            <div class="arrow">→</div>
-        </a>
-
-        <a href="#" class="social-card">
-            <div class="social-info">
-                <div class="icon-box icon-instagram"></div> <div class="social-name">
-                    <h4>INSTAGRAM</h4>
-                    <p>Visual art & renders</p>
-                </div>
-            </div>
-            <div class="arrow">→</div>
-        </a>
-
-        <a href="#" class="social-card">
-            <div class="social-info">
-                <div class="icon-box icon-facebook"></div> <div class="social-name">
+                <div class="social-icon">📘</div>
+                <div class="social-name">
                     <h4>FACEBOOK</h4>
-                    <p>Community & Updates</p>
+                    <p>Join our community</p>
                 </div>
             </div>
             <div class="arrow">→</div>
@@ -360,9 +257,32 @@
 
         <a href="#" class="social-card">
             <div class="social-info">
-                <div class="icon-box icon-twitter"></div> <div class="social-name">
+                <div class="social-icon">📸</div>
+                <div class="social-name">
+                    <h4>INSTAGRAM</h4>
+                    <p>Daily 3D renders & art</p>
+                </div>
+            </div>
+            <div class="arrow">→</div>
+        </a>
+
+        <a href="#" class="social-card">
+            <div class="social-info">
+                <div class="social-icon">🎬</div>
+                <div class="social-name">
+                    <h4>YOUTUBE</h4>
+                    <p>Animation tutorials & breakdowns</p>
+                </div>
+            </div>
+            <div class="arrow">→</div>
+        </a>
+
+        <a href="#" class="social-card">
+            <div class="social-info">
+                <div class="social-icon">🐦</div>
+                <div class="social-name">
                     <h4>TWITTER (X)</h4>
-                    <p>Industry news</p>
+                    <p>Tech news & updates</p>
                 </div>
             </div>
             <div class="arrow">→</div>
@@ -370,34 +290,13 @@
     </section>
 
     <script>
-        // --- Typewriter Effect Logic ---
-        const textElement = document.getElementById('typewriter');
-        const textToType = "A collective of visionary artists redefining reality through digital craftsmanship. We blend advanced technology with artistic precision to build immersive 3D worlds, characters, and nano-visualizations that inspire.";
-        
-        let index = 0;
-
-        function typeEffect() {
-            if (index < textToType.length) {
-                textElement.innerHTML += textToType.charAt(index);
-                index++;
-                setTimeout(typeEffect, 40); // Typing speed (ms)
-            }
-        }
-
-        // Start typing on load
-        window.onload = typeEffect;
-
-
-        // --- Scroll Animation logic for Social Cards ---
-        const observerOptions = { threshold: 0.2 };
-
+        const observerOptions = { threshold: 0.1 };
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry, idx) => {
+            entries.forEach((entry, index) => {
                 if (entry.isIntersecting) {
-                    // Staggered appearance
                     setTimeout(() => {
                         entry.target.classList.add('show');
-                    }, idx * 100); 
+                    }, index * 150); 
                 }
             });
         }, observerOptions);
